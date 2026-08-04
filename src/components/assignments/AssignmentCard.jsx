@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell } from 'recharts';
+import { CalendarClock } from 'lucide-react';
 import { callGetAssignmentProgress } from '../../lib/api.js';
 
 export default function AssignmentCard({ assignment, className }) {
@@ -21,7 +22,7 @@ export default function AssignmentCard({ assignment, className }) {
   ];
 
   return (
-    <div className="rounded-2xl border border-black/5 bg-white shadow-sm p-4 flex items-center gap-4">
+    <div className="rounded-2xl bg-white shadow-md p-4 flex items-center gap-4">
       <div className="h-16 w-16 shrink-0 relative">
         <PieChart width={64} height={64}>
           <Pie
@@ -45,7 +46,8 @@ export default function AssignmentCard({ assignment, className }) {
         <p className="font-semibold text-brand-text truncate">{assignment.title}</p>
         <p className="text-sm text-brand-grey-text truncate">{className}</p>
         {assignment.dueDateMs && (
-          <p className="text-xs text-brand-grey-text mt-0.5">
+          <p className="flex items-center gap-1 text-xs text-brand-grey-text mt-0.5">
+            <CalendarClock size={13} />
             עד {new Date(assignment.dueDateMs).toLocaleDateString('he-IL')}
           </p>
         )}

@@ -1,15 +1,16 @@
 import { NavLink } from 'react-router-dom';
+import { Home, Users, ClipboardList, User } from 'lucide-react';
 
 const TABS = [
-  { to: '/', icon: '🏠', label: 'בית', end: true },
-  { to: '/classes', icon: '👥', label: 'כיתות' },
-  { to: '/assignments', icon: '📋', label: 'משימות' },
-  { to: '/profile', icon: '👤', label: 'פרופיל' },
+  { to: '/', icon: Home, label: 'בית', end: true },
+  { to: '/classes', icon: Users, label: 'כיתות' },
+  { to: '/assignments', icon: ClipboardList, label: 'משימות' },
+  { to: '/profile', icon: User, label: 'פרופיל' },
 ];
 
 export default function BottomNav() {
   return (
-    <nav className="sticky bottom-0 z-40 bg-white border-t border-black/5 grid grid-cols-4">
+    <nav className="sticky bottom-0 z-40 bg-white shadow-[0_-2px_8px_rgba(0,0,0,0.06)] grid grid-cols-4">
       {TABS.map((tab) => (
         <NavLink
           key={tab.to}
@@ -21,7 +22,7 @@ export default function BottomNav() {
             }`
           }
         >
-          <span className="text-xl">{tab.icon}</span>
+          <tab.icon size={22} strokeWidth={2.25} />
           {tab.label}
         </NavLink>
       ))}

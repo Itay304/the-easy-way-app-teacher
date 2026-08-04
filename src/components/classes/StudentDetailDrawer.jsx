@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { X } from 'lucide-react';
 import { getUserDoc } from '../../lib/api.js';
 import { daysAgo } from '../../lib/dateUtils.js';
 import LoadingSpinner from '../LoadingSpinner.jsx';
@@ -20,11 +21,11 @@ export default function StudentDetailDrawer({ student, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center p-4">
-      <div className="bg-white rounded-2xl w-full max-w-sm p-6 max-h-[85vh] overflow-y-auto">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 max-h-[85vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-bold text-brand-text">התקדמות אישית</h2>
-          <button onClick={onClose} className="text-brand-grey-text text-xl leading-none">
-            ✕
+          <button onClick={onClose} className="text-brand-grey-text hover:text-brand-text">
+            <X size={20} />
           </button>
         </div>
 

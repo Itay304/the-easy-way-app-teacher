@@ -7,9 +7,10 @@ import {
   callGetClassHardWords,
 } from '../lib/api.js';
 import { toDateKey, daysAgo, lastSevenDays } from '../lib/dateUtils.js';
-import LoadingSpinner from '../components/LoadingSpinner.jsx';
+import { GraduationCap, ClipboardList, TrendingUp } from 'lucide-react';
 import ErrorBanner from '../components/ErrorBanner.jsx';
 import SummaryCard from '../components/SummaryCard.jsx';
+import { SummaryCardsSkeleton, Skeleton } from '../components/Skeleton.jsx';
 import WeeklyActivityChart from '../components/home/WeeklyActivityChart.jsx';
 import InactiveStudentsList from '../components/home/InactiveStudentsList.jsx';
 import HardWordsHeatmap from '../components/home/HardWordsHeatmap.jsx';
@@ -118,24 +119,31 @@ export default function Home() {
     };
   }, [profile, user, reloadKey]);
 
-  if (loading) return <LoadingSpinner label="טוען דשבורד..." />;
-
   return (
     <div className="px-4 pt-6 space-y-6">
       <h1 className="text-2xl font-bold text-brand-text">בית</h1>
 
       {error && <ErrorBanner message={error} onRetry={() => setReloadKey((k) => k + 1)} />}
 
+      {loading && (
+        <div className="space-y-6">
+          <SummaryCardsSkeleton />
+          <Skeleton className="h-56 rounded-2xl" />
+          <Skeleton className="h-32 rounded-2xl" />
+        </div>
+      )}
+
       {data && (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <SummaryCard icon="🎓" label="תלמידים פעילים היום" value={data.activeToday} />
-            <SummaryCard icon="📋" label="משימות פעילות" value={data.activeAssignments} accent="brand-turquoise" />
+            <SummaryCard icon={GraduationCap} label="תלמידים פעילים היום" value={data.activeToday} />
             <SummaryCard
-              icon="📈"
-              label="ממוצע מילים נכבשות"
-              value={data.avgMastered.toFixed(1)}
+              icon={ClipboardList}
+              label="משימות פעילות"
+              value={data.activeAssignments}
+              accent="turquoise"
             />
+            <SummaryCard icon={TrendingUp} label="ממוצע מילים נכבשות" value={data.avgMastered.toFixed(1)} />
           </div>
 
           <WeeklyActivityChart data={data.weeklyChart} />

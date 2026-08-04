@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, useOutletContext, Link } from 'react-router-dom';
+import { ArrowRight, Megaphone, Share2 } from 'lucide-react';
 import { getClassById, callGetClassProgress } from '../lib/api.js';
-import LoadingSpinner from '../components/LoadingSpinner.jsx';
+import { ListSkeleton } from '../components/Skeleton.jsx';
 import ErrorBanner from '../components/ErrorBanner.jsx';
 import StudentTable from '../components/classes/StudentTable.jsx';
 import StudentDetailDrawer from '../components/classes/StudentDetailDrawer.jsx';
@@ -75,8 +76,9 @@ export default function ClassDetail() {
 
   return (
     <div className="px-4 pt-6 space-y-4">
-      <Link to="/classes" className="text-sm text-brand-grey-text hover:text-brand-text">
-        ← חזרה לכיתות
+      <Link to="/classes" className="inline-flex items-center gap-1 text-sm text-brand-grey-text hover:text-brand-text">
+        <ArrowRight size={16} />
+        חזרה לכיתות
       </Link>
 
       {error && <ErrorBanner message={error} onRetry={() => setReloadKey((k) => k + 1)} />}
@@ -84,28 +86,30 @@ export default function ClassDetail() {
       {classInfo && (
         <>
           <div>
-            <h1 className="text-2xl font-bold text-brand-text">{classInfo.name}</h1>
+            <h1 className="text-2xl font-bold text-brand-green-dark">{classInfo.name}</h1>
             {classInfo.grade && <p className="text-brand-grey-text">שכבה {classInfo.grade}</p>}
           </div>
 
           <div className="flex flex-wrap gap-3">
             <button
               onClick={() => setShowAnnouncement(true)}
-              className="flex-1 min-w-[140px] px-4 py-3 rounded-xl bg-brand-green text-white font-semibold text-sm"
+              className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-green text-white font-semibold text-sm shadow-sm"
             >
-              📣 שלח הודעה לכיתה
+              <Megaphone size={17} />
+              שלח הודעה לכיתה
             </button>
             <button
               onClick={handleShare}
-              className="flex-1 min-w-[140px] px-4 py-3 rounded-xl bg-brand-turquoise/10 text-brand-turquoise font-semibold text-sm"
+              className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-turquoise/10 text-brand-turquoise font-semibold text-sm"
             >
-              {shareStatus || `🔗 שתף קוד (${classInfo.joinCode})`}
+              <Share2 size={17} />
+              {shareStatus || `שתף קוד (${classInfo.joinCode})`}
             </button>
           </div>
         </>
       )}
 
-      {!students && !error && <LoadingSpinner label="טוען תלמידים..." />}
+      {!students && !error && <ListSkeleton rows={5} />}
 
       {students && (
         <StudentTable

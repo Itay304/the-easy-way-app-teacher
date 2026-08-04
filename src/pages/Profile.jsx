@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
+import { ExternalLink, LogOut } from 'lucide-react';
 import { auth } from '../firebase.js';
 import { getInstitution, getMyClasses } from '../lib/api.js';
-import LoadingSpinner from '../components/LoadingSpinner.jsx';
+import { Skeleton } from '../components/Skeleton.jsx';
 
 const NOTIFY_KEY = 'easylex_notify_inactive';
 
@@ -45,7 +46,7 @@ export default function Profile() {
     <div className="px-4 pt-6 space-y-5">
       <h1 className="text-2xl font-bold text-brand-text">פרופיל</h1>
 
-      <div className="rounded-2xl border border-black/5 bg-white shadow-sm p-5 text-center">
+      <div className="rounded-2xl bg-white shadow-md p-5 text-center">
         <span className="h-16 w-16 mx-auto rounded-full bg-brand-turquoise/15 text-brand-turquoise font-bold text-2xl flex items-center justify-center mb-3">
           {(profile.displayName || '?')[0]}
         </span>
@@ -54,7 +55,10 @@ export default function Profile() {
       </div>
 
       {!stats ? (
-        <LoadingSpinner />
+        <div className="grid grid-cols-2 gap-3">
+          <Skeleton className="h-16 rounded-xl" />
+          <Skeleton className="h-16 rounded-xl" />
+        </div>
       ) : (
         <div className="grid grid-cols-2 gap-3">
           <div className="rounded-xl bg-brand-grey-light px-4 py-3 text-center">
@@ -68,7 +72,7 @@ export default function Profile() {
         </div>
       )}
 
-      <div className="rounded-2xl border border-black/5 bg-white shadow-sm p-5 flex items-center justify-between">
+      <div className="rounded-2xl bg-white shadow-md p-5 flex items-center justify-between">
         <span className="text-sm font-medium text-brand-text">התראות על תלמידים לא פעילים</span>
         <button
           onClick={toggleNotify}
@@ -88,15 +92,17 @@ export default function Profile() {
         href="https://theeasywayapp.co.il/teacher"
         target="_blank"
         rel="noopener noreferrer"
-        className="block w-full text-center py-3.5 rounded-xl bg-brand-turquoise/10 text-brand-turquoise font-semibold"
+        className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-brand-turquoise/10 text-brand-turquoise font-semibold"
       >
+        <ExternalLink size={17} />
         פתח ממשק מלא באתר
       </a>
 
       <button
         onClick={() => signOut(auth)}
-        className="block w-full text-center py-3.5 rounded-xl border border-black/10 text-brand-text font-semibold"
+        className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-white shadow-sm text-brand-text font-semibold"
       >
+        <LogOut size={17} />
         התנתק
       </button>
     </div>

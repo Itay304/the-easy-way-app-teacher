@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { X } from 'lucide-react';
 import StepSource from './steps/StepSource.jsx';
 import StepFilter from './steps/StepFilter.jsx';
 import StepFinalize from './steps/StepFinalize.jsx';
@@ -13,7 +14,7 @@ export default function AssignmentWizard({ institutionId, classes, onClose, onCr
 
   return (
     <div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center p-4">
-      <div className="bg-white rounded-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-4">
           <div className="flex gap-1.5">
             {[1, 2, 3].map((n) => (
@@ -23,8 +24,8 @@ export default function AssignmentWizard({ institutionId, classes, onClose, onCr
               />
             ))}
           </div>
-          <button onClick={onClose} className="text-brand-grey-text text-xl leading-none">
-            ✕
+          <button onClick={onClose} className="text-brand-grey-text hover:text-brand-text">
+            <X size={20} />
           </button>
         </div>
 

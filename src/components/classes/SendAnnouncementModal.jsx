@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Megaphone } from 'lucide-react';
 import { callSendAnnouncement } from '../../lib/api.js';
 
 const MAX_LEN = 200;
@@ -24,8 +25,11 @@ export default function SendAnnouncementModal({ classId, onClose, onSent }) {
 
   return (
     <div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center p-4">
-      <div className="bg-white rounded-2xl w-full max-w-sm p-6">
-        <h2 className="text-lg font-bold text-brand-text mb-4">שלח הודעה לכיתה</h2>
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Megaphone size={20} className="text-brand-green" />
+          <h2 className="text-lg font-bold text-brand-text">שלח הודעה לכיתה</h2>
+        </div>
         <form onSubmit={handleSubmit} className="space-y-3">
           <textarea
             required

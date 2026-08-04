@@ -1,3 +1,6 @@
+import { CheckCircle2, XCircle, Users } from 'lucide-react';
+import EmptyState from '../EmptyState.jsx';
+
 const SORT_OPTIONS = [
   { key: 'xp', label: 'XP' },
   { key: 'mastered', label: 'מילים' },
@@ -54,14 +57,14 @@ export default function StudentTable({
       </div>
 
       {sorted.length === 0 ? (
-        <p className="text-brand-grey-text text-center py-8">אין תלמידים להצגה.</p>
+        <EmptyState icon={Users} title="אין תלמידים להצגה" />
       ) : (
         <ul className="space-y-2">
           {sorted.map((s) => (
             <li key={s.uid}>
               <button
                 onClick={() => onSelectStudent(s)}
-                className="w-full flex items-center gap-3 bg-white rounded-xl border border-black/5 px-4 py-3 hover:shadow-md transition text-right"
+                className="w-full flex items-center gap-3 bg-white rounded-xl shadow-sm px-4 py-3 hover:shadow-md active:shadow-sm transition text-right"
               >
                 <span className="h-10 w-10 rounded-full bg-brand-turquoise/15 text-brand-turquoise font-bold flex items-center justify-center shrink-0">
                   {(s.displayName || '?')[0]}
@@ -74,9 +77,11 @@ export default function StudentTable({
                     {s.totalXp} XP · {s.masteredWords} מילים נכבשות
                   </span>
                 </span>
-                <span className={`text-lg shrink-0 ${s.weeklyActivity ? 'text-brand-green' : 'text-red-400'}`}>
-                  {s.weeklyActivity ? '✓' : '✗'}
-                </span>
+                {s.weeklyActivity ? (
+                  <CheckCircle2 size={20} className="text-brand-green shrink-0" />
+                ) : (
+                  <XCircle size={20} className="text-red-400 shrink-0" />
+                )}
               </button>
             </li>
           ))}

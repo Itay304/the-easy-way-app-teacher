@@ -23,7 +23,7 @@ export default function CreateClassModal({ onClose, onCreated }) {
 
   return (
     <div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center p-4">
-      <div className="bg-white rounded-2xl w-full max-w-sm p-6">
+      <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6">
         <h2 className="text-lg font-bold text-brand-text mb-4">צור כיתה חדשה</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
