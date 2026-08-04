@@ -18,17 +18,16 @@ export default function TabsCarousel() {
   const location = useLocation();
   const activeIndex = Math.max(0, TAB_PATHS.indexOf(location.pathname));
 
-  // מיפוי מאומת בבדיקה על מכשיר אמיתי (לא ניחוש): swipe ימינה → טאב קודם
-  // (index - 1), swipe שמאלה → טאב הבא (index + 1).
+  // swipe ימינה → טאב הבא (index + 1), swipe שמאלה → טאב קודם (index - 1).
   const handlers = useSwipeable({
     onSwipedLeft: () => {
-      if (activeIndex < TAB_PATHS.length - 1) {
-        navigate(TAB_PATHS[activeIndex + 1], { replace: true });
+      if (activeIndex > 0) {
+        navigate(TAB_PATHS[activeIndex - 1], { replace: true });
       }
     },
     onSwipedRight: () => {
-      if (activeIndex > 0) {
-        navigate(TAB_PATHS[activeIndex - 1], { replace: true });
+      if (activeIndex < TAB_PATHS.length - 1) {
+        navigate(TAB_PATHS[activeIndex + 1], { replace: true });
       }
     },
     trackMouse: false,
