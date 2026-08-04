@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
 import { TAB_PATHS } from '../lib/tabs.js';
@@ -8,17 +9,28 @@ import Profile from '../pages/Profile.jsx';
 
 const TAB_PAGES = [Home, Classes, Assignments, Profile];
 
-// עגלת טאבים מוחלקת (כמו ViewPager) — כל 4 העמודים מותקנים תמיד,
-// ומחליקים אופקית לפי אינדקס הטאב הפעיל. עוטפים ב-dir="ltr" כדי
-// שהחישוב הפיזי של translateX לא יתהפך בגלל ה-RTL של הדף (flex-direction
-// כן מתהפך תחת RTL, transform לא — צריך לבודד אחד מהשני), ואז מחזירים
-// dir="rtl" בתוך כל עמוד בנפרד כדי שהתוכן עצמו יישאר RTL כרגיל.
+// גישה חדשה לגמרי אחרי שגישת ה-track-מוחלק (flex + translateX + dir
+// tricks) התבררה כלא אמינה על מכשיר אמיתי חרף כמה תיקונים: רק העמוד
+// הפעיל מותקן בכל רגע נתון (לא כל 4 יחד), וכשהאינדקס משתנה הוא נכנס
+// עם אנימציית keyframes פיזית (translateX מ-100%/-100% ל-0) — לא תלויה
+// בכלל ב-dir/direction, אז אין עוד מקום לבלבול RTL/LTR.
 export default function TabsCarousel() {
   const navigate = useNavigate();
   const location = useLocation();
   const activeIndex = Math.max(0, TAB_PATHS.indexOf(location.pathname));
 
-  // swipe ימינה → טאב הבא (index + 1), swipe שמאלה → טאב קודם (index - 1).
+  const prevIndexRef = useRef(activeIndex);
+  const [animClass, setAnimClass] = useState('');
+
+  useEffect(() => {
+    if (activeIndex > prevIndexRef.current) {
+      setAnimClass('animate-slide-in-right'); // הבא — נכנס מימין
+    } else if (activeIndex < prevIndexRef.current) {
+      setAnimClass('animate-slide-in-left'); // קודם — נכנס משמאל
+    }
+    prevIndexRef.current = activeIndex;
+  }, [activeIndex]);
+
   const handlers = useSwipeable({
     onSwipedLeft: () => {
       if (activeIndex > 0) {
@@ -34,40 +46,12 @@ export default function TabsCarousel() {
     preventScrollOnSwipe: false,
   });
 
-  const transformValue = `translateX(-${activeIndex * (100 / TAB_PAGES.length)}%)`;
+  const ActivePage = TAB_PAGES[activeIndex];
 
   return (
-    <div {...handlers} dir="ltr" className="overflow-hidden relative">
-      {/* TODO זמני להסרה — תצוגת דיבוג על המסך (בלי צורך ב-devtools מרוחק):
-          activeIndex + מחרוזת ה-transform בפועל, כדי לוודא במדויק מה קורה
-          בזמן swipe אמיתי, במקום להמשיך לנחש. */}
-      <div
-        dir="ltr"
-        className="fixed top-0 inset-x-0 z-50 bg-black/80 text-white text-xs font-mono px-3 py-1.5 text-center"
-      >
-        DEBUG · index={activeIndex} ({TAB_PATHS[activeIndex]}) · {transformValue}
-      </div>
-
-      <div
-        className="flex transition-transform duration-300 ease-out"
-        style={{
-          // direction מפורש כ-inline style (לא רק תלוי בירושה מה-dir="ltr"
-          // של ההורה) — כדי שסדר הפריסה הפיזי של הילדים (flex-direction:
-          // row) יהיה LTR באופן ודאי, בלי שום תלות בשרשרת ירושה.
-          direction: 'ltr',
-          // אחוזי transform מחושבים יחסית לרוחב האלמנט עצמו (ה-track,
-          // שהוא TAB_PAGES.length*100% מרוחב ההורה) — לא יחסית להורה.
-          // צעד של 100/length אחוזים מתוך הרוחב העצמי שווה בדיוק לרוחב
-          // הורה אחד, בלי קשר לכמות הטאבים.
-          transform: transformValue,
-          width: `${TAB_PAGES.length * 100}%`,
-        }}
-      >
-        {TAB_PAGES.map((Page, i) => (
-          <div key={TAB_PATHS[i]} dir="rtl" className="shrink-0" style={{ width: `${100 / TAB_PAGES.length}%` }}>
-            <Page />
-          </div>
-        ))}
+    <div {...handlers} className="overflow-hidden">
+      <div key={activeIndex} className={animClass}>
+        <ActivePage />
       </div>
     </div>
   );

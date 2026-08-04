@@ -35,3 +35,29 @@ body {
 *::-webkit-scrollbar {
   display: none;
 }
+
+/* אנימציית מעבר בין טאבים (TabsCarousel) — translateX() פיזי, לא תלוי
+   ב-dir/direction בכלל (בניגוד לגישת ה-flex-track הקודמת שהתבררה
+   כלא-אמינה). כניסה מימין = "הבא", כניסה משמאל = "קודם". */
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+.animate-slide-in-right {
+  animation: slide-in-right 300ms ease-out;
+}
+.animate-slide-in-left {
+  animation: slide-in-left 300ms ease-out;
+}
