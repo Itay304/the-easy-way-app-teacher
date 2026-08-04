@@ -12,12 +12,17 @@ export default function BottomNav() {
           replace
           aria-label={tab.label}
           className={({ isActive }) =>
-            `flex items-center justify-center py-3.5 transition ${
+            `flex flex-col items-center justify-center gap-0.5 py-3 transition ${
               isActive ? 'text-brand-green' : 'text-brand-grey-text'
             }`
           }
         >
-          <tab.icon size={24} strokeWidth={2.25} />
+          {({ isActive }) => (
+            <>
+              <tab.icon size={24} strokeWidth={2.25} />
+              {isActive && <span className="text-[11px] font-medium">{tab.label}</span>}
+            </>
+          )}
         </NavLink>
       ))}
     </nav>
