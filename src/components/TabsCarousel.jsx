@@ -18,15 +18,18 @@ export default function TabsCarousel() {
   const location = useLocation();
   const activeIndex = Math.max(0, TAB_PATHS.indexOf(location.pathname));
 
+  // RTL: הטאבים בתפריט התחתון מסודרים מימין לשמאל (Home ראשון = ימני
+  // ביותר), אז כיוון ה-swipe הפיזי הפוך מ-LTR — שמאלה = לטאב הקודם
+  // (ימינה בתפריט), ימינה = לטאב הבא (שמאלה בתפריט).
   const handlers = useSwipeable({
     onSwipedLeft: () => {
-      if (activeIndex < TAB_PATHS.length - 1) {
-        navigate(TAB_PATHS[activeIndex + 1], { replace: true });
+      if (activeIndex > 0) {
+        navigate(TAB_PATHS[activeIndex - 1], { replace: true });
       }
     },
     onSwipedRight: () => {
-      if (activeIndex > 0) {
-        navigate(TAB_PATHS[activeIndex - 1], { replace: true });
+      if (activeIndex < TAB_PATHS.length - 1) {
+        navigate(TAB_PATHS[activeIndex + 1], { replace: true });
       }
     },
     trackMouse: false,
