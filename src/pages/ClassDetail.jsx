@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useParams, useOutletContext, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowRight, Megaphone, Share2 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext.jsx';
 import { getClassById, callGetClassProgress } from '../lib/api.js';
 import { ListSkeleton } from '../components/Skeleton.jsx';
 import ErrorBanner from '../components/ErrorBanner.jsx';
@@ -28,7 +29,8 @@ async function shareJoinCode(className, joinCode) {
 
 export default function ClassDetail() {
   const { classId } = useParams();
-  const { profile } = useOutletContext();
+  const navigate = useNavigate();
+  const { profile } = useAuth();
   const [classInfo, setClassInfo] = useState(null);
   const [students, setStudents] = useState(null);
   const [error, setError] = useState('');
@@ -65,6 +67,17 @@ export default function ClassDetail() {
     };
   }, [classId, profile, reloadKey]);
 
+  function goBack() {
+    // navigate(-1) קופץ אחורה בהיסטוריה האמיתית (עדיף על push חדש ל-/classes,
+    // שהיה יוצר entry כפול). אם הגיעו לכאן ישירות (deep link, אין state
+    // קודם) — נופלים ל-/classes בלי ליצור עוד skip-back מוזר.
+    if (window.history.state && window.history.state.idx > 0) {
+      navigate(-1);
+    } else {
+      navigate('/classes', { replace: true });
+    }
+  }
+
   async function handleShare() {
     if (!classInfo) return;
     const result = await shareJoinCode(classInfo.name, classInfo.joinCode);
@@ -76,10 +89,13 @@ export default function ClassDetail() {
 
   return (
     <div className="px-4 pt-6 space-y-4">
-      <Link to="/classes" className="inline-flex items-center gap-1 text-sm text-brand-grey-text hover:text-brand-text">
+      <button
+        onClick={goBack}
+        className="inline-flex items-center gap-1 text-sm text-brand-grey-text hover:text-brand-text"
+      >
         <ArrowRight size={16} />
         חזרה לכיתות
-      </Link>
+      </button>
 
       {error && <ErrorBanner message={error} onRetry={() => setReloadKey((k) => k + 1)} />}
 

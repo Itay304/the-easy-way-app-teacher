@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
 import { Plus, ClipboardList } from 'lucide-react';
+import { useAuth } from '../context/AuthContext.jsx';
 import { getMyClasses, getAssignmentsForClasses } from '../lib/api.js';
 import { ListSkeleton } from '../components/Skeleton.jsx';
 import ErrorBanner from '../components/ErrorBanner.jsx';
@@ -9,7 +9,7 @@ import AssignmentCard from '../components/assignments/AssignmentCard.jsx';
 import AssignmentWizard from '../components/assignments/AssignmentWizard.jsx';
 
 export default function Assignments() {
-  const { user, profile } = useOutletContext();
+  const { user, profile } = useAuth();
   const [classes, setClasses] = useState(null);
   const [assignments, setAssignments] = useState(null);
   const [error, setError] = useState('');

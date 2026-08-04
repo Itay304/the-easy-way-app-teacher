@@ -1,21 +1,15 @@
 import { NavLink } from 'react-router-dom';
-import { Home, Users, ClipboardList, User } from 'lucide-react';
-
-const TABS = [
-  { to: '/', icon: Home, label: 'בית', end: true },
-  { to: '/classes', icon: Users, label: 'כיתות' },
-  { to: '/assignments', icon: ClipboardList, label: 'משימות' },
-  { to: '/profile', icon: User, label: 'פרופיל' },
-];
+import { TABS } from '../lib/tabs.js';
 
 export default function BottomNav() {
   return (
     <nav className="sticky bottom-0 z-40 bg-white shadow-[0_-2px_8px_rgba(0,0,0,0.06)] grid grid-cols-4">
       {TABS.map((tab) => (
         <NavLink
-          key={tab.to}
-          to={tab.to}
-          end={tab.end}
+          key={tab.path}
+          to={tab.path}
+          end
+          replace
           className={({ isActive }) =>
             `flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium transition ${
               isActive ? 'text-brand-green' : 'text-brand-grey-text'

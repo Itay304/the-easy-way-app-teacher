@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { ExternalLink, LogOut } from 'lucide-react';
+import { useAuth } from '../context/AuthContext.jsx';
 import { auth } from '../firebase.js';
 import { getInstitution, getMyClasses } from '../lib/api.js';
 import { Skeleton } from '../components/Skeleton.jsx';
@@ -9,7 +9,7 @@ import { Skeleton } from '../components/Skeleton.jsx';
 const NOTIFY_KEY = 'easylex_notify_inactive';
 
 export default function Profile() {
-  const { user, profile } = useOutletContext();
+  const { user, profile } = useAuth();
   const [institution, setInstitution] = useState(null);
   const [stats, setStats] = useState(null);
   const [notifyInactive, setNotifyInactive] = useState(

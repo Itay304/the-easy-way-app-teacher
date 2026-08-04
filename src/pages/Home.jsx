@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.jsx';
 import {
   getMyClasses,
   getAssignmentsForClasses,
@@ -16,7 +16,7 @@ import InactiveStudentsList from '../components/home/InactiveStudentsList.jsx';
 import HardWordsHeatmap from '../components/home/HardWordsHeatmap.jsx';
 
 export default function Home() {
-  const { user, profile } = useOutletContext();
+  const { user, profile } = useAuth();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [data, setData] = useState(null);

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useOutletContext, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Plus, Users } from 'lucide-react';
+import { useAuth } from '../context/AuthContext.jsx';
 import { getMyClasses, callGetClassProgress } from '../lib/api.js';
 import { ListSkeleton } from '../components/Skeleton.jsx';
 import ErrorBanner from '../components/ErrorBanner.jsx';
@@ -8,7 +9,7 @@ import EmptyState from '../components/EmptyState.jsx';
 import CreateClassModal from '../components/classes/CreateClassModal.jsx';
 
 export default function Classes() {
-  const { user, profile } = useOutletContext();
+  const { user, profile } = useAuth();
   const [classes, setClasses] = useState(null);
   const [error, setError] = useState('');
   const [showCreate, setShowCreate] = useState(false);
