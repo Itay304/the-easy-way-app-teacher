@@ -10,14 +10,14 @@ export default function BottomNav() {
           to={tab.path}
           end
           replace
+          aria-label={tab.label}
           className={({ isActive }) =>
-            `flex flex-col items-center justify-center gap-1 py-2.5 text-xs font-medium transition ${
+            `flex items-center justify-center py-3.5 transition ${
               isActive ? 'text-brand-green' : 'text-brand-grey-text'
             }`
           }
         >
-          <tab.icon size={22} strokeWidth={2.25} />
-          {tab.label}
+          <tab.icon size={24} strokeWidth={2.25} />
         </NavLink>
       ))}
     </nav>

@@ -18,20 +18,13 @@ export default function TabsCarousel() {
   const location = useLocation();
   const activeIndex = Math.max(0, TAB_PATHS.indexOf(location.pathname));
 
-  // הגדרה מפורשת (מאומתת על מכשיר אמיתי): האצבע זזה שמאלה (onSwipedLeft,
-  // תנועה מימין לשמאל) → טאב הבא (index + 1). האצבע זזה ימינה
-  // (onSwipedRight, תנועה משמאל לימין) → טאב הקודם (index - 1).
+  // TODO זמני — נוחש כיוון פעמיים ברצף וטעה בשתיים. במקום לנחש שוב,
+  // בונים גרסת דיבוג: swipe רק מדפיס ל-console, לא מנווט בפועל. בדוק
+  // במכשיר אמיתי מה מודפס כשמחליקים ימינה/שמאלה, ואז נחזיר את הניווט
+  // עם המיפוי הנכון וימחק את ה-console.log.
   const handlers = useSwipeable({
-    onSwipedLeft: () => {
-      if (activeIndex < TAB_PATHS.length - 1) {
-        navigate(TAB_PATHS[activeIndex + 1], { replace: true });
-      }
-    },
-    onSwipedRight: () => {
-      if (activeIndex > 0) {
-        navigate(TAB_PATHS[activeIndex - 1], { replace: true });
-      }
-    },
+    onSwipedLeft: () => console.log('LEFT', activeIndex),
+    onSwipedRight: () => console.log('RIGHT', activeIndex),
     trackMouse: false,
     preventScrollOnSwipe: false,
   });
