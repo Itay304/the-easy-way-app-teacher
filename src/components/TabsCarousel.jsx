@@ -34,8 +34,20 @@ export default function TabsCarousel() {
     preventScrollOnSwipe: false,
   });
 
+  const transformValue = `translateX(-${activeIndex * (100 / TAB_PAGES.length)}%)`;
+
   return (
-    <div {...handlers} dir="ltr" className="overflow-hidden">
+    <div {...handlers} dir="ltr" className="overflow-hidden relative">
+      {/* TODO זמני להסרה — תצוגת דיבוג על המסך (בלי צורך ב-devtools מרוחק):
+          activeIndex + מחרוזת ה-transform בפועל, כדי לוודא במדויק מה קורה
+          בזמן swipe אמיתי, במקום להמשיך לנחש. */}
+      <div
+        dir="ltr"
+        className="fixed top-0 inset-x-0 z-50 bg-black/80 text-white text-xs font-mono px-3 py-1.5 text-center"
+      >
+        DEBUG · index={activeIndex} ({TAB_PATHS[activeIndex]}) · {transformValue}
+      </div>
+
       <div
         className="flex transition-transform duration-300 ease-out"
         style={{
@@ -47,7 +59,7 @@ export default function TabsCarousel() {
           // שהוא TAB_PAGES.length*100% מרוחב ההורה) — לא יחסית להורה.
           // צעד של 100/length אחוזים מתוך הרוחב העצמי שווה בדיוק לרוחב
           // הורה אחד, בלי קשר לכמות הטאבים.
-          transform: `translateX(-${activeIndex * (100 / TAB_PAGES.length)}%)`,
+          transform: transformValue,
           width: `${TAB_PAGES.length * 100}%`,
         }}
       >
