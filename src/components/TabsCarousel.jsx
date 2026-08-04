@@ -39,6 +39,10 @@ export default function TabsCarousel() {
       <div
         className="flex transition-transform duration-300 ease-out"
         style={{
+          // direction מפורש כ-inline style (לא רק תלוי בירושה מה-dir="ltr"
+          // של ההורה) — כדי שסדר הפריסה הפיזי של הילדים (flex-direction:
+          // row) יהיה LTR באופן ודאי, בלי שום תלות בשרשרת ירושה.
+          direction: 'ltr',
           // אחוזי transform מחושבים יחסית לרוחב האלמנט עצמו (ה-track,
           // שהוא TAB_PAGES.length*100% מרוחב ההורה) — לא יחסית להורה.
           // צעד של 100/length אחוזים מתוך הרוחב העצמי שווה בדיוק לרוחב
