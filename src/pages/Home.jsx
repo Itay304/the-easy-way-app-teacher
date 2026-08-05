@@ -72,23 +72,28 @@ export default function Home() {
             .length,
         }));
 
-        // איחוד מילים קשות מכל הכיתות (סכימת attempts/errors מחדש לפני מיון סופי)
+        // איחוד מילים קשות מכל הכיתות (סכימת attempts/errors/תלמידים מחדש
+        // לפני מיון סופי) — מפת חום מציגה את כל המילים, לא רק top 5.
         const wordMap = new Map();
         hardWordsResults.flat().forEach((w) => {
           const errors = Math.round(w.errorRate * w.totalAttempts);
-          const entry = wordMap.get(w.englishWord) || { attempts: 0, errors: 0 };
+          const entry = wordMap.get(w.englishWord) ||
+            { attempts: 0, errors: 0, studentsAttempted: 0, studentsFailed: 0 };
           entry.attempts += w.totalAttempts;
           entry.errors += errors;
+          entry.studentsAttempted += w.studentsAttempted || 0;
+          entry.studentsFailed += w.studentsFailed || 0;
           wordMap.set(w.englishWord, entry);
         });
         const hardWords = Array.from(wordMap.entries())
-          .map(([englishWord, { attempts, errors }]) => ({
+          .map(([englishWord, { attempts, errors, studentsAttempted, studentsFailed }]) => ({
             englishWord,
             totalAttempts: attempts,
             errorRate: attempts > 0 ? errors / attempts : 0,
+            studentsAttempted,
+            studentsFailed,
           }))
-          .sort((a, b) => b.errorRate - a.errorRate)
-          .slice(0, 5);
+          .sort((a, b) => b.errorRate - a.errorRate);
 
         if (!cancelled) {
           setData({
