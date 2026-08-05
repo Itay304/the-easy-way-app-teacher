@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { callCreateAssignment } from '../../../lib/api.js';
 
 export default function StepFinalize({ matchedWords, listId, classes, onBack, onCreated }) {
-  const [selectionMode, setSelectionMode] = useState('all'); // 'all' | 'random' | 'manual'
+  const [selectionMode, setSelectionMode] = useState('all'); // 'all' | 'random' | 'manual' | 'varied'
   const [randomCount, setRandomCount] = useState(Math.min(10, matchedWords.length));
   const [manualIds, setManualIds] = useState([]);
   const [title, setTitle] = useState('');
@@ -16,7 +16,7 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
   }
 
   function resolveWordIds() {
-    if (selectionMode === 'all') return matchedWords.map((w) => w.id);
+    if (selectionMode === 'all' || selectionMode === 'varied') return matchedWords.map((w) => w.id);
     if (selectionMode === 'random') {
       const shuffled = [...matchedWords].sort(() => Math.random() - 0.5);
       return shuffled.slice(0, randomCount).map((w) => w.id);
@@ -41,6 +41,7 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
     try {
       const payload = { classId, listId, title: title.trim(), wordIds };
       if (dueDate) payload.dueDateMs = new Date(dueDate).getTime();
+      if (selectionMode === 'varied') payload.practiceMode = 'varied';
       await callCreateAssignment(payload);
       onCreated();
     } catch {
@@ -55,17 +56,18 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
       <h2 className="text-lg font-bold text-brand-text">שלב 3: כמות והגדרות</h2>
 
       <div className="space-y-2">
-        <div className="flex gap-2">
+        <div className="grid grid-cols-2 gap-2">
           {[
             { key: 'all', label: `כל ${matchedWords.length} המילים` },
             { key: 'random', label: 'אקראי' },
             { key: 'manual', label: 'בחירה ידנית' },
+            { key: 'varied', label: 'מגוון אוטומטי 🎯' },
           ].map((opt) => (
             <button
               key={opt.key}
               type="button"
               onClick={() => setSelectionMode(opt.key)}
-              className={`flex-1 py-2 rounded-xl text-sm font-semibold ${
+              className={`py-2 rounded-xl text-sm font-semibold ${
                 selectionMode === opt.key ? 'bg-brand-green text-white' : 'bg-brand-grey-light text-brand-text'
               }`}
             >
@@ -73,6 +75,13 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
             </button>
           ))}
         </div>
+
+        {selectionMode === 'varied' && (
+          <p className="text-sm text-brand-grey-text bg-brand-grey-light rounded-xl p-3">
+            כל {matchedWords.length} המילים ייכללו במשימה. אנחנו ממליצים לתלמידים לחלק את התרגול לשלושה שווה
+            בשווה — שליש כרטיסיות, שליש מבחן, שליש איות — כדי לגוון את שיטת הלמידה.
+          </p>
+        )}
 
         {selectionMode === 'random' && (
           <div className="px-1">
