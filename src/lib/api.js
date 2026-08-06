@@ -26,7 +26,22 @@ export async function getClassById(institutionId, classId) {
   return snap.exists() ? { id: snap.id, ...snap.data() } : null;
 }
 
+/** כל המורים במוסד — לדשבורד המנהל (dropdown "העבר כיתה"). מותר לקרוא:
+ * firestore.rules מתיר לכל משתמש לקרוא users/{uid} אחרים באותו מוסד
+ * (belongsToInstitution), לא רק מנהל — אין צורך ב-Cloud Function כאן,
+ * רק לכתיבת teacherId בפועל (ר' callTransferClass). */
+export async function getTeachersForInstitution(institutionId) {
+  const q = query(
+    collection(db, 'users'),
+    where('institutionId', '==', institutionId),
+    where('role', '==', 'teacher'),
+  );
+  const snap = await getDocs(q);
+  return snap.docs.map((d) => ({ uid: d.id, ...d.data() }));
+}
+
 export const callCreateClass = httpsCallable(functions, 'createClass');
+export const callTransferClass = httpsCallable(functions, 'transferClass');
 
 // ── משימות ───────────────────────────────────────────────────────────────
 

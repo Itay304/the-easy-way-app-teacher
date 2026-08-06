@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowRight, Megaphone, Share2, Eye } from 'lucide-react';
+import { ArrowRight, Megaphone, Share2, Eye, ArrowRightLeft } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { getClassById, callGetClassProgress } from '../lib/api.js';
 import { ListSkeleton } from '../components/Skeleton.jsx';
@@ -9,6 +9,7 @@ import StudentTable from '../components/classes/StudentTable.jsx';
 import StudentDetailDrawer from '../components/classes/StudentDetailDrawer.jsx';
 import SendAnnouncementModal from '../components/classes/SendAnnouncementModal.jsx';
 import PreviewModal from '../components/classes/PreviewModal.jsx';
+import TransferClassModal from '../components/classes/TransferClassModal.jsx';
 
 async function shareJoinCode(className, joinCode) {
   const text = `הצטרפו לכיתה "${className}" באפליקציית EasyLex עם הקוד: ${joinCode}`;
@@ -40,6 +41,8 @@ export default function ClassDetail() {
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [showAnnouncement, setShowAnnouncement] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [showTransfer, setShowTransfer] = useState(false);
+  const [transferStatus, setTransferStatus] = useState('');
   const [shareStatus, setShareStatus] = useState('');
   const [reloadKey, setReloadKey] = useState(0);
 
@@ -130,7 +133,18 @@ export default function ClassDetail() {
               <Eye size={17} />
               תצוגה מקדימה 👁
             </button>
+            {profile.role === 'principal' && (
+              <button
+                onClick={() => setShowTransfer(true)}
+                className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-grey-light text-brand-text font-semibold text-sm"
+              >
+                <ArrowRightLeft size={17} />
+                העבר כיתה
+              </button>
+            )}
           </div>
+
+          {transferStatus && <p className="text-sm text-brand-green font-semibold text-center">{transferStatus}</p>}
         </>
       )}
 
@@ -161,6 +175,21 @@ export default function ClassDetail() {
 
       {showPreview && (
         <PreviewModal institutionId={profile.institutionId} classId={classId} onClose={() => setShowPreview(false)} />
+      )}
+
+      {showTransfer && (
+        <TransferClassModal
+          institutionId={profile.institutionId}
+          classId={classId}
+          currentTeacherId={classInfo?.teacherId}
+          onClose={() => setShowTransfer(false)}
+          onTransferred={() => {
+            setShowTransfer(false);
+            setTransferStatus('הכיתה הועברה בהצלחה!');
+            setReloadKey((k) => k + 1);
+            setTimeout(() => setTransferStatus(''), 3000);
+          }}
+        />
       )}
     </div>
   );
