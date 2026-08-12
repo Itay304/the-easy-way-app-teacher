@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowRight, Megaphone, Share2, Eye, ArrowRightLeft } from 'lucide-react';
+import { ArrowRight, Megaphone, Share2, Link2, Eye, ArrowRightLeft } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { getClassById, callGetClassProgress } from '../lib/api.js';
 import { ListSkeleton } from '../components/Skeleton.jsx';
@@ -29,6 +29,28 @@ async function shareJoinCode(className, joinCode) {
   }
 }
 
+async function shareJoinLink(joinCode) {
+  const url = `https://student.theeasywayapp.co.il?code=${joinCode}`;
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: 'הצטרף לכיתה ב-EasyLex',
+        text: 'לחץ על הקישור כדי להירשם לכיתה',
+        url,
+      });
+      return 'shared';
+    } catch {
+      return null;
+    }
+  }
+  try {
+    await navigator.clipboard.writeText(url);
+    return 'copied';
+  } catch {
+    return null;
+  }
+}
+
 export default function ClassDetail() {
   const { classId } = useParams();
   const navigate = useNavigate();
@@ -44,6 +66,7 @@ export default function ClassDetail() {
   const [showTransfer, setShowTransfer] = useState(false);
   const [transferStatus, setTransferStatus] = useState('');
   const [shareStatus, setShareStatus] = useState('');
+  const [linkStatus, setLinkStatus] = useState('');
   const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
@@ -92,6 +115,15 @@ export default function ClassDetail() {
     }
   }
 
+  async function handleShareLink() {
+    if (!classInfo) return;
+    const result = await shareJoinLink(classInfo.joinCode);
+    if (result === 'copied') {
+      setLinkStatus('הקישור הועתק!');
+      setTimeout(() => setLinkStatus(''), 2000);
+    }
+  }
+
   return (
     <div className="px-4 pt-6 space-y-4">
       <button
@@ -125,6 +157,13 @@ export default function ClassDetail() {
             >
               <Share2 size={17} />
               {shareStatus || `שתף קוד (${classInfo.joinCode})`}
+            </button>
+            <button
+              onClick={handleShareLink}
+              className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-turquoise/10 text-brand-turquoise font-semibold text-sm"
+            >
+              <Link2 size={17} />
+              {linkStatus || 'שתף קישור'}
             </button>
             <button
               onClick={() => setShowPreview(true)}
