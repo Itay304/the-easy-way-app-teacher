@@ -4,7 +4,7 @@ import {
   createUserWithEmailAndPassword,
   deleteUser,
 } from 'firebase/auth';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, setDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 import { auth, db, functions } from '../firebase.js';
 
@@ -60,7 +60,10 @@ export default function Login() {
         } catch (joinErr) {
           // אותו עיקרון all-or-nothing כמו בהרשמת תלמיד (the-easy-way-app-student):
           // קוד מוסד לא תקין לא אמור להשאיר מורה "יתום" — מחובר אבל בלי
-          // מוסד, ובלי אפשרות לנסות שוב עם אותו אימייל.
+          // מוסד, ובלי אפשרות לנסות שוב עם אותו אימייל. מוחקים גם את
+          // מסמך Firestore שכבר נכתב (setDoc הצליח לפני שה-join נכשל),
+          // לא רק את חשבון ה-Auth — אחרת נשאר מסמך יתום בלי חשבון תואם.
+          await deleteDoc(doc(db, 'users', user.uid)).catch(() => {});
           await deleteUser(user).catch(() => {});
           throw joinErr;
         }
