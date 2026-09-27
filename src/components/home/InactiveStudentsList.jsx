@@ -24,7 +24,7 @@ export default function InactiveStudentsList({ students }) {
                 key={s.uid}
                 className="flex items-center justify-between bg-red-50 rounded-xl px-4 py-3"
               >
-                <span className="font-medium text-brand-text">{s.displayName || 'תלמיד'}</span>
+                <span className="font-medium text-brand-text">{s.displayName || s.fullName || 'תלמיד'}</span>
                 <span className="text-sm text-red-600 font-semibold">
                   {Number.isFinite(days) ? `${days} ימים` : 'מעולם לא תרגל'}
                 </span>

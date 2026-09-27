@@ -67,11 +67,11 @@ export default function StudentTable({
                 className="w-full flex items-center gap-3 bg-white rounded-xl shadow-sm px-4 py-3 hover:shadow-md active:shadow-sm transition text-right"
               >
                 <span className="h-10 w-10 rounded-full bg-brand-turquoise/15 text-brand-turquoise font-bold flex items-center justify-center shrink-0">
-                  {(s.displayName || '?')[0]}
+                  {(s.displayName || s.fullName || '?')[0]}
                 </span>
                 <span className="flex-1 min-w-0">
                   <span className="block font-semibold text-brand-text truncate">
-                    {s.displayName || 'תלמיד'}
+                    {s.displayName || s.fullName || 'תלמיד'}
                   </span>
                   <span className="block text-xs text-brand-grey-text">
                     {s.totalXp} XP · {s.masteredWords} מילים נכבשות

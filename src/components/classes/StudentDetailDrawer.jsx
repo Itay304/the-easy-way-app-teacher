@@ -31,10 +31,10 @@ export default function StudentDetailDrawer({ student, onClose }) {
 
         <div className="flex items-center gap-3 mb-6">
           <span className="h-14 w-14 rounded-full bg-brand-turquoise/15 text-brand-turquoise font-bold text-xl flex items-center justify-center shrink-0">
-            {(student.displayName || '?')[0]}
+            {(student.displayName || student.fullName || '?')[0]}
           </span>
           <div>
-            <p className="font-bold text-brand-text text-lg">{student.displayName || 'תלמיד'}</p>
+            <p className="font-bold text-brand-text text-lg">{student.displayName || student.fullName || 'תלמיד'}</p>
             <p className="text-sm text-brand-grey-text">
               {Number.isFinite(days) ? `פעיל לאחרונה לפני ${days} ימים` : 'מעולם לא תרגל'}
             </p>
