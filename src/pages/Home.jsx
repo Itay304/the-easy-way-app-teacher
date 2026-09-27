@@ -146,9 +146,13 @@ export default function Home() {
             <SummaryCard icon={TrendingUp} label="ממוצע מילים נכבשות" value={data.avgMastered.toFixed(1)} />
           </div>
 
+          {/* בדסקטופ (md+) שני הפאנלים התחתונים לצד זה זה — שתי עמודות
+          מנצלות את הרוחב הפנוי במקום לגלול עמודה בודדת (audit/REPORT.md item 6) */}
           <WeeklyActivityChart data={data.weeklyChart} />
-          <InactiveStudentsList students={data.inactiveStudents} />
-          <HardWordsHeatmap words={data.hardWords} />
+          <div className="md:grid md:grid-cols-2 md:gap-4 space-y-6 md:space-y-0">
+            <InactiveStudentsList students={data.inactiveStudents} />
+            <HardWordsHeatmap words={data.hardWords} />
+          </div>
         </>
       )}
     </div>

@@ -152,18 +152,41 @@ export default function ClassDetail() {
         </>
       )}
 
-      {!students && !error && <ListSkeleton rows={5} />}
+      {/* בדסקטופ (md+): טבלת התלמידים בעמודה רחבה + פאנל "כיתה במבט" קבוע
+      בצד — משתמש בנתונים שכבר נטענו (classInfo/students), בלי בקשה נוספת
+      (audit/REPORT.md item 6). במובייל נשאר טור בודד כמו היום. */}
+      <div className="md:grid md:grid-cols-3 md:gap-6 md:items-start">
+        <div className="md:col-span-2">
+          {!students && !error && <ListSkeleton rows={5} />}
 
-      {students && (
-        <StudentTable
-          students={students}
-          sortBy={sortBy}
-          onSortChange={setSortBy}
-          onlyInactive={onlyInactive}
-          onToggleOnlyInactive={() => setOnlyInactive((v) => !v)}
-          onSelectStudent={setSelectedStudent}
-        />
-      )}
+          {students && (
+            <StudentTable
+              students={students}
+              sortBy={sortBy}
+              onSortChange={setSortBy}
+              onlyInactive={onlyInactive}
+              onToggleOnlyInactive={() => setOnlyInactive((v) => !v)}
+              onSelectStudent={setSelectedStudent}
+            />
+          )}
+        </div>
+
+        {classInfo && (
+          <aside className="hidden md:block rounded-2xl bg-white shadow-md p-5 space-y-5 sticky top-6">
+            <h2 className="font-bold text-brand-text">כיתה במבט</h2>
+            <div>
+              <p className="text-xs text-brand-grey-text">מספר תלמידים</p>
+              <p className="text-2xl font-bold text-brand-text">{students?.length ?? classInfo.studentCount ?? '—'}</p>
+            </div>
+            <div>
+              <p className="text-xs text-brand-grey-text mb-1">קוד הצטרפות</p>
+              <p className="text-2xl font-bold text-brand-turquoise tracking-wider" dir="ltr">
+                {classInfo.joinCode}
+              </p>
+            </div>
+          </aside>
+        )}
+      </div>
 
       {selectedStudent && (
         <StudentDetailDrawer student={selectedStudent} onClose={() => setSelectedStudent(null)} />
