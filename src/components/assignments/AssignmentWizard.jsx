@@ -20,7 +20,7 @@ export default function AssignmentWizard({ institutionId, classes, onClose, onCr
             {[1, 2, 3].map((n) => (
               <span
                 key={n}
-                className={`h-1.5 w-8 rounded-full ${n <= step ? 'bg-brand-green' : 'bg-brand-grey-light'}`}
+                className={`h-1.5 w-8 rounded-full ${n <= step ? 'bg-brand-turquoise' : 'bg-brand-grey-light'}`}
               />
             ))}
           </div>

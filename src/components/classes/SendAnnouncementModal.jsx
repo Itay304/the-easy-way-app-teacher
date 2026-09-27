@@ -27,7 +27,7 @@ export default function SendAnnouncementModal({ classId, onClose, onSent }) {
     <div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6">
         <div className="flex items-center gap-2 mb-4">
-          <Megaphone size={20} className="text-brand-green" />
+          <Megaphone size={20} className="text-brand-turquoise" />
           <h2 className="text-lg font-bold text-brand-text">שלח הודעה לכיתה</h2>
         </div>
         <form onSubmit={handleSubmit} className="space-y-3">
@@ -38,7 +38,7 @@ export default function SendAnnouncementModal({ classId, onClose, onSent }) {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="הודעה לתלמידי הכיתה..."
-            className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-green resize-none"
+            className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-turquoise resize-none"
           />
           <p className="text-xs text-brand-grey-text text-left">
             {message.length}/{MAX_LEN}
@@ -55,7 +55,7 @@ export default function SendAnnouncementModal({ classId, onClose, onSent }) {
             <button
               type="submit"
               disabled={submitting || !message.trim()}
-              className="flex-1 py-3 rounded-xl bg-brand-green text-white font-bold disabled:opacity-60"
+              className="flex-1 py-3 rounded-xl bg-brand-turquoise text-white font-bold disabled:opacity-60"
             >
               {submitting ? '...' : 'שלח'}
             </button>

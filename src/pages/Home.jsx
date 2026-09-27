@@ -142,12 +142,7 @@ export default function Home() {
         <>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <SummaryCard icon={GraduationCap} label="תלמידים פעילים היום" value={data.activeToday} />
-            <SummaryCard
-              icon={ClipboardList}
-              label="משימות פעילות"
-              value={data.activeAssignments}
-              accent="turquoise"
-            />
+            <SummaryCard icon={ClipboardList} label="משימות פעילות" value={data.activeAssignments} />
             <SummaryCard icon={TrendingUp} label="ממוצע מילים נכבשות" value={data.avgMastered.toFixed(1)} />
           </div>
 

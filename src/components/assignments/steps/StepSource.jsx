@@ -24,7 +24,7 @@ export default function StepSource({ institutionId, source, onChange, onNext }) 
         <button
           onClick={() => setTab('wordList')}
           className={`flex-1 py-2.5 rounded-xl text-sm font-semibold ${
-            tab === 'wordList' ? 'bg-brand-green text-white' : 'bg-brand-grey-light text-brand-text'
+            tab === 'wordList' ? 'bg-brand-turquoise text-white' : 'bg-brand-grey-light text-brand-text'
           }`}
         >
           באנדים
@@ -32,7 +32,7 @@ export default function StepSource({ institutionId, source, onChange, onNext }) 
         <button
           onClick={() => setTab('customList')}
           className={`flex-1 py-2.5 rounded-xl text-sm font-semibold ${
-            tab === 'customList' ? 'bg-brand-green text-white' : 'bg-brand-grey-light text-brand-text'
+            tab === 'customList' ? 'bg-brand-turquoise text-white' : 'bg-brand-grey-light text-brand-text'
           }`}
         >
           רשימות מוסדיות
@@ -52,7 +52,7 @@ export default function StepSource({ institutionId, source, onChange, onNext }) 
                 onClick={() => selectList('wordList', list.id)}
                 className={`w-full text-right px-4 py-3 rounded-xl border transition ${
                   source.sourceType === 'wordList' && source.listId === list.id
-                    ? 'border-brand-green bg-brand-green/5'
+                    ? 'border-brand-turquoise bg-brand-turquoise/5'
                     : 'border-black/10 bg-white'
                 }`}
               >
@@ -79,7 +79,7 @@ export default function StepSource({ institutionId, source, onChange, onNext }) 
                 onClick={() => selectList('customList', list.id)}
                 className={`w-full text-right px-4 py-3 rounded-xl border transition ${
                   source.sourceType === 'customList' && source.listId === list.id
-                    ? 'border-brand-green bg-brand-green/5'
+                    ? 'border-brand-turquoise bg-brand-turquoise/5'
                     : 'border-black/10 bg-white'
                 }`}
               >
@@ -93,7 +93,7 @@ export default function StepSource({ institutionId, source, onChange, onNext }) 
       <button
         onClick={onNext}
         disabled={!source.listId}
-        className="w-full py-3 rounded-xl bg-brand-green text-white font-bold disabled:opacity-40"
+        className="w-full py-3 rounded-xl bg-brand-turquoise text-white font-bold disabled:opacity-40"
       >
         המשך
       </button>

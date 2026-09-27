@@ -57,7 +57,7 @@ export default function Classes() {
         <h1 className="text-2xl font-bold text-brand-text">כיתות</h1>
         <button
           onClick={() => setShowCreate(true)}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-brand-green text-white font-semibold text-sm shadow-sm"
+          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-brand-turquoise text-white font-semibold text-sm shadow-sm"
         >
           <Plus size={16} strokeWidth={2.5} />
           כיתה חדשה
@@ -82,7 +82,7 @@ export default function Classes() {
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-bold text-brand-green-dark text-lg">{c.name}</p>
+                    <p className="font-bold text-brand-turquoise-dark text-lg">{c.name}</p>
                     {c.grade && <p className="text-sm text-brand-grey-text mt-0.5">שכבה {c.grade}</p>}
                   </div>
                   <div className="text-left">

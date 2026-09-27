@@ -45,7 +45,7 @@ export default function TransferClassModal({ institutionId, classId, currentTeac
     <div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6">
         <div className="flex items-center gap-2 mb-4">
-          <ArrowRightLeft size={20} className="text-brand-green" />
+          <ArrowRightLeft size={20} className="text-brand-turquoise" />
           <h2 className="text-lg font-bold text-brand-text">העבר כיתה למורה אחר</h2>
         </div>
 
@@ -57,7 +57,7 @@ export default function TransferClassModal({ institutionId, classId, currentTeac
               required
               value={newTeacherId}
               onChange={(e) => setNewTeacherId(e.target.value)}
-              className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-green"
+              className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-turquoise"
             >
               {teachers.length === 0 && <option value="">אין מורים נוספים במוסד</option>}
               {teachers.map((t) => (
@@ -81,7 +81,7 @@ export default function TransferClassModal({ institutionId, classId, currentTeac
               <button
                 type="submit"
                 disabled={submitting || !newTeacherId || newTeacherId === currentTeacherId}
-                className="flex-1 py-3 rounded-xl bg-brand-green text-white font-bold disabled:opacity-60"
+                className="flex-1 py-3 rounded-xl bg-brand-turquoise text-white font-bold disabled:opacity-60"
               >
                 {submitting ? '...' : 'העבר'}
               </button>

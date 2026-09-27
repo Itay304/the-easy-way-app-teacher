@@ -68,7 +68,7 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
               type="button"
               onClick={() => setSelectionMode(opt.key)}
               className={`py-2 rounded-xl text-sm font-semibold ${
-                selectionMode === opt.key ? 'bg-brand-green text-white' : 'bg-brand-grey-light text-brand-text'
+                selectionMode === opt.key ? 'bg-brand-turquoise text-white' : 'bg-brand-grey-light text-brand-text'
               }`}
             >
               {opt.label}
@@ -91,7 +91,7 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
               max={matchedWords.length}
               value={randomCount}
               onChange={(e) => setRandomCount(Number(e.target.value))}
-              className="w-full accent-brand-green"
+              className="w-full accent-brand-turquoise"
             />
             <p className="text-center text-sm text-brand-grey-text">{randomCount} מילים אקראיות</p>
           </div>
@@ -117,7 +117,7 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="שם המשימה"
-        className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-green"
+        className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-turquoise"
       />
 
       <div>
@@ -126,7 +126,7 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
           type="date"
           value={dueDate}
           onChange={(e) => setDueDate(e.target.value)}
-          className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-green"
+          className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-turquoise"
         />
       </div>
 
@@ -136,7 +136,7 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
           required
           value={classId}
           onChange={(e) => setClassId(e.target.value)}
-          className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-green"
+          className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-turquoise"
         >
           {classes.map((c) => (
             <option key={c.id} value={c.id}>
@@ -155,7 +155,7 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
         <button
           type="submit"
           disabled={submitting}
-          className="flex-1 py-3 rounded-xl bg-brand-green text-white font-bold disabled:opacity-60"
+          className="flex-1 py-3 rounded-xl bg-brand-turquoise text-white font-bold disabled:opacity-60"
         >
           {submitting ? '...' : 'צור משימה'}
         </button>

@@ -63,7 +63,7 @@ export default function StepFilter({
               onClick={() => onFiltersChange({ ...filters, letters: toggle(filters.letters, letter) })}
               className={`h-8 w-8 rounded-lg text-sm font-semibold ${
                 filters.letters.includes(letter)
-                  ? 'bg-brand-green text-white'
+                  ? 'bg-brand-turquoise text-white'
                   : 'bg-brand-grey-light text-brand-text'
               }`}
             >
@@ -82,7 +82,7 @@ export default function StepFilter({
               onClick={() => onFiltersChange({ ...filters, pos: toggle(filters.pos, opt.key) })}
               className={`px-3 py-1.5 rounded-full text-sm font-medium ${
                 filters.pos.includes(opt.key)
-                  ? 'bg-brand-green text-white'
+                  ? 'bg-brand-turquoise text-white'
                   : 'bg-brand-grey-light text-brand-text'
               }`}
             >
@@ -101,7 +101,7 @@ export default function StepFilter({
               onClick={() => onFiltersChange({ ...filters, difficulty: toggle(filters.difficulty, d) })}
               className={`px-4 py-1.5 rounded-full text-sm font-medium ${
                 filters.difficulty.includes(d)
-                  ? 'bg-brand-green text-white'
+                  ? 'bg-brand-turquoise text-white'
                   : 'bg-brand-grey-light text-brand-text'
               }`}
             >
@@ -116,7 +116,7 @@ export default function StepFilter({
           value={filters.search}
           onChange={(e) => onFiltersChange({ ...filters, search: e.target.value })}
           placeholder="חיפוש חופשי (אנגלית/עברית)"
-          className="w-full rounded-xl border border-black/10 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-green"
+          className="w-full rounded-xl border border-black/10 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-brand-turquoise"
         />
       </div>
 
@@ -154,7 +154,7 @@ export default function StepFilter({
         <button
           onClick={onNext}
           disabled={matched.length === 0}
-          className="flex-1 py-3 rounded-xl bg-brand-green text-white font-bold disabled:opacity-40"
+          className="flex-1 py-3 rounded-xl bg-brand-turquoise text-white font-bold disabled:opacity-40"
         >
           המשך
         </button>

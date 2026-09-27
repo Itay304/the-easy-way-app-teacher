@@ -111,14 +111,14 @@ export default function ClassDetail() {
       {classInfo && (
         <>
           <div>
-            <h1 className="text-2xl font-bold text-brand-green-dark">{classInfo.name}</h1>
+            <h1 className="text-2xl font-bold text-brand-turquoise-dark">{classInfo.name}</h1>
             {classInfo.grade && <p className="text-brand-grey-text">שכבה {classInfo.grade}</p>}
           </div>
 
           <div className="flex flex-wrap gap-3">
             <button
               onClick={() => setShowAnnouncement(true)}
-              className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-green text-white font-semibold text-sm shadow-sm"
+              className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-turquoise text-white font-semibold text-sm shadow-sm"
             >
               <Megaphone size={17} />
               שלח הודעה לכיתה

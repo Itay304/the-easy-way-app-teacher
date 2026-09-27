@@ -13,7 +13,7 @@ export default function BottomNav() {
           aria-label={tab.label}
           className={({ isActive }) =>
             `flex flex-col items-center justify-center gap-0.5 py-3 transition ${
-              isActive ? 'text-brand-green' : 'text-brand-grey-text'
+              isActive ? 'text-brand-turquoise' : 'text-brand-grey-text'
             }`
           }
         >

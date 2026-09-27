@@ -77,7 +77,7 @@ export default function Profile() {
         <button
           onClick={toggleNotify}
           className={`w-12 h-7 rounded-full transition relative ${
-            notifyInactive ? 'bg-brand-green' : 'bg-black/10'
+            notifyInactive ? 'bg-brand-turquoise' : 'bg-black/10'
           }`}
         >
           <span

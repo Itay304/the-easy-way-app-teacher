@@ -39,7 +39,7 @@ export default function StudentTable({
             onClick={() => onSortChange(opt.key)}
             className={`px-3 py-1.5 rounded-full text-sm font-medium transition ${
               sortBy === opt.key
-                ? 'bg-brand-green text-white'
+                ? 'bg-brand-turquoise text-white'
                 : 'bg-brand-grey-light text-brand-text'
             }`}
           >

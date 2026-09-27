@@ -98,7 +98,7 @@ export default function Login() {
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
             placeholder="שם מלא"
-            className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-green"
+            className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-turquoise"
           />
         )}
         <input
@@ -107,7 +107,7 @@ export default function Login() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="אימייל"
-          className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-green"
+          className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-turquoise"
         />
         <input
           type="password"
@@ -115,13 +115,13 @@ export default function Login() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="סיסמה"
-          className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-green"
+          className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-turquoise"
         />
         {error && <p className="text-red-600 text-sm text-center">{error}</p>}
         <button
           type="submit"
           disabled={submitting}
-          className="w-full py-4 rounded-xl bg-brand-green text-white font-bold text-lg hover:bg-brand-green-dark transition disabled:opacity-60"
+          className="w-full py-4 rounded-xl bg-brand-turquoise text-white font-bold text-lg hover:bg-brand-turquoise-dark transition disabled:opacity-60"
         >
           {submitting ? '...' : mode === 'login' ? 'כניסה' : 'הרשמה'}
         </button>

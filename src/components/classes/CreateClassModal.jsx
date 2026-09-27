@@ -31,13 +31,13 @@ export default function CreateClassModal({ onClose, onCreated }) {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="שם הכיתה"
-            className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-green"
+            className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-turquoise"
           />
           <input
             value={grade}
             onChange={(e) => setGrade(e.target.value)}
             placeholder="שכבה (אופציונלי)"
-            className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-green"
+            className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-turquoise"
           />
           {error && <p className="text-red-600 text-sm text-center">{error}</p>}
           <div className="flex gap-3">
@@ -51,7 +51,7 @@ export default function CreateClassModal({ onClose, onCreated }) {
             <button
               type="submit"
               disabled={submitting || !name.trim()}
-              className="flex-1 py-3 rounded-xl bg-brand-green text-white font-bold disabled:opacity-60"
+              className="flex-1 py-3 rounded-xl bg-brand-turquoise text-white font-bold disabled:opacity-60"
             >
               {submitting ? '...' : 'צור'}
             </button>

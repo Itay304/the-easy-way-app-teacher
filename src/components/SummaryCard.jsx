@@ -1,5 +1,5 @@
-export default function SummaryCard({ icon: Icon, label, value, accent = 'green' }) {
-  const bg = accent === 'turquoise' ? 'bg-brand-turquoise/10 text-brand-turquoise' : 'bg-brand-green/10 text-brand-green';
+export default function SummaryCard({ icon: Icon, label, value, accent = 'turquoise' }) {
+  const bg = accent === 'green' ? 'bg-brand-green/10 text-brand-green' : 'bg-brand-turquoise/10 text-brand-turquoise';
 
   return (
     <div className="rounded-2xl bg-white shadow-md p-4 flex items-center gap-4">
