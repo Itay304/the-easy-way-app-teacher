@@ -86,6 +86,7 @@ export async function getCustomListWords(institutionId, listId) {
 // ── התקדמות תלמידים / הודעות (Cloud Functions קיימות בלבד) ─────────────────
 
 export const callGetClassProgress = httpsCallable(functions, 'getClassProgress');
+export const callGetClassStudentCounts = httpsCallable(functions, 'getClassStudentCounts');
 export const callGetClassHardWords = httpsCallable(functions, 'getClassHardWords');
 export const callGetAssignmentProgress = httpsCallable(functions, 'getAssignmentProgress');
 export const callSendAnnouncement = httpsCallable(functions, 'sendAnnouncement');

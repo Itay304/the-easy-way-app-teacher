@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Users } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
-import { getMyClasses, callGetClassProgress } from '../lib/api.js';
+import { getMyClasses, callGetClassProgress, callGetClassStudentCounts } from '../lib/api.js';
 import { ListSkeleton } from '../components/Skeleton.jsx';
 import ErrorBanner from '../components/ErrorBanner.jsx';
 import EmptyState from '../components/EmptyState.jsx';
@@ -21,7 +21,11 @@ export default function Classes() {
     async function load() {
       setError('');
       try {
-        const list = await getMyClasses(profile.institutionId, user.uid);
+        const [list, countsRes] = await Promise.all([
+          getMyClasses(profile.institutionId, user.uid),
+          callGetClassStudentCounts({ institutionId: profile.institutionId }).catch(() => ({ data: { counts: {} } })),
+        ]);
+        const counts = countsRes.data.counts || {};
         const withActivity = await Promise.all(
           list.map(async (c) => {
             try {
@@ -31,9 +35,9 @@ export default function Classes() {
                 students.length === 0
                   ? 0
                   : Math.round((students.filter((s) => s.weeklyActivity).length / students.length) * 100);
-              return { ...c, activePct };
+              return { ...c, liveStudentCount: counts[c.id] ?? 0, activePct };
             } catch {
-              return { ...c, activePct: null };
+              return { ...c, liveStudentCount: counts[c.id] ?? 0, activePct: null };
             }
           }),
         );
@@ -86,7 +90,7 @@ export default function Classes() {
                     {c.grade && <p className="text-sm text-brand-grey-text mt-0.5">שכבה {c.grade}</p>}
                   </div>
                   <div className="text-left">
-                    <p className="text-xl font-bold text-brand-turquoise">{c.studentCount || 0}</p>
+                    <p className="text-xl font-bold text-brand-turquoise">{c.liveStudentCount}</p>
                     <p className="text-xs text-brand-grey-text">תלמידים</p>
                   </div>
                 </div>

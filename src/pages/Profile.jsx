@@ -3,7 +3,7 @@ import { signOut } from 'firebase/auth';
 import { ExternalLink, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { auth } from '../firebase.js';
-import { getInstitution, getMyClasses } from '../lib/api.js';
+import { getInstitution, getMyClasses, callGetClassStudentCounts } from '../lib/api.js';
 import { Skeleton } from '../components/Skeleton.jsx';
 
 const NOTIFY_KEY = 'easylex_notify_inactive';
@@ -19,15 +19,17 @@ export default function Profile() {
   useEffect(() => {
     let cancelled = false;
     async function load() {
-      const [inst, classes] = await Promise.all([
+      const [inst, classes, countsRes] = await Promise.all([
         getInstitution(profile.institutionId),
         getMyClasses(profile.institutionId, user.uid),
+        callGetClassStudentCounts({ institutionId: profile.institutionId }).catch(() => ({ data: { counts: {} } })),
       ]);
       if (cancelled) return;
+      const counts = countsRes.data.counts || {};
       setInstitution(inst);
       setStats({
         classCount: classes.length,
-        studentCount: classes.reduce((sum, c) => sum + (c.studentCount || 0), 0),
+        studentCount: classes.reduce((sum, c) => sum + (counts[c.id] ?? 0), 0),
       });
     }
     if (profile?.institutionId && user) load();
