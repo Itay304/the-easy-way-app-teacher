@@ -189,7 +189,13 @@ export default function ClassDetail() {
       </div>
 
       {selectedStudent && (
-        <StudentDetailDrawer student={selectedStudent} onClose={() => setSelectedStudent(null)} />
+        <StudentDetailDrawer
+          student={selectedStudent}
+          classId={classId}
+          institutionId={profile.institutionId}
+          onClose={() => setSelectedStudent(null)}
+          onRemoved={(uid) => setStudents((prev) => prev.filter((s) => s.uid !== uid))}
+        />
       )}
 
       {showAnnouncement && (

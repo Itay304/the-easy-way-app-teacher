@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
-import { X } from 'lucide-react';
-import { getUserDoc } from '../../lib/api.js';
+import { X, UserMinus } from 'lucide-react';
+import { getUserDoc, callRemoveStudentFromClass } from '../../lib/api.js';
 import { daysAgo } from '../../lib/dateUtils.js';
 import LoadingSpinner from '../LoadingSpinner.jsx';
 
-export default function StudentDetailDrawer({ student, onClose }) {
+export default function StudentDetailDrawer({ student, classId, institutionId, onClose, onRemoved }) {
   const [extra, setExtra] = useState(undefined); // undefined = loading
+  const [confirming, setConfirming] = useState(false);
+  const [removing, setRemoving] = useState(false);
+  const [removeError, setRemoveError] = useState('');
 
   useEffect(() => {
     let cancelled = false;
@@ -16,6 +19,19 @@ export default function StudentDetailDrawer({ student, onClose }) {
       cancelled = true;
     };
   }, [student.uid]);
+
+  async function handleRemove() {
+    setRemoving(true);
+    setRemoveError('');
+    try {
+      await callRemoveStudentFromClass({ studentUid: student.uid, classId, institutionId });
+      onRemoved(student.uid);
+      onClose();
+    } catch (err) {
+      setRemoveError(err.message || 'שגיאה בהסרת התלמיד. נסו שוב.');
+      setRemoving(false);
+    }
+  }
 
   const days = daysAgo(student.lastActiveDate);
 
@@ -61,6 +77,40 @@ export default function StudentDetailDrawer({ student, onClose }) {
         >
           {student.weeklyActivity ? 'פעיל השבוע' : 'לא פעיל השבוע'}
         </div>
+
+        {removeError && <p className="text-red-600 text-sm text-center mt-4">{removeError}</p>}
+
+        {confirming ? (
+          <div className="mt-4 rounded-xl bg-red-50 p-4 space-y-3">
+            <p className="text-sm font-semibold text-red-700 text-center">
+              להסיר את {student.displayName || student.fullName || 'התלמיד'} מהכיתה?
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setConfirming(false)}
+                disabled={removing}
+                className="flex-1 py-2.5 rounded-xl bg-white border border-black/10 text-brand-text font-semibold text-sm disabled:opacity-60"
+              >
+                ביטול
+              </button>
+              <button
+                onClick={handleRemove}
+                disabled={removing}
+                className="flex-1 py-2.5 rounded-xl bg-red-600 text-white font-semibold text-sm disabled:opacity-60"
+              >
+                {removing ? '...' : 'כן, הסר'}
+              </button>
+            </div>
+          </div>
+        ) : (
+          <button
+            onClick={() => setConfirming(true)}
+            className="mt-4 w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-red-600 hover:bg-red-50 font-semibold text-sm transition"
+          >
+            <UserMinus size={16} />
+            הסר מהכיתה
+          </button>
+        )}
       </div>
     </div>
   );

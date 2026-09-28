@@ -87,6 +87,7 @@ export async function getCustomListWords(institutionId, listId) {
 
 export const callGetClassProgress = httpsCallable(functions, 'getClassProgress');
 export const callGetClassStudentCounts = httpsCallable(functions, 'getClassStudentCounts');
+export const callRemoveStudentFromClass = httpsCallable(functions, 'removeStudentFromClass');
 export const callGetClassHardWords = httpsCallable(functions, 'getClassHardWords');
 export const callGetAssignmentProgress = httpsCallable(functions, 'getAssignmentProgress');
 export const callSendAnnouncement = httpsCallable(functions, 'sendAnnouncement');
