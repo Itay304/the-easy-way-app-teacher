@@ -176,7 +176,7 @@ export default function ClassDetail() {
             <h2 className="font-bold text-brand-text">כיתה במבט</h2>
             <div>
               <p className="text-xs text-brand-grey-text">מספר תלמידים</p>
-              <p className="text-2xl font-bold text-brand-text">{students?.length ?? classInfo.studentCount ?? '—'}</p>
+              <p className="text-2xl font-bold text-brand-text">{students?.length ?? '—'}</p>
             </div>
             <div>
               <p className="text-xs text-brand-grey-text mb-1">קוד הצטרפות</p>
