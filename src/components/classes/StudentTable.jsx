@@ -49,7 +49,7 @@ export default function StudentTable({
         <button
           onClick={onToggleOnlyInactive}
           className={`px-3 py-1.5 rounded-full text-sm font-medium transition mr-auto ${
-            onlyInactive ? 'bg-red-500 text-white' : 'bg-brand-grey-light text-brand-text'
+            onlyInactive ? 'bg-brand-error text-white' : 'bg-brand-grey-light text-brand-text'
           }`}
         >
           לא פעילים 3+ ימים
@@ -80,7 +80,7 @@ export default function StudentTable({
                 {s.weeklyActivity ? (
                   <CheckCircle2 size={20} className="text-brand-green shrink-0" />
                 ) : (
-                  <XCircle size={20} className="text-red-400 shrink-0" />
+                  <XCircle size={20} className="text-brand-error shrink-0" />
                 )}
               </button>
             </li>

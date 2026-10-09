@@ -43,7 +43,7 @@ export default function SendAnnouncementModal({ classId, onClose, onSent }) {
           <p className="text-xs text-brand-grey-text text-left">
             {message.length}/{MAX_LEN}
           </p>
-          {error && <p className="text-red-600 text-sm text-center">{error}</p>}
+          {error && <p className="text-brand-error text-sm text-center">{error}</p>}
           <div className="flex gap-3">
             <button
               type="button"

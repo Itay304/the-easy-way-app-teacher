@@ -146,7 +146,7 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
         </select>
       </div>
 
-      {error && <p className="text-red-600 text-sm text-center">{error}</p>}
+      {error && <p className="text-brand-error text-sm text-center">{error}</p>}
 
       <div className="flex gap-3">
         <button type="button" onClick={onBack} className="flex-1 py-3 rounded-xl border border-black/10 text-brand-text font-semibold">

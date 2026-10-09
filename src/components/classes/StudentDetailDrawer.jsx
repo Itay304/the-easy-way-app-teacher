@@ -72,17 +72,17 @@ export default function StudentDetailDrawer({ student, classId, institutionId, o
 
         <div
           className={`rounded-xl px-4 py-3 text-sm font-semibold text-center ${
-            student.weeklyActivity ? 'bg-brand-green/10 text-brand-green' : 'bg-red-50 text-red-600'
+            student.weeklyActivity ? 'bg-brand-green/10 text-brand-green' : 'bg-brand-error-light text-brand-error'
           }`}
         >
           {student.weeklyActivity ? 'פעיל השבוע' : 'לא פעיל השבוע'}
         </div>
 
-        {removeError && <p className="text-red-600 text-sm text-center mt-4">{removeError}</p>}
+        {removeError && <p className="text-brand-error text-sm text-center mt-4">{removeError}</p>}
 
         {confirming ? (
-          <div className="mt-4 rounded-xl bg-red-50 p-4 space-y-3">
-            <p className="text-sm font-semibold text-red-700 text-center">
+          <div className="mt-4 rounded-xl bg-brand-error-light p-4 space-y-3">
+            <p className="text-sm font-semibold text-brand-error-dark text-center">
               להסיר את {student.displayName || student.fullName || 'התלמיד'} מהכיתה?
             </p>
             <div className="flex gap-3">
@@ -96,7 +96,7 @@ export default function StudentDetailDrawer({ student, classId, institutionId, o
               <button
                 onClick={handleRemove}
                 disabled={removing}
-                className="flex-1 py-2.5 rounded-xl bg-red-600 text-white font-semibold text-sm disabled:opacity-60"
+                className="flex-1 py-2.5 rounded-xl bg-brand-error text-white font-semibold text-sm disabled:opacity-60"
               >
                 {removing ? '...' : 'כן, הסר'}
               </button>
@@ -105,7 +105,7 @@ export default function StudentDetailDrawer({ student, classId, institutionId, o
         ) : (
           <button
             onClick={() => setConfirming(true)}
-            className="mt-4 w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-red-600 hover:bg-red-50 font-semibold text-sm transition"
+            className="mt-4 w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-brand-error hover:bg-brand-error-light font-semibold text-sm transition"
           >
             <UserMinus size={16} />
             הסר מהכיתה

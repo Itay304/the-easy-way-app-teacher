@@ -117,7 +117,7 @@ export default function Login() {
           placeholder="סיסמה"
           className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-turquoise"
         />
-        {error && <p className="text-red-600 text-sm text-center">{error}</p>}
+        {error && <p className="text-brand-error text-sm text-center">{error}</p>}
         <button
           type="submit"
           disabled={submitting}

@@ -68,7 +68,7 @@ export default function TransferClassModal({ institutionId, classId, currentTeac
               ))}
             </select>
 
-            {error && <p className="text-red-600 text-sm text-center">{error}</p>}
+            {error && <p className="text-brand-error text-sm text-center">{error}</p>}
 
             <div className="flex gap-3">
               <button
