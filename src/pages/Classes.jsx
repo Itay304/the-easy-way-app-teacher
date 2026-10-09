@@ -63,7 +63,7 @@ export default function Classes() {
           onClick={() => setShowCreate(true)}
           className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-brand-turquoise text-white font-semibold text-sm shadow-sm"
         >
-          <Plus size={16} strokeWidth={2.5} />
+          <Plus size={16} strokeWidth={2} />
           כיתה חדשה
         </button>
       </div>

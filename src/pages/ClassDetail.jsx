@@ -120,21 +120,21 @@ export default function ClassDetail() {
               onClick={() => setShowAnnouncement(true)}
               className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-turquoise text-white font-semibold text-sm shadow-sm"
             >
-              <Megaphone size={17} />
+              <Megaphone size={16} />
               שלח הודעה לכיתה
             </button>
             <button
               onClick={handleShare}
               className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-turquoise/10 text-brand-turquoise font-semibold text-sm"
             >
-              <Share2 size={17} />
+              <Share2 size={16} />
               {shareStatus || 'שתף'}
             </button>
             <button
               onClick={() => setShowPreview(true)}
               className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-grey-light text-brand-text font-semibold text-sm"
             >
-              <Eye size={17} />
+              <Eye size={16} />
               תצוגה מקדימה 👁
             </button>
             {profile.role === 'principal' && (
@@ -142,7 +142,7 @@ export default function ClassDetail() {
                 onClick={() => setShowTransfer(true)}
                 className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-grey-light text-brand-text font-semibold text-sm"
               >
-                <ArrowRightLeft size={17} />
+                <ArrowRightLeft size={16} />
                 העבר כיתה
               </button>
             )}

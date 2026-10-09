@@ -25,7 +25,7 @@ export default function HardWordsHeatmap({ words }) {
   return (
     <section className="rounded-2xl bg-white shadow-md p-5">
       <div className="flex items-center gap-2 mb-1">
-        <Flame size={18} className="text-amber-500" />
+        <Flame size={16} className="text-amber-500" />
         <h2 className="text-lg font-bold text-brand-text">מפת חום — מילים קשות בכיתה</h2>
       </div>
       <p className="text-sm text-brand-grey-text mb-4">

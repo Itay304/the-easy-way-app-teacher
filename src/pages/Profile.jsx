@@ -96,7 +96,7 @@ export default function Profile() {
         rel="noopener noreferrer"
         className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-brand-turquoise/10 text-brand-turquoise font-semibold"
       >
-        <ExternalLink size={17} />
+        <ExternalLink size={16} />
         פתח ממשק מלא באתר
       </a>
 
@@ -104,7 +104,7 @@ export default function Profile() {
         onClick={() => signOut(auth)}
         className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-white shadow-sm text-brand-text font-semibold"
       >
-        <LogOut size={17} />
+        <LogOut size={16} />
         התנתק
       </button>
     </div>

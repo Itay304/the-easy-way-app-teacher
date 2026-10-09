@@ -47,7 +47,7 @@ export default function AssignmentCard({ assignment, className }) {
         <p className="text-sm text-brand-grey-text truncate">{className}</p>
         {assignment.dueDateMs && (
           <p className="flex items-center gap-1 text-xs text-brand-grey-text mt-0.5">
-            <CalendarClock size={13} />
+            <CalendarClock size={16} />
             עד {new Date(assignment.dueDateMs).toLocaleDateString('he-IL')}
           </p>
         )}

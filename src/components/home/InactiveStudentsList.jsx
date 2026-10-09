@@ -5,7 +5,7 @@ export default function InactiveStudentsList({ students }) {
   return (
     <section className="rounded-2xl bg-white shadow-md p-5">
       <div className="flex items-center gap-2 mb-1">
-        <AlertTriangle size={18} className="text-brand-error" />
+        <AlertTriangle size={16} className="text-brand-error" />
         <h2 className="text-lg font-bold text-brand-text">תלמידים לא פעילים</h2>
       </div>
       <p className="text-sm text-brand-grey-text mb-4">3+ ימים ללא תרגול</p>

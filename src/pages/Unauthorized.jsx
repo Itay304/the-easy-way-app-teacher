@@ -6,7 +6,7 @@ export default function Unauthorized() {
   return (
     <div className="min-h-dvh flex flex-col items-center justify-center px-6 py-12 text-center">
       <div className="h-16 w-16 rounded-full bg-brand-error-light text-brand-error flex items-center justify-center mb-4">
-        <ShieldAlert size={30} />
+        <ShieldAlert size={24} />
       </div>
       <h1 className="text-2xl font-bold text-brand-text mb-2">אין הרשאה</h1>
       <p className="text-brand-grey-text mb-10 max-w-sm">
