@@ -173,7 +173,7 @@ export default function ClassDetail() {
 
         {classInfo && (
           <aside className="hidden md:block rounded-2xl bg-white shadow-md p-5 space-y-5 sticky top-6">
-            <h2 className="font-bold text-brand-text">כיתה במבט</h2>
+            <h2 className="text-h2 font-bold text-brand-text">כיתה במבט</h2>
             <div>
               <p className="text-xs text-brand-grey-text">מספר תלמידים</p>
               <p className="text-2xl font-bold text-brand-text">{students?.length ?? '—'}</p>
