@@ -7,6 +7,7 @@ import ErrorBanner from '../components/ErrorBanner.jsx';
 import EmptyState from '../components/EmptyState.jsx';
 import AssignmentCard from '../components/assignments/AssignmentCard.jsx';
 import AssignmentWizard from '../components/assignments/AssignmentWizard.jsx';
+import Button from '../components/ui/Button.jsx';
 
 export default function Assignments() {
   const { user, profile } = useAuth();
@@ -49,14 +50,15 @@ export default function Assignments() {
     <div className="px-4 pt-6 space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-brand-text">משימות</h1>
-        <button
+        <Button
+          size="sm"
           onClick={() => setShowWizard(true)}
           disabled={!classes || classes.length === 0}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-brand-turquoise text-white font-semibold text-sm shadow-sm disabled:opacity-40"
+          className="shadow-sm"
         >
           <Plus size={16} strokeWidth={2} />
           משימה חדשה
-        </button>
+        </Button>
       </div>
 
       {error && <ErrorBanner message={error} onRetry={() => setReloadKey((k) => k + 1)} />}

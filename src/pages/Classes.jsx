@@ -7,6 +7,7 @@ import { ListSkeleton } from '../components/Skeleton.jsx';
 import ErrorBanner from '../components/ErrorBanner.jsx';
 import EmptyState from '../components/EmptyState.jsx';
 import CreateClassModal from '../components/classes/CreateClassModal.jsx';
+import Button from '../components/ui/Button.jsx';
 
 export default function Classes() {
   const { user, profile } = useAuth();
@@ -59,13 +60,10 @@ export default function Classes() {
     <div className="px-4 pt-6 space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-brand-text">כיתות</h1>
-        <button
-          onClick={() => setShowCreate(true)}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-brand-turquoise text-white font-semibold text-sm shadow-sm"
-        >
+        <Button size="sm" onClick={() => setShowCreate(true)} className="shadow-sm">
           <Plus size={16} strokeWidth={2} />
           כיתה חדשה
-        </button>
+        </Button>
       </div>
 
       {error && <ErrorBanner message={error} onRetry={() => setReloadKey((k) => k + 1)} />}
