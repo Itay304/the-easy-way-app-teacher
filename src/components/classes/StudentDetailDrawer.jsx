@@ -96,13 +96,10 @@ export default function StudentDetailDrawer({ student, classId, institutionId, o
             </div>
           </div>
         ) : (
-          <button
-            onClick={() => setConfirming(true)}
-            className="mt-4 w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-brand-error hover:bg-brand-error-light font-semibold text-body-sm transition"
-          >
+          <Button variant="danger-subtle" onClick={() => setConfirming(true)} className="mt-4 w-full">
             <UserMinus size={16} />
             הסר מהכיתה
-          </button>
+          </Button>
         )}
     </Modal>
   );

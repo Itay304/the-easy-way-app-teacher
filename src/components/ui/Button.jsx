@@ -1,8 +1,9 @@
 const VARIANT_CLASSES = {
   primary: 'bg-brand-turquoise text-white hover:bg-brand-turquoise-dark',
-  secondary: 'bg-white border border-black/10 text-brand-text hover:bg-black/5',
+  secondary: 'bg-brand-turquoise/10 text-brand-turquoise hover:bg-brand-turquoise/20',
   ghost: 'bg-transparent text-brand-turquoise hover:bg-brand-turquoise/10',
   danger: 'bg-brand-error text-white hover:bg-brand-error-dark',
+  'danger-subtle': 'bg-brand-error-light text-brand-error hover:bg-brand-error-border',
 };
 
 const SIZE_CLASSES = {
