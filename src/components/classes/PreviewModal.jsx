@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { X, Eye, CalendarClock } from 'lucide-react';
 import { getAssignmentsForClasses, getWordsForList, getCustomListWords } from '../../lib/api.js';
 import LoadingSpinner from '../LoadingSpinner.jsx';
+import Modal from '../ui/Modal.jsx';
+import Card from '../ui/Card.jsx';
 
 const SAMPLE_WORD = {
   englishWord: 'achieve',
@@ -72,8 +74,7 @@ export default function PreviewModal({ institutionId, classId, onClose }) {
   }, [institutionId, classId]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 max-h-[90vh] overflow-y-auto space-y-5">
+    <Modal onClose={onClose} maxWidth="md" className="max-h-[90vh] overflow-y-auto space-y-5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Eye size={20} className="text-brand-turquoise" />
@@ -90,7 +91,7 @@ export default function PreviewModal({ institutionId, classId, onClose }) {
           <>
             <div>
               <p className="text-xs font-semibold text-brand-grey-text mb-2">כרטיס משימה</p>
-              <div className="rounded-2xl bg-white shadow-md border border-black/5 p-4">
+              <Card padding="p-4" className="border border-black/5">
                 <div className="flex items-center justify-between mb-2">
                   <p className="font-semibold text-brand-text truncate">
                     {assignment?.title || 'משימת תרגול לדוגמה'}
@@ -111,17 +112,18 @@ export default function PreviewModal({ institutionId, classId, onClose }) {
                 ) : (
                   <p className="text-xs text-brand-grey-text mt-2">ללא דד-ליין</p>
                 )}
-              </div>
+              </Card>
             </div>
 
             <div>
               <p className="text-xs font-semibold text-brand-grey-text mb-2">כרטיסיית תרגול</p>
-              <div
+              <Card
+                padding="p-6"
                 role="button"
                 tabIndex={0}
                 onClick={() => setFlipped((f) => !f)}
                 onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && setFlipped((f) => !f)}
-                className="rounded-2xl bg-white shadow-md border border-black/5 p-6 flex flex-col items-center justify-center text-center cursor-pointer min-h-[110px]"
+                className="border border-black/5 flex flex-col items-center justify-center text-center cursor-pointer min-h-[110px]"
               >
                 {!flipped ? (
                   <p className="text-2xl font-bold text-brand-text" dir="ltr">
@@ -137,17 +139,17 @@ export default function PreviewModal({ institutionId, classId, onClose }) {
                     )}
                   </>
                 )}
-              </div>
+              </Card>
               <p className="text-xs text-brand-grey-text text-center mt-1">הקש/י להיפוך</p>
             </div>
 
             <div>
               <p className="text-xs font-semibold text-brand-grey-text mb-2">שאלת מבחן</p>
-              <div className="rounded-2xl bg-white shadow-md border border-black/5 p-5 text-center mb-2">
+              <Card padding="p-5" className="border border-black/5 text-center mb-2">
                 <p className="text-xl font-bold text-brand-text" dir="ltr">
                   {word.englishWord}
                 </p>
-              </div>
+              </Card>
               <div className="space-y-2">
                 {choices.map((c) => (
                   <div key={c} className="w-full rounded-xl border border-black/10 p-3 text-sm font-semibold text-brand-text">
@@ -162,7 +164,6 @@ export default function PreviewModal({ institutionId, classId, onClose }) {
             </p>
           </>
         )}
-      </div>
-    </div>
+    </Modal>
   );
 }

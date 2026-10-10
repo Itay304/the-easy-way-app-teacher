@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { callCreateClass } from '../../lib/api.js';
+import Modal from '../ui/Modal.jsx';
+import Input from '../ui/Input.jsx';
+import Button from '../ui/Button.jsx';
 
 export default function CreateClassModal({ onClose, onCreated }) {
   const [name, setName] = useState('');
@@ -22,42 +25,21 @@ export default function CreateClassModal({ onClose, onCreated }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6">
-        <h2 className="text-lg font-bold text-brand-text mb-4">צור כיתה חדשה</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            required
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="שם הכיתה"
-            className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-turquoise"
-          />
-          <input
-            value={grade}
-            onChange={(e) => setGrade(e.target.value)}
-            placeholder="שכבה (אופציונלי)"
-            className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-turquoise"
-          />
-          {error && <p className="text-brand-error text-sm text-center">{error}</p>}
-          <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 py-3 rounded-xl border border-black/10 text-brand-text font-semibold"
-            >
-              ביטול
-            </button>
-            <button
-              type="submit"
-              disabled={submitting || !name.trim()}
-              className="flex-1 py-3 rounded-xl bg-brand-turquoise text-white font-bold disabled:opacity-60"
-            >
-              {submitting ? '...' : 'צור'}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+    <Modal onClose={onClose} maxWidth="sm">
+      <h2 className="text-lg font-bold text-brand-text mb-4">צור כיתה חדשה</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <Input required value={name} onChange={(e) => setName(e.target.value)} placeholder="שם הכיתה" />
+        <Input value={grade} onChange={(e) => setGrade(e.target.value)} placeholder="שכבה (אופציונלי)" />
+        {error && <p className="text-brand-error text-sm text-center">{error}</p>}
+        <div className="flex gap-3">
+          <Button type="button" variant="secondary" onClick={onClose} className="flex-1">
+            ביטול
+          </Button>
+          <Button type="submit" loading={submitting} disabled={!name.trim()} className="flex-1">
+            צור
+          </Button>
+        </div>
+      </form>
+    </Modal>
   );
 }

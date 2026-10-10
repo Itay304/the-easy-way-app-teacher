@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Megaphone } from 'lucide-react';
 import { callSendAnnouncement } from '../../lib/api.js';
+import Modal from '../ui/Modal.jsx';
+import Button from '../ui/Button.jsx';
 
 const MAX_LEN = 200;
 
@@ -24,44 +26,34 @@ export default function SendAnnouncementModal({ classId, onClose, onSent }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6">
-        <div className="flex items-center gap-2 mb-4">
-          <Megaphone size={20} className="text-brand-turquoise" />
-          <h2 className="text-lg font-bold text-brand-text">שלח הודעה לכיתה</h2>
-        </div>
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <textarea
-            required
-            maxLength={MAX_LEN}
-            rows={4}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="הודעה לתלמידי הכיתה..."
-            className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-turquoise resize-none"
-          />
-          <p className="text-xs text-brand-grey-text text-left">
-            {message.length}/{MAX_LEN}
-          </p>
-          {error && <p className="text-brand-error text-sm text-center">{error}</p>}
-          <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 py-3 rounded-xl border border-black/10 text-brand-text font-semibold"
-            >
-              ביטול
-            </button>
-            <button
-              type="submit"
-              disabled={submitting || !message.trim()}
-              className="flex-1 py-3 rounded-xl bg-brand-turquoise text-white font-bold disabled:opacity-60"
-            >
-              {submitting ? '...' : 'שלח'}
-            </button>
-          </div>
-        </form>
+    <Modal onClose={onClose} maxWidth="sm">
+      <div className="flex items-center gap-2 mb-4">
+        <Megaphone size={20} className="text-brand-turquoise" />
+        <h2 className="text-lg font-bold text-brand-text">שלח הודעה לכיתה</h2>
       </div>
-    </div>
+      <form onSubmit={handleSubmit} className="space-y-3">
+        <textarea
+          required
+          maxLength={MAX_LEN}
+          rows={4}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="הודעה לתלמידי הכיתה..."
+          className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-turquoise resize-none"
+        />
+        <p className="text-xs text-brand-grey-text text-left">
+          {message.length}/{MAX_LEN}
+        </p>
+        {error && <p className="text-brand-error text-sm text-center">{error}</p>}
+        <div className="flex gap-3">
+          <Button type="button" variant="secondary" onClick={onClose} className="flex-1">
+            ביטול
+          </Button>
+          <Button type="submit" loading={submitting} disabled={!message.trim()} className="flex-1">
+            שלח
+          </Button>
+        </div>
+      </form>
+    </Modal>
   );
 }

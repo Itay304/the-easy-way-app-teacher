@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { callCreateAssignment } from '../../../lib/api.js';
+import Input from '../../ui/Input.jsx';
+import Button from '../../ui/Button.jsx';
 
 export default function StepFinalize({ matchedWords, listId, classes, onBack, onCreated }) {
   const [selectionMode, setSelectionMode] = useState('all'); // 'all' | 'random' | 'manual' | 'varied'
@@ -112,23 +114,14 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
         )}
       </div>
 
-      <input
-        required
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="שם המשימה"
-        className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-turquoise"
-      />
+      <Input required value={title} onChange={(e) => setTitle(e.target.value)} placeholder="שם המשימה" />
 
-      <div>
-        <label className="block text-sm font-semibold text-brand-text mb-1">דד-ליין (אופציונלי)</label>
-        <input
-          type="date"
-          value={dueDate}
-          onChange={(e) => setDueDate(e.target.value)}
-          className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-turquoise"
-        />
-      </div>
+      <Input
+        type="date"
+        label="דד-ליין (אופציונלי)"
+        value={dueDate}
+        onChange={(e) => setDueDate(e.target.value)}
+      />
 
       <div>
         <label className="block text-sm font-semibold text-brand-text mb-1">לאיזו כיתה</label>
@@ -149,16 +142,12 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
       {error && <p className="text-brand-error text-sm text-center">{error}</p>}
 
       <div className="flex gap-3">
-        <button type="button" onClick={onBack} className="flex-1 py-3 rounded-xl border border-black/10 text-brand-text font-semibold">
+        <Button type="button" variant="secondary" onClick={onBack} className="flex-1">
           חזרה
-        </button>
-        <button
-          type="submit"
-          disabled={submitting}
-          className="flex-1 py-3 rounded-xl bg-brand-turquoise text-white font-bold disabled:opacity-60"
-        >
-          {submitting ? '...' : 'צור משימה'}
-        </button>
+        </Button>
+        <Button type="submit" loading={submitting} className="flex-1">
+          צור משימה
+        </Button>
       </div>
     </form>
   );

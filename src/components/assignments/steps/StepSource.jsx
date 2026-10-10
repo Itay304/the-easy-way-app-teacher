@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getWordLists, getCustomLists } from '../../../lib/api.js';
 import LoadingSpinner from '../../LoadingSpinner.jsx';
+import Button from '../../ui/Button.jsx';
 
 export default function StepSource({ institutionId, source, onChange, onNext }) {
   const [wordLists, setWordLists] = useState(null);
@@ -90,13 +91,9 @@ export default function StepSource({ institutionId, source, onChange, onNext }) 
         </div>
       )}
 
-      <button
-        onClick={onNext}
-        disabled={!source.listId}
-        className="w-full py-3 rounded-xl bg-brand-turquoise text-white font-bold disabled:opacity-40"
-      >
+      <Button onClick={onNext} disabled={!source.listId} className="w-full">
         המשך
-      </button>
+      </Button>
     </div>
   );
 }

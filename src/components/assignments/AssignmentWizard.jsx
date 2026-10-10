@@ -3,6 +3,7 @@ import { X } from 'lucide-react';
 import StepSource from './steps/StepSource.jsx';
 import StepFilter from './steps/StepFilter.jsx';
 import StepFinalize from './steps/StepFinalize.jsx';
+import Modal from '../ui/Modal.jsx';
 
 const EMPTY_FILTERS = { letters: [], pos: [], difficulty: [], search: '', hardWordsForClass: false };
 
@@ -13,8 +14,7 @@ export default function AssignmentWizard({ institutionId, classes, onClose, onCr
   const [matchedWords, setMatchedWords] = useState([]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
+    <Modal onClose={onClose} maxWidth="lg" className="max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-4">
           <div className="flex gap-1.5">
             {[1, 2, 3].map((n) => (
@@ -60,7 +60,6 @@ export default function AssignmentWizard({ institutionId, classes, onClose, onCr
             onCreated={onCreated}
           />
         )}
-      </div>
-    </div>
+    </Modal>
   );
 }

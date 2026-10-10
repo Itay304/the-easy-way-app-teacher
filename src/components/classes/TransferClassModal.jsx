@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { ArrowRightLeft } from 'lucide-react';
 import { getTeachersForInstitution, callTransferClass } from '../../lib/api.js';
 import LoadingSpinner from '../LoadingSpinner.jsx';
+import Modal from '../ui/Modal.jsx';
+import Button from '../ui/Button.jsx';
 
 export default function TransferClassModal({ institutionId, classId, currentTeacherId, onClose, onTransferred }) {
   const [teachers, setTeachers] = useState(null);
@@ -42,8 +44,7 @@ export default function TransferClassModal({ institutionId, classId, currentTeac
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6">
+    <Modal onClose={onClose} maxWidth="sm">
         <div className="flex items-center gap-2 mb-4">
           <ArrowRightLeft size={20} className="text-brand-turquoise" />
           <h2 className="text-lg font-bold text-brand-text">העבר כיתה למורה אחר</h2>
@@ -71,24 +72,20 @@ export default function TransferClassModal({ institutionId, classId, currentTeac
             {error && <p className="text-brand-error text-sm text-center">{error}</p>}
 
             <div className="flex gap-3">
-              <button
-                type="button"
-                onClick={onClose}
-                className="flex-1 py-3 rounded-xl border border-black/10 text-brand-text font-semibold"
-              >
+              <Button type="button" variant="secondary" onClick={onClose} className="flex-1">
                 ביטול
-              </button>
-              <button
+              </Button>
+              <Button
                 type="submit"
-                disabled={submitting || !newTeacherId || newTeacherId === currentTeacherId}
-                className="flex-1 py-3 rounded-xl bg-brand-turquoise text-white font-bold disabled:opacity-60"
+                loading={submitting}
+                disabled={!newTeacherId || newTeacherId === currentTeacherId}
+                className="flex-1"
               >
-                {submitting ? '...' : 'העבר'}
-              </button>
+                העבר
+              </Button>
             </div>
           </form>
         )}
-      </div>
-    </div>
+    </Modal>
   );
 }

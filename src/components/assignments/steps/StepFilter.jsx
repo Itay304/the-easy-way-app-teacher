@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { getWordsForList, getCustomListWords, callGetClassHardWords } from '../../../lib/api.js';
 import { filterWords, POS_OPTIONS, LETTER_OPTIONS, DIFFICULTY_OPTIONS } from '../../../lib/wordFilters.js';
 import LoadingSpinner from '../../LoadingSpinner.jsx';
+import Button from '../../ui/Button.jsx';
 
 function toggle(arr, value) {
   return arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value];
@@ -148,16 +149,12 @@ export default function StepFilter({
       <p className="text-center text-sm font-semibold text-brand-turquoise">נמצאו {matched.length} מילים</p>
 
       <div className="flex gap-3">
-        <button onClick={onBack} className="flex-1 py-3 rounded-xl border border-black/10 text-brand-text font-semibold">
+        <Button variant="secondary" onClick={onBack} className="flex-1">
           חזרה
-        </button>
-        <button
-          onClick={onNext}
-          disabled={matched.length === 0}
-          className="flex-1 py-3 rounded-xl bg-brand-turquoise text-white font-bold disabled:opacity-40"
-        >
+        </Button>
+        <Button onClick={onNext} disabled={matched.length === 0} className="flex-1">
           המשך
-        </button>
+        </Button>
       </div>
     </div>
   );
