@@ -3,6 +3,8 @@ import { X, UserMinus } from 'lucide-react';
 import { getUserDoc, callRemoveStudentFromClass } from '../../lib/api.js';
 import { daysAgo } from '../../lib/dateUtils.js';
 import LoadingSpinner from '../LoadingSpinner.jsx';
+import Modal from '../ui/Modal.jsx';
+import Button from '../ui/Button.jsx';
 
 export default function StudentDetailDrawer({ student, classId, institutionId, onClose, onRemoved }) {
   const [extra, setExtra] = useState(undefined); // undefined = loading
@@ -36,8 +38,7 @@ export default function StudentDetailDrawer({ student, classId, institutionId, o
   const days = daysAgo(student.lastActiveDate);
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 max-h-[85vh] overflow-y-auto">
+    <Modal onClose={onClose} maxWidth="sm" className="max-h-[85vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-bold text-brand-text">התקדמות אישית</h2>
           <button onClick={onClose} className="text-brand-grey-text hover:text-brand-text">
@@ -86,20 +87,12 @@ export default function StudentDetailDrawer({ student, classId, institutionId, o
               להסיר את {student.displayName || student.fullName || 'התלמיד'} מהכיתה?
             </p>
             <div className="flex gap-3">
-              <button
-                onClick={() => setConfirming(false)}
-                disabled={removing}
-                className="flex-1 py-2.5 rounded-xl bg-white border border-black/10 text-brand-text font-semibold text-sm disabled:opacity-60"
-              >
+              <Button variant="secondary" size="sm" disabled={removing} onClick={() => setConfirming(false)} className="flex-1">
                 ביטול
-              </button>
-              <button
-                onClick={handleRemove}
-                disabled={removing}
-                className="flex-1 py-2.5 rounded-xl bg-brand-error text-white font-semibold text-sm disabled:opacity-60"
-              >
-                {removing ? '...' : 'כן, הסר'}
-              </button>
+              </Button>
+              <Button variant="danger" size="sm" loading={removing} onClick={handleRemove} className="flex-1">
+                כן, הסר
+              </Button>
             </div>
           </div>
         ) : (
@@ -111,8 +104,7 @@ export default function StudentDetailDrawer({ student, classId, institutionId, o
             הסר מהכיתה
           </button>
         )}
-      </div>
-    </div>
+    </Modal>
   );
 }
 
