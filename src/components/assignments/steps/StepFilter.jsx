@@ -149,7 +149,7 @@ export default function StepFilter({
       <p className="text-center text-body-sm font-semibold text-brand-turquoise">נמצאו {matched.length} מילים</p>
 
       <div className="flex gap-3">
-        <Button variant="secondary" onClick={onBack} className="flex-1">
+        <Button variant="ghost" onClick={onBack} className="flex-1">
           חזרה
         </Button>
         <Button onClick={onNext} disabled={matched.length === 0} className="flex-1">

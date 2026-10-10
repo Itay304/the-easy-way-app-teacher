@@ -87,7 +87,7 @@ export default function StudentDetailDrawer({ student, classId, institutionId, o
               להסיר את {student.displayName || student.fullName || 'התלמיד'} מהכיתה?
             </p>
             <div className="flex gap-3">
-              <Button variant="secondary" size="sm" disabled={removing} onClick={() => setConfirming(false)} className="flex-1">
+              <Button variant="ghost" size="sm" disabled={removing} onClick={() => setConfirming(false)} className="flex-1">
                 ביטול
               </Button>
               <Button variant="danger" size="sm" loading={removing} onClick={handleRemove} className="flex-1">

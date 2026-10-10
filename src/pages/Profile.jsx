@@ -102,7 +102,7 @@ export default function Profile() {
         פתח ממשק מלא באתר
       </a>
 
-      <Button variant="secondary" size="lg" onClick={() => signOut(auth)}>
+      <Button variant="danger-subtle" size="lg" onClick={() => signOut(auth)}>
         <LogOut size={16} />
         התנתק
       </Button>

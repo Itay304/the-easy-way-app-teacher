@@ -142,7 +142,7 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
       {error && <p className="text-brand-error text-body-sm text-center">{error}</p>}
 
       <div className="flex gap-3">
-        <Button type="button" variant="secondary" onClick={onBack} className="flex-1">
+        <Button type="button" variant="ghost" onClick={onBack} className="flex-1">
           חזרה
         </Button>
         <Button type="submit" loading={submitting} className="flex-1">

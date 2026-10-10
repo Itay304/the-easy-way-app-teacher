@@ -46,7 +46,7 @@ export default function SendAnnouncementModal({ classId, onClose, onSent }) {
         </p>
         {error && <p className="text-brand-error text-body-sm text-center">{error}</p>}
         <div className="flex gap-3">
-          <Button type="button" variant="secondary" onClick={onClose} className="flex-1">
+          <Button type="button" variant="ghost" onClick={onClose} className="flex-1">
             ביטול
           </Button>
           <Button type="submit" loading={submitting} disabled={!message.trim()} className="flex-1">

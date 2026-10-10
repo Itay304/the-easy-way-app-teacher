@@ -32,7 +32,7 @@ export default function CreateClassModal({ onClose, onCreated }) {
         <Input value={grade} onChange={(e) => setGrade(e.target.value)} placeholder="שכבה (אופציונלי)" />
         {error && <p className="text-brand-error text-body-sm text-center">{error}</p>}
         <div className="flex gap-3">
-          <Button type="button" variant="secondary" onClick={onClose} className="flex-1">
+          <Button type="button" variant="ghost" onClick={onClose} className="flex-1">
             ביטול
           </Button>
           <Button type="submit" loading={submitting} disabled={!name.trim()} className="flex-1">
