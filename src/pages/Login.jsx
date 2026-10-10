@@ -7,6 +7,8 @@ import {
 import { doc, setDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 import { auth, db, functions } from '../firebase.js';
+import Input from '../components/ui/Input.jsx';
+import Button from '../components/ui/Button.jsx';
 
 const PENDING_INSTITUTION_KEY = 'pending_institution_code';
 
@@ -92,39 +94,20 @@ export default function Login() {
 
       <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
         {mode === 'signup' && (
-          <input
-            type="text"
-            required
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            placeholder="שם מלא"
-            className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-turquoise"
-          />
+          <Input type="text" required value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="שם מלא" />
         )}
-        <input
-          type="email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="אימייל"
-          className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-turquoise"
-        />
-        <input
+        <Input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="אימייל" />
+        <Input
           type="password"
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="סיסמה"
-          className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-turquoise"
         />
         {error && <p className="text-brand-error text-sm text-center">{error}</p>}
-        <button
-          type="submit"
-          disabled={submitting}
-          className="w-full py-4 rounded-xl bg-brand-turquoise text-white font-bold text-lg hover:bg-brand-turquoise-dark transition disabled:opacity-60"
-        >
-          {submitting ? '...' : mode === 'login' ? 'כניסה' : 'הרשמה'}
-        </button>
+        <Button type="submit" size="lg" loading={submitting}>
+          {mode === 'login' ? 'כניסה' : 'הרשמה'}
+        </Button>
         <button
           type="button"
           onClick={switchMode}

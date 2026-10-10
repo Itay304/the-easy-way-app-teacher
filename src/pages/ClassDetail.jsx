@@ -10,6 +10,7 @@ import StudentDetailDrawer from '../components/classes/StudentDetailDrawer.jsx';
 import SendAnnouncementModal from '../components/classes/SendAnnouncementModal.jsx';
 import PreviewModal from '../components/classes/PreviewModal.jsx';
 import TransferClassModal from '../components/classes/TransferClassModal.jsx';
+import Button from '../components/ui/Button.jsx';
 
 async function shareJoinInfo(joinCode) {
   const url = `https://student.theeasywayapp.co.il?code=${joinCode}`;
@@ -98,13 +99,10 @@ export default function ClassDetail() {
 
   return (
     <div className="px-4 pt-6 space-y-4">
-      <button
-        onClick={goBack}
-        className="inline-flex items-center gap-1 text-sm text-brand-grey-text hover:text-brand-text"
-      >
+      <Button variant="ghost" size="sm" onClick={goBack}>
         <ArrowRight size={16} />
         חזרה לכיתות
-      </button>
+      </Button>
 
       {error && <ErrorBanner message={error} onRetry={() => setReloadKey((k) => k + 1)} />}
 
@@ -116,13 +114,10 @@ export default function ClassDetail() {
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <button
-              onClick={() => setShowAnnouncement(true)}
-              className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-turquoise text-white font-semibold text-sm shadow-sm"
-            >
+            <Button onClick={() => setShowAnnouncement(true)} className="flex-1 min-w-[140px] shadow-sm">
               <Megaphone size={16} />
               שלח הודעה לכיתה
-            </button>
+            </Button>
             <button
               onClick={handleShare}
               className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-turquoise/10 text-brand-turquoise font-semibold text-sm"
