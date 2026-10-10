@@ -19,12 +19,12 @@ export default function StepSource({ institutionId, source, onChange, onNext }) 
 
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-bold text-brand-text">שלב 1: מקור מילים</h2>
+      <h2 className="text-body-lg font-bold text-brand-text">שלב 1: מקור מילים</h2>
 
       <div className="flex gap-2">
         <button
           onClick={() => setTab('wordList')}
-          className={`flex-1 py-2.5 rounded-xl text-sm font-semibold ${
+          className={`flex-1 py-2.5 rounded-xl text-body-sm font-semibold ${
             tab === 'wordList' ? 'bg-brand-turquoise text-white' : 'bg-brand-grey-light text-brand-text'
           }`}
         >
@@ -32,7 +32,7 @@ export default function StepSource({ institutionId, source, onChange, onNext }) 
         </button>
         <button
           onClick={() => setTab('customList')}
-          className={`flex-1 py-2.5 rounded-xl text-sm font-semibold ${
+          className={`flex-1 py-2.5 rounded-xl text-body-sm font-semibold ${
             tab === 'customList' ? 'bg-brand-turquoise text-white' : 'bg-brand-grey-light text-brand-text'
           }`}
         >
@@ -45,7 +45,7 @@ export default function StepSource({ institutionId, source, onChange, onNext }) 
           {wordLists === null ? (
             <LoadingSpinner />
           ) : wordLists.length === 0 ? (
-            <p className="text-brand-grey-text text-sm text-center py-4">לא נמצאו רשימות מילים.</p>
+            <p className="text-brand-grey-text text-body-sm text-center py-4">לא נמצאו רשימות מילים.</p>
           ) : (
             wordLists.map((list) => (
               <button
@@ -59,7 +59,7 @@ export default function StepSource({ institutionId, source, onChange, onNext }) 
               >
                 <span className="font-semibold text-brand-text">{list.name || list.id}</span>
                 {typeof list.wordCount === 'number' && (
-                  <span className="text-sm text-brand-grey-text mr-2">({list.wordCount} מילים)</span>
+                  <span className="text-body-sm text-brand-grey-text mr-2">({list.wordCount} מילים)</span>
                 )}
               </button>
             ))
@@ -72,7 +72,7 @@ export default function StepSource({ institutionId, source, onChange, onNext }) 
           {customLists === null ? (
             <LoadingSpinner />
           ) : customLists.length === 0 ? (
-            <p className="text-brand-grey-text text-sm text-center py-4">אין עדיין רשימות מוסדיות.</p>
+            <p className="text-brand-grey-text text-body-sm text-center py-4">אין עדיין רשימות מוסדיות.</p>
           ) : (
             customLists.map((list) => (
               <button

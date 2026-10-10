@@ -8,13 +8,13 @@ export default function Unauthorized() {
       <div className="h-16 w-16 rounded-full bg-brand-error-light text-brand-error flex items-center justify-center mb-4">
         <ShieldAlert size={24} />
       </div>
-      <h1 className="text-2xl font-bold text-brand-text mb-2">אין הרשאה</h1>
+      <h1 className="text-h1 font-bold text-brand-text mb-2">אין הרשאה</h1>
       <p className="text-brand-grey-text mb-10 max-w-sm">
         החשבון הזה אינו מוגדר כמורה או כמנהל מוסד. אם זו טעות, פנה למנהל המערכת שלך.
       </p>
       <button
         onClick={() => signOut(auth)}
-        className="text-sm text-brand-grey-text hover:text-brand-text underline"
+        className="text-body-sm text-brand-grey-text hover:text-brand-text underline"
       >
         התנתק ונסה עם חשבון אחר
       </button>

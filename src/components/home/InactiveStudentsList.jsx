@@ -6,12 +6,12 @@ export default function InactiveStudentsList({ students }) {
     <section className="rounded-2xl bg-white shadow-md p-5">
       <div className="flex items-center gap-2 mb-1">
         <AlertTriangle size={16} className="text-brand-error" />
-        <h2 className="text-lg font-bold text-brand-text">תלמידים לא פעילים</h2>
+        <h2 className="text-body-lg font-bold text-brand-text">תלמידים לא פעילים</h2>
       </div>
-      <p className="text-sm text-brand-grey-text mb-4">3+ ימים ללא תרגול</p>
+      <p className="text-body-sm text-brand-grey-text mb-4">3+ ימים ללא תרגול</p>
 
       {students.length === 0 ? (
-        <p className="text-sm text-brand-grey-text flex items-center gap-2">
+        <p className="text-body-sm text-brand-grey-text flex items-center gap-2">
           <PartyPopper size={16} className="text-brand-green" />
           כל התלמידים פעילים — כל הכבוד!
         </p>
@@ -25,7 +25,7 @@ export default function InactiveStudentsList({ students }) {
                 className="flex items-center justify-between bg-brand-error-light rounded-xl px-4 py-3"
               >
                 <span className="font-medium text-brand-text">{s.displayName || s.fullName || 'תלמיד'}</span>
-                <span className="text-sm text-brand-error font-semibold">
+                <span className="text-body-sm text-brand-error font-semibold">
                   {Number.isFinite(days) ? `${days} ימים` : 'מעולם לא תרגל'}
                 </span>
               </li>

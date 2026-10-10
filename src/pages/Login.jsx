@@ -90,7 +90,7 @@ export default function Login() {
   return (
     <div className="min-h-dvh flex flex-col items-center justify-center px-6 py-12">
       <img src="/icons/icon-192.png" alt="EasyLex" className="h-20 w-20 rounded-2xl shadow-md mb-6" />
-      <h1 className="text-2xl font-bold text-brand-text mb-8">EasyLex — מורה</h1>
+      <h1 className="text-h1 font-bold text-brand-text mb-8">EasyLex — מורה</h1>
 
       <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
         {mode === 'signup' && (
@@ -104,14 +104,14 @@ export default function Login() {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="סיסמה"
         />
-        {error && <p className="text-brand-error text-sm text-center">{error}</p>}
+        {error && <p className="text-brand-error text-body-sm text-center">{error}</p>}
         <Button type="submit" size="lg" loading={submitting}>
           {mode === 'login' ? 'כניסה' : 'הרשמה'}
         </Button>
         <button
           type="button"
           onClick={switchMode}
-          className="w-full text-sm text-brand-grey-text hover:text-brand-text underline"
+          className="w-full text-body-sm text-brand-grey-text hover:text-brand-text underline"
         >
           {mode === 'login' ? 'אין לך חשבון? הירשם' : 'כבר יש לך חשבון? התחבר'}
         </button>

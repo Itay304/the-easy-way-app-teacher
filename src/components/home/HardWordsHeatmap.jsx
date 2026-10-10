@@ -26,14 +26,14 @@ export default function HardWordsHeatmap({ words }) {
     <section className="rounded-2xl bg-white shadow-md p-5">
       <div className="flex items-center gap-2 mb-1">
         <Flame size={16} className="text-amber-500" />
-        <h2 className="text-lg font-bold text-brand-text">מפת חום — מילים קשות בכיתה</h2>
+        <h2 className="text-body-lg font-bold text-brand-text">מפת חום — מילים קשות בכיתה</h2>
       </div>
-      <p className="text-sm text-brand-grey-text mb-4">
+      <p className="text-body-sm text-brand-grey-text mb-4">
         לפי אחוז שגיאות על פני כל הכיתות שלך. הקש/י על מילה לפרטים.
       </p>
 
       {words.length === 0 ? (
-        <p className="text-sm text-brand-grey-text">אין עדיין מספיק נתוני תרגול.</p>
+        <p className="text-body-sm text-brand-grey-text">אין עדיין מספיק נתוני תרגול.</p>
       ) : (
         <>
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 max-h-96 overflow-y-auto pr-1">
@@ -48,10 +48,10 @@ export default function HardWordsHeatmap({ words }) {
                     w.errorRate,
                   )} ${isSelected ? 'ring-2 ring-offset-1 ring-brand-turquoise' : ''}`}
                 >
-                  <p className="font-bold text-sm truncate" dir="ltr">
+                  <p className="font-bold text-body-sm truncate" dir="ltr">
                     {w.englishWord}
                   </p>
-                  <p className="text-xs font-semibold mt-1">{Math.round(w.errorRate * 100)}% שגיאה</p>
+                  <p className="text-caption font-semibold mt-1">{Math.round(w.errorRate * 100)}% שגיאה</p>
                 </button>
               );
             })}
@@ -62,16 +62,16 @@ export default function HardWordsHeatmap({ words }) {
               <p className="font-bold text-brand-text" dir="ltr">
                 {selected.englishWord}
               </p>
-              <p className="text-sm text-brand-grey-text">
+              <p className="text-body-sm text-brand-grey-text">
                 {selected.studentsFailed} מתוך {selected.studentsAttempted} תלמידים שניסו את המילה עדיין לא כבשו אותה
               </p>
-              <p className="text-sm text-brand-grey-text">
+              <p className="text-body-sm text-brand-grey-text">
                 {selected.totalAttempts} ניסיונות סה"כ · {Math.round(selected.errorRate * 100)}% שגיאה
               </p>
             </div>
           )}
 
-          <div className="flex items-center justify-center gap-3 mt-4 text-xs text-brand-grey-text flex-wrap">
+          <div className="flex items-center justify-center gap-3 mt-4 text-caption text-brand-grey-text flex-wrap">
             {LEGEND.map((item) => (
               <span key={item.label} className="flex items-center gap-1">
                 <span className={`h-3 w-3 rounded-full inline-block ${item.className}`} />

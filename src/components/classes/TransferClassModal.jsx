@@ -47,7 +47,7 @@ export default function TransferClassModal({ institutionId, classId, currentTeac
     <Modal onClose={onClose} maxWidth="sm">
         <div className="flex items-center gap-2 mb-4">
           <ArrowRightLeft size={20} className="text-brand-turquoise" />
-          <h2 className="text-lg font-bold text-brand-text">העבר כיתה למורה אחר</h2>
+          <h2 className="text-body-lg font-bold text-brand-text">העבר כיתה למורה אחר</h2>
         </div>
 
         {teachers === null && !error && <LoadingSpinner />}
@@ -69,7 +69,7 @@ export default function TransferClassModal({ institutionId, classId, currentTeac
               ))}
             </select>
 
-            {error && <p className="text-brand-error text-sm text-center">{error}</p>}
+            {error && <p className="text-brand-error text-body-sm text-center">{error}</p>}
 
             <div className="flex gap-3">
               <Button type="button" variant="secondary" onClick={onClose} className="flex-1">

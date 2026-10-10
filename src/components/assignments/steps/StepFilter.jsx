@@ -53,16 +53,16 @@ export default function StepFilter({
 
   return (
     <div className="space-y-5">
-      <h2 className="text-lg font-bold text-brand-text">שלב 2: סינון (אופציונלי)</h2>
+      <h2 className="text-body-lg font-bold text-brand-text">שלב 2: סינון (אופציונלי)</h2>
 
       <div>
-        <p className="text-sm font-semibold text-brand-text mb-2">אות התחלה</p>
+        <p className="text-body-sm font-semibold text-brand-text mb-2">אות התחלה</p>
         <div className="flex flex-wrap gap-1.5">
           {LETTER_OPTIONS.map((letter) => (
             <button
               key={letter}
               onClick={() => onFiltersChange({ ...filters, letters: toggle(filters.letters, letter) })}
-              className={`h-8 w-8 rounded-lg text-sm font-semibold ${
+              className={`h-8 w-8 rounded-lg text-body-sm font-semibold ${
                 filters.letters.includes(letter)
                   ? 'bg-brand-turquoise text-white'
                   : 'bg-brand-grey-light text-brand-text'
@@ -75,13 +75,13 @@ export default function StepFilter({
       </div>
 
       <div>
-        <p className="text-sm font-semibold text-brand-text mb-2">חלק דיבר</p>
+        <p className="text-body-sm font-semibold text-brand-text mb-2">חלק דיבר</p>
         <div className="flex flex-wrap gap-2">
           {POS_OPTIONS.map((opt) => (
             <button
               key={opt.key}
               onClick={() => onFiltersChange({ ...filters, pos: toggle(filters.pos, opt.key) })}
-              className={`px-3 py-1.5 rounded-full text-sm font-medium ${
+              className={`px-3 py-1.5 rounded-full text-body-sm font-medium ${
                 filters.pos.includes(opt.key)
                   ? 'bg-brand-turquoise text-white'
                   : 'bg-brand-grey-light text-brand-text'
@@ -94,13 +94,13 @@ export default function StepFilter({
       </div>
 
       <div>
-        <p className="text-sm font-semibold text-brand-text mb-2">קושי</p>
+        <p className="text-body-sm font-semibold text-brand-text mb-2">קושי</p>
         <div className="flex gap-2">
           {DIFFICULTY_OPTIONS.map((d) => (
             <button
               key={d}
               onClick={() => onFiltersChange({ ...filters, difficulty: toggle(filters.difficulty, d) })}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium ${
+              className={`px-4 py-1.5 rounded-full text-body-sm font-medium ${
                 filters.difficulty.includes(d)
                   ? 'bg-brand-turquoise text-white'
                   : 'bg-brand-grey-light text-brand-text'
@@ -122,7 +122,7 @@ export default function StepFilter({
       </div>
 
       <div className="rounded-xl bg-brand-grey-light p-3 space-y-2">
-        <label className="flex items-center gap-2 text-sm font-semibold text-brand-text">
+        <label className="flex items-center gap-2 text-body-sm font-semibold text-brand-text">
           <input
             type="checkbox"
             checked={filters.hardWordsForClass}
@@ -134,7 +134,7 @@ export default function StepFilter({
           <select
             value={hardWordClassId}
             onChange={(e) => setHardWordClassId(e.target.value)}
-            className="w-full rounded-lg border border-black/10 px-3 py-2 text-sm"
+            className="w-full rounded-lg border border-black/10 px-3 py-2 text-body-sm"
           >
             <option value="">בחר כיתה...</option>
             {classes.map((c) => (
@@ -146,7 +146,7 @@ export default function StepFilter({
         )}
       </div>
 
-      <p className="text-center text-sm font-semibold text-brand-turquoise">נמצאו {matched.length} מילים</p>
+      <p className="text-center text-body-sm font-semibold text-brand-turquoise">נמצאו {matched.length} מילים</p>
 
       <div className="flex gap-3">
         <Button variant="secondary" onClick={onBack} className="flex-1">

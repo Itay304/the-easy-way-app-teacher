@@ -3,7 +3,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 export default function WeeklyActivityChart({ data }) {
   return (
     <section className="rounded-2xl bg-white shadow-md p-5">
-      <h2 className="text-lg font-bold text-brand-text mb-4">פעילות שבועית</h2>
+      <h2 className="text-body-lg font-bold text-brand-text mb-4">פעילות שבועית</h2>
       <div className="h-56" dir="ltr">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>

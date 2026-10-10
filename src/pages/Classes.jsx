@@ -59,7 +59,7 @@ export default function Classes() {
   return (
     <div className="px-4 pt-6 space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-brand-text">כיתות</h1>
+        <h1 className="text-h1 font-bold text-brand-text">כיתות</h1>
         <Button size="sm" onClick={() => setShowCreate(true)} className="shadow-sm">
           <Plus size={16} strokeWidth={2} />
           כיתה חדשה
@@ -84,16 +84,16 @@ export default function Classes() {
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-bold text-brand-turquoise-dark text-lg">{c.name}</p>
-                    {c.grade && <p className="text-sm text-brand-grey-text mt-0.5">שכבה {c.grade}</p>}
+                    <p className="font-bold text-brand-turquoise-dark text-body-lg">{c.name}</p>
+                    {c.grade && <p className="text-body-sm text-brand-grey-text mt-0.5">שכבה {c.grade}</p>}
                   </div>
                   <div className="text-left">
-                    <p className="text-xl font-bold text-brand-turquoise">{c.liveStudentCount}</p>
-                    <p className="text-xs text-brand-grey-text">תלמידים</p>
+                    <p className="text-h2 font-bold text-brand-turquoise">{c.liveStudentCount}</p>
+                    <p className="text-caption text-brand-grey-text">תלמידים</p>
                   </div>
                 </div>
                 {c.activePct !== null && (
-                  <p className="text-sm font-semibold text-brand-green mt-3">{c.activePct}% פעילים השבוע</p>
+                  <p className="text-body-sm font-semibold text-brand-green mt-3">{c.activePct}% פעילים השבוע</p>
                 )}
               </Link>
             </li>

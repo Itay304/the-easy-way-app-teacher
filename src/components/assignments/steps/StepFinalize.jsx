@@ -55,7 +55,7 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      <h2 className="text-lg font-bold text-brand-text">שלב 3: כמות והגדרות</h2>
+      <h2 className="text-body-lg font-bold text-brand-text">שלב 3: כמות והגדרות</h2>
 
       <div className="space-y-2">
         <div className="grid grid-cols-2 gap-2">
@@ -69,7 +69,7 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
               key={opt.key}
               type="button"
               onClick={() => setSelectionMode(opt.key)}
-              className={`py-2 rounded-xl text-sm font-semibold ${
+              className={`py-2 rounded-xl text-body-sm font-semibold ${
                 selectionMode === opt.key ? 'bg-brand-turquoise text-white' : 'bg-brand-grey-light text-brand-text'
               }`}
             >
@@ -79,7 +79,7 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
         </div>
 
         {selectionMode === 'varied' && (
-          <p className="text-sm text-brand-grey-text bg-brand-grey-light rounded-xl p-3">
+          <p className="text-body-sm text-brand-grey-text bg-brand-grey-light rounded-xl p-3">
             כל {matchedWords.length} המילים ייכללו במשימה. אנחנו ממליצים לתלמידים לחלק את התרגול לשלושה שווה
             בשווה — שליש כרטיסיות, שליש מבחן, שליש איות — כדי לגוון את שיטת הלמידה.
           </p>
@@ -95,14 +95,14 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
               onChange={(e) => setRandomCount(Number(e.target.value))}
               className="w-full accent-brand-turquoise"
             />
-            <p className="text-center text-sm text-brand-grey-text">{randomCount} מילים אקראיות</p>
+            <p className="text-center text-body-sm text-brand-grey-text">{randomCount} מילים אקראיות</p>
           </div>
         )}
 
         {selectionMode === 'manual' && (
           <div className="max-h-48 overflow-y-auto rounded-xl border border-black/10 divide-y divide-black/5">
             {matchedWords.map((w) => (
-              <label key={w.id} className="flex items-center gap-3 px-4 py-2 text-sm">
+              <label key={w.id} className="flex items-center gap-3 px-4 py-2 text-body-sm">
                 <input type="checkbox" checked={manualIds.includes(w.id)} onChange={() => toggleManual(w.id)} />
                 <span dir="ltr" className="font-medium text-brand-text">
                   {w.englishWord}
@@ -124,7 +124,7 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
       />
 
       <div>
-        <label className="block text-sm font-semibold text-brand-text mb-1">לאיזו כיתה</label>
+        <label className="block text-body-sm font-semibold text-brand-text mb-1">לאיזו כיתה</label>
         <select
           required
           value={classId}
@@ -139,7 +139,7 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
         </select>
       </div>
 
-      {error && <p className="text-brand-error text-sm text-center">{error}</p>}
+      {error && <p className="text-brand-error text-body-sm text-center">{error}</p>}
 
       <div className="flex gap-3">
         <Button type="button" variant="secondary" onClick={onBack} className="flex-1">

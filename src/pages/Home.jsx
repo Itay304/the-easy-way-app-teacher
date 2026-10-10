@@ -126,7 +126,7 @@ export default function Home() {
 
   return (
     <div className="px-4 pt-6 space-y-6">
-      <h1 className="text-2xl font-bold text-brand-text">בית</h1>
+      <h1 className="text-h1 font-bold text-brand-text">בית</h1>
 
       {error && <ErrorBanner message={error} onRetry={() => setReloadKey((k) => k + 1)} />}
 

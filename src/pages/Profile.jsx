@@ -48,14 +48,14 @@ export default function Profile() {
 
   return (
     <div className="px-4 pt-6 space-y-5">
-      <h1 className="text-2xl font-bold text-brand-text">פרופיל</h1>
+      <h1 className="text-h1 font-bold text-brand-text">פרופיל</h1>
 
       <Card padding="p-5" className="text-center">
-        <span className="h-16 w-16 mx-auto rounded-full bg-brand-turquoise/15 text-brand-turquoise font-bold text-2xl flex items-center justify-center mb-3">
+        <span className="h-16 w-16 mx-auto rounded-full bg-brand-turquoise/15 text-brand-turquoise font-bold text-h1 flex items-center justify-center mb-3">
           {(profile.displayName || '?')[0]}
         </span>
-        <p className="font-bold text-brand-text text-lg">{profile.displayName}</p>
-        <p className="text-sm text-brand-grey-text">{institution ? institution.name : '...'}</p>
+        <p className="font-bold text-brand-text text-body-lg">{profile.displayName}</p>
+        <p className="text-body-sm text-brand-grey-text">{institution ? institution.name : '...'}</p>
       </Card>
 
       {!stats ? (
@@ -66,18 +66,18 @@ export default function Profile() {
       ) : (
         <div className="grid grid-cols-2 gap-3">
           <div className="rounded-xl bg-brand-grey-light px-4 py-3 text-center">
-            <p className="text-xl font-bold text-brand-text">{stats.classCount}</p>
-            <p className="text-xs text-brand-grey-text mt-0.5">כיתות</p>
+            <p className="text-h2 font-bold text-brand-text">{stats.classCount}</p>
+            <p className="text-caption text-brand-grey-text mt-0.5">כיתות</p>
           </div>
           <div className="rounded-xl bg-brand-grey-light px-4 py-3 text-center">
-            <p className="text-xl font-bold text-brand-text">{stats.studentCount}</p>
-            <p className="text-xs text-brand-grey-text mt-0.5">תלמידים</p>
+            <p className="text-h2 font-bold text-brand-text">{stats.studentCount}</p>
+            <p className="text-caption text-brand-grey-text mt-0.5">תלמידים</p>
           </div>
         </div>
       )}
 
       <Card padding="p-5" className="flex items-center justify-between">
-        <span className="text-sm font-medium text-brand-text">התראות על תלמידים לא פעילים</span>
+        <span className="text-body-sm font-medium text-brand-text">התראות על תלמידים לא פעילים</span>
         <button
           onClick={toggleNotify}
           className={`w-12 h-7 rounded-full transition relative ${

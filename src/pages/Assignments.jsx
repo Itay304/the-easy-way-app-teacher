@@ -49,7 +49,7 @@ export default function Assignments() {
   return (
     <div className="px-4 pt-6 space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-brand-text">משימות</h1>
+        <h1 className="text-h1 font-bold text-brand-text">משימות</h1>
         <Button
           size="sm"
           onClick={() => setShowWizard(true)}

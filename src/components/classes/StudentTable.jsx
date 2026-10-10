@@ -32,12 +32,12 @@ export default function StudentTable({
   return (
     <div>
       <div className="flex flex-wrap items-center gap-2 mb-3">
-        <span className="text-sm text-brand-grey-text ml-1">מיון:</span>
+        <span className="text-body-sm text-brand-grey-text ml-1">מיון:</span>
         {SORT_OPTIONS.map((opt) => (
           <button
             key={opt.key}
             onClick={() => onSortChange(opt.key)}
-            className={`px-3 py-1.5 rounded-full text-sm font-medium transition ${
+            className={`px-3 py-1.5 rounded-full text-body-sm font-medium transition ${
               sortBy === opt.key
                 ? 'bg-brand-turquoise text-white'
                 : 'bg-brand-grey-light text-brand-text'
@@ -48,7 +48,7 @@ export default function StudentTable({
         ))}
         <button
           onClick={onToggleOnlyInactive}
-          className={`px-3 py-1.5 rounded-full text-sm font-medium transition mr-auto ${
+          className={`px-3 py-1.5 rounded-full text-body-sm font-medium transition mr-auto ${
             onlyInactive ? 'bg-brand-error text-white' : 'bg-brand-grey-light text-brand-text'
           }`}
         >
@@ -73,7 +73,7 @@ export default function StudentTable({
                   <span className="block font-semibold text-brand-text truncate">
                     {s.displayName || s.fullName || 'תלמיד'}
                   </span>
-                  <span className="block text-xs text-brand-grey-text">
+                  <span className="block text-caption text-brand-grey-text">
                     {s.totalXp} XP · {s.masteredWords} מילים נכבשות
                   </span>
                 </span>

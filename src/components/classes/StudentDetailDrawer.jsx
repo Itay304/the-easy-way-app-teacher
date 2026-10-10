@@ -40,19 +40,19 @@ export default function StudentDetailDrawer({ student, classId, institutionId, o
   return (
     <Modal onClose={onClose} maxWidth="sm" className="max-h-[85vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-bold text-brand-text">התקדמות אישית</h2>
+          <h2 className="text-body-lg font-bold text-brand-text">התקדמות אישית</h2>
           <button onClick={onClose} className="text-brand-grey-text hover:text-brand-text">
             <X size={20} />
           </button>
         </div>
 
         <div className="flex items-center gap-3 mb-6">
-          <span className="h-14 w-14 rounded-full bg-brand-turquoise/15 text-brand-turquoise font-bold text-xl flex items-center justify-center shrink-0">
+          <span className="h-14 w-14 rounded-full bg-brand-turquoise/15 text-brand-turquoise font-bold text-h2 flex items-center justify-center shrink-0">
             {(student.displayName || student.fullName || '?')[0]}
           </span>
           <div>
-            <p className="font-bold text-brand-text text-lg">{student.displayName || student.fullName || 'תלמיד'}</p>
-            <p className="text-sm text-brand-grey-text">
+            <p className="font-bold text-brand-text text-body-lg">{student.displayName || student.fullName || 'תלמיד'}</p>
+            <p className="text-body-sm text-brand-grey-text">
               {Number.isFinite(days) ? `פעיל לאחרונה לפני ${days} ימים` : 'מעולם לא תרגל'}
             </p>
           </div>
@@ -72,18 +72,18 @@ export default function StudentDetailDrawer({ student, classId, institutionId, o
         {extra === undefined && <LoadingSpinner label="טוען פרטים נוספים..." />}
 
         <div
-          className={`rounded-xl px-4 py-3 text-sm font-semibold text-center ${
+          className={`rounded-xl px-4 py-3 text-body-sm font-semibold text-center ${
             student.weeklyActivity ? 'bg-brand-green/10 text-brand-green' : 'bg-brand-error-light text-brand-error'
           }`}
         >
           {student.weeklyActivity ? 'פעיל השבוע' : 'לא פעיל השבוע'}
         </div>
 
-        {removeError && <p className="text-brand-error text-sm text-center mt-4">{removeError}</p>}
+        {removeError && <p className="text-brand-error text-body-sm text-center mt-4">{removeError}</p>}
 
         {confirming ? (
           <div className="mt-4 rounded-xl bg-brand-error-light p-4 space-y-3">
-            <p className="text-sm font-semibold text-brand-error-dark text-center">
+            <p className="text-body-sm font-semibold text-brand-error-dark text-center">
               להסיר את {student.displayName || student.fullName || 'התלמיד'} מהכיתה?
             </p>
             <div className="flex gap-3">
@@ -98,7 +98,7 @@ export default function StudentDetailDrawer({ student, classId, institutionId, o
         ) : (
           <button
             onClick={() => setConfirming(true)}
-            className="mt-4 w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-brand-error hover:bg-brand-error-light font-semibold text-sm transition"
+            className="mt-4 w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-brand-error hover:bg-brand-error-light font-semibold text-body-sm transition"
           >
             <UserMinus size={16} />
             הסר מהכיתה
@@ -111,8 +111,8 @@ export default function StudentDetailDrawer({ student, classId, institutionId, o
 function Stat({ label, value }) {
   return (
     <div className="rounded-xl bg-brand-grey-light px-4 py-3 text-center">
-      <p className="text-xl font-bold text-brand-text">{value}</p>
-      <p className="text-xs text-brand-grey-text mt-0.5">{label}</p>
+      <p className="text-h2 font-bold text-brand-text">{value}</p>
+      <p className="text-caption text-brand-grey-text mt-0.5">{label}</p>
     </div>
   );
 }

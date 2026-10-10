@@ -29,7 +29,7 @@ export default function SendAnnouncementModal({ classId, onClose, onSent }) {
     <Modal onClose={onClose} maxWidth="sm">
       <div className="flex items-center gap-2 mb-4">
         <Megaphone size={20} className="text-brand-turquoise" />
-        <h2 className="text-lg font-bold text-brand-text">שלח הודעה לכיתה</h2>
+        <h2 className="text-body-lg font-bold text-brand-text">שלח הודעה לכיתה</h2>
       </div>
       <form onSubmit={handleSubmit} className="space-y-3">
         <textarea
@@ -41,10 +41,10 @@ export default function SendAnnouncementModal({ classId, onClose, onSent }) {
           placeholder="הודעה לתלמידי הכיתה..."
           className="w-full rounded-xl border border-black/10 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-turquoise resize-none"
         />
-        <p className="text-xs text-brand-grey-text text-left">
+        <p className="text-caption text-brand-grey-text text-left">
           {message.length}/{MAX_LEN}
         </p>
-        {error && <p className="text-brand-error text-sm text-center">{error}</p>}
+        {error && <p className="text-brand-error text-body-sm text-center">{error}</p>}
         <div className="flex gap-3">
           <Button type="button" variant="secondary" onClick={onClose} className="flex-1">
             ביטול

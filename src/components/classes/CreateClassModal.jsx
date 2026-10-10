@@ -26,11 +26,11 @@ export default function CreateClassModal({ onClose, onCreated }) {
 
   return (
     <Modal onClose={onClose} maxWidth="sm">
-      <h2 className="text-lg font-bold text-brand-text mb-4">צור כיתה חדשה</h2>
+      <h2 className="text-body-lg font-bold text-brand-text mb-4">צור כיתה חדשה</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input required value={name} onChange={(e) => setName(e.target.value)} placeholder="שם הכיתה" />
         <Input value={grade} onChange={(e) => setGrade(e.target.value)} placeholder="שכבה (אופציונלי)" />
-        {error && <p className="text-brand-error text-sm text-center">{error}</p>}
+        {error && <p className="text-brand-error text-body-sm text-center">{error}</p>}
         <div className="flex gap-3">
           <Button type="button" variant="secondary" onClick={onClose} className="flex-1">
             ביטול

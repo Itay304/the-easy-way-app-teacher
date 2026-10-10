@@ -39,15 +39,15 @@ export default function AssignmentCard({ assignment, className }) {
             <Cell fill="#f5f5f5" />
           </Pie>
         </PieChart>
-        <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-brand-text">
+        <span className="absolute inset-0 flex items-center justify-center text-caption font-bold text-brand-text">
           {pct === null ? '…' : `${pct}%`}
         </span>
       </div>
       <div className="min-w-0">
         <p className="font-semibold text-brand-text truncate">{assignment.title}</p>
-        <p className="text-sm text-brand-grey-text truncate">{className}</p>
+        <p className="text-body-sm text-brand-grey-text truncate">{className}</p>
         {assignment.dueDateMs && (
-          <p className="flex items-center gap-1 text-xs text-brand-grey-text mt-0.5">
+          <p className="flex items-center gap-1 text-caption text-brand-grey-text mt-0.5">
             <CalendarClock size={16} />
             עד {new Date(assignment.dueDateMs).toLocaleDateString('he-IL')}
           </p>

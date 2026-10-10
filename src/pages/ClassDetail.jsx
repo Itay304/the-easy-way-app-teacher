@@ -109,7 +109,7 @@ export default function ClassDetail() {
       {classInfo && (
         <>
           <div>
-            <h1 className="text-2xl font-bold text-brand-turquoise-dark">{classInfo.name}</h1>
+            <h1 className="text-h1 font-bold text-brand-turquoise-dark">{classInfo.name}</h1>
             {classInfo.grade && <p className="text-brand-grey-text">שכבה {classInfo.grade}</p>}
           </div>
 
@@ -120,14 +120,14 @@ export default function ClassDetail() {
             </Button>
             <button
               onClick={handleShare}
-              className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-turquoise/10 text-brand-turquoise font-semibold text-sm"
+              className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-turquoise/10 text-brand-turquoise font-semibold text-body-sm"
             >
               <Share2 size={16} />
               {shareStatus || 'שתף'}
             </button>
             <button
               onClick={() => setShowPreview(true)}
-              className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-grey-light text-brand-text font-semibold text-sm"
+              className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-grey-light text-brand-text font-semibold text-body-sm"
             >
               <Eye size={16} />
               תצוגה מקדימה 👁
@@ -135,7 +135,7 @@ export default function ClassDetail() {
             {profile.role === 'principal' && (
               <button
                 onClick={() => setShowTransfer(true)}
-                className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-grey-light text-brand-text font-semibold text-sm"
+                className="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-grey-light text-brand-text font-semibold text-body-sm"
               >
                 <ArrowRightLeft size={16} />
                 העבר כיתה
@@ -143,7 +143,7 @@ export default function ClassDetail() {
             )}
           </div>
 
-          {transferStatus && <p className="text-sm text-brand-green font-semibold text-center">{transferStatus}</p>}
+          {transferStatus && <p className="text-body-sm text-brand-green font-semibold text-center">{transferStatus}</p>}
         </>
       )}
 
@@ -170,12 +170,12 @@ export default function ClassDetail() {
           <aside className="hidden md:block rounded-2xl bg-white shadow-md p-5 space-y-5 sticky top-6">
             <h2 className="text-h2 font-bold text-brand-text">כיתה במבט</h2>
             <div>
-              <p className="text-xs text-brand-grey-text">מספר תלמידים</p>
-              <p className="text-2xl font-bold text-brand-text">{students?.length ?? '—'}</p>
+              <p className="text-caption text-brand-grey-text">מספר תלמידים</p>
+              <p className="text-h1 font-bold text-brand-text">{students?.length ?? '—'}</p>
             </div>
             <div>
-              <p className="text-xs text-brand-grey-text mb-1">קוד הצטרפות</p>
-              <p className="text-2xl font-bold text-brand-turquoise tracking-wider" dir="ltr">
+              <p className="text-caption text-brand-grey-text mb-1">קוד הצטרפות</p>
+              <p className="text-h1 font-bold text-brand-turquoise tracking-wider" dir="ltr">
                 {classInfo.joinCode}
               </p>
             </div>

@@ -78,7 +78,7 @@ export default function PreviewModal({ institutionId, classId, onClose }) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Eye size={20} className="text-brand-turquoise" />
-            <h2 className="text-lg font-bold text-brand-text">תצוגה מקדימה</h2>
+            <h2 className="text-body-lg font-bold text-brand-text">תצוגה מקדימה</h2>
           </div>
           <button onClick={onClose} className="text-brand-grey-text hover:text-brand-text">
             <X size={20} />
@@ -90,13 +90,13 @@ export default function PreviewModal({ institutionId, classId, onClose }) {
         ) : (
           <>
             <div>
-              <p className="text-xs font-semibold text-brand-grey-text mb-2">כרטיס משימה</p>
+              <p className="text-caption font-semibold text-brand-grey-text mb-2">כרטיס משימה</p>
               <Card padding="p-4" className="border border-black/5">
                 <div className="flex items-center justify-between mb-2">
                   <p className="font-semibold text-brand-text truncate">
                     {assignment?.title || 'משימת תרגול לדוגמה'}
                   </p>
-                  <span className="text-sm font-bold text-brand-turquoise shrink-0">{DEMO_PROGRESS_PCT}%</span>
+                  <span className="text-body-sm font-bold text-brand-turquoise shrink-0">{DEMO_PROGRESS_PCT}%</span>
                 </div>
                 <div className="h-2 rounded-full bg-brand-grey-light overflow-hidden">
                   <div
@@ -105,18 +105,18 @@ export default function PreviewModal({ institutionId, classId, onClose }) {
                   />
                 </div>
                 {assignment?.dueDateMs ? (
-                  <p className="flex items-center gap-1 text-xs text-brand-grey-text mt-2">
+                  <p className="flex items-center gap-1 text-caption text-brand-grey-text mt-2">
                     <CalendarClock size={16} />
                     עד {new Date(assignment.dueDateMs).toLocaleDateString('he-IL')}
                   </p>
                 ) : (
-                  <p className="text-xs text-brand-grey-text mt-2">ללא דד-ליין</p>
+                  <p className="text-caption text-brand-grey-text mt-2">ללא דד-ליין</p>
                 )}
               </Card>
             </div>
 
             <div>
-              <p className="text-xs font-semibold text-brand-grey-text mb-2">כרטיסיית תרגול</p>
+              <p className="text-caption font-semibold text-brand-grey-text mb-2">כרטיסיית תרגול</p>
               <Card
                 padding="p-6"
                 role="button"
@@ -126,40 +126,40 @@ export default function PreviewModal({ institutionId, classId, onClose }) {
                 className="border border-black/5 flex flex-col items-center justify-center text-center cursor-pointer min-h-[110px]"
               >
                 {!flipped ? (
-                  <p className="text-2xl font-bold text-brand-text" dir="ltr">
+                  <p className="text-h1 font-bold text-brand-text" dir="ltr">
                     {word.englishWord}
                   </p>
                 ) : (
                   <>
-                    <p className="text-xl font-bold text-brand-turquoise mb-1">{word.hebrewTranslation}</p>
+                    <p className="text-h2 font-bold text-brand-turquoise mb-1">{word.hebrewTranslation}</p>
                     {word.exampleSentence && (
-                      <p className="text-sm text-brand-grey-text" dir="ltr">
+                      <p className="text-body-sm text-brand-grey-text" dir="ltr">
                         {word.exampleSentence}
                       </p>
                     )}
                   </>
                 )}
               </Card>
-              <p className="text-xs text-brand-grey-text text-center mt-1">הקש/י להיפוך</p>
+              <p className="text-caption text-brand-grey-text text-center mt-1">הקש/י להיפוך</p>
             </div>
 
             <div>
-              <p className="text-xs font-semibold text-brand-grey-text mb-2">שאלת מבחן</p>
+              <p className="text-caption font-semibold text-brand-grey-text mb-2">שאלת מבחן</p>
               <Card padding="p-5" className="border border-black/5 text-center mb-2">
-                <p className="text-xl font-bold text-brand-text" dir="ltr">
+                <p className="text-h2 font-bold text-brand-text" dir="ltr">
                   {word.englishWord}
                 </p>
               </Card>
               <div className="space-y-2">
                 {choices.map((c) => (
-                  <div key={c} className="w-full rounded-xl border border-black/10 p-3 text-sm font-semibold text-brand-text">
+                  <div key={c} className="w-full rounded-xl border border-black/10 p-3 text-body-sm font-semibold text-brand-text">
                     {c}
                   </div>
                 ))}
               </div>
             </div>
 
-            <p className="text-sm text-center text-brand-grey-text bg-brand-grey-light rounded-xl p-3">
+            <p className="text-body-sm text-center text-brand-grey-text bg-brand-grey-light rounded-xl p-3">
               👁 כך התלמיד רואה את המשימה שלך
             </p>
           </>
