@@ -9,7 +9,7 @@ import {
 import { toDateKey, daysAgo, lastSevenDays } from '../lib/dateUtils.js';
 import { GraduationCap, ClipboardList, TrendingUp } from 'lucide-react';
 import ErrorBanner from '../components/ErrorBanner.jsx';
-import SummaryCard from '../components/SummaryCard.jsx';
+import SummaryCard from '../components/ui/StatCard.jsx';
 import { SummaryCardsSkeleton, Skeleton } from '../components/Skeleton.jsx';
 import WeeklyActivityChart from '../components/home/WeeklyActivityChart.jsx';
 import InactiveStudentsList from '../components/home/InactiveStudentsList.jsx';

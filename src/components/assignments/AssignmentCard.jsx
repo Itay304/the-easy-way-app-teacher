@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { PieChart, Pie, Cell } from 'recharts';
 import { CalendarClock } from 'lucide-react';
 import { callGetAssignmentProgress } from '../../lib/api.js';
+import Card from '../ui/Card.jsx';
 
 export default function AssignmentCard({ assignment, className }) {
   const [pct, setPct] = useState(null);
@@ -22,7 +23,7 @@ export default function AssignmentCard({ assignment, className }) {
   ];
 
   return (
-    <div className="rounded-2xl bg-white shadow-md p-4 flex items-center gap-4">
+    <Card className="flex items-center gap-4">
       <div className="h-16 w-16 shrink-0 relative">
         <PieChart width={64} height={64}>
           <Pie
@@ -52,6 +53,6 @@ export default function AssignmentCard({ assignment, className }) {
           </p>
         )}
       </div>
-    </div>
+    </Card>
   );
 }

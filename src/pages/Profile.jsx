@@ -5,6 +5,8 @@ import { useAuth } from '../context/AuthContext.jsx';
 import { auth } from '../firebase.js';
 import { getInstitution, getMyClasses, callGetClassStudentCounts } from '../lib/api.js';
 import { Skeleton } from '../components/Skeleton.jsx';
+import Card from '../components/ui/Card.jsx';
+import Button from '../components/ui/Button.jsx';
 
 const NOTIFY_KEY = 'easylex_notify_inactive';
 
@@ -48,13 +50,13 @@ export default function Profile() {
     <div className="px-4 pt-6 space-y-5">
       <h1 className="text-2xl font-bold text-brand-text">פרופיל</h1>
 
-      <div className="rounded-2xl bg-white shadow-md p-5 text-center">
+      <Card padding="p-5" className="text-center">
         <span className="h-16 w-16 mx-auto rounded-full bg-brand-turquoise/15 text-brand-turquoise font-bold text-2xl flex items-center justify-center mb-3">
           {(profile.displayName || '?')[0]}
         </span>
         <p className="font-bold text-brand-text text-lg">{profile.displayName}</p>
         <p className="text-sm text-brand-grey-text">{institution ? institution.name : '...'}</p>
-      </div>
+      </Card>
 
       {!stats ? (
         <div className="grid grid-cols-2 gap-3">
@@ -74,7 +76,7 @@ export default function Profile() {
         </div>
       )}
 
-      <div className="rounded-2xl bg-white shadow-md p-5 flex items-center justify-between">
+      <Card padding="p-5" className="flex items-center justify-between">
         <span className="text-sm font-medium text-brand-text">התראות על תלמידים לא פעילים</span>
         <button
           onClick={toggleNotify}
@@ -88,7 +90,7 @@ export default function Profile() {
             }`}
           />
         </button>
-      </div>
+      </Card>
 
       <a
         href="https://theeasywayapp.co.il/teacher"
@@ -100,13 +102,10 @@ export default function Profile() {
         פתח ממשק מלא באתר
       </a>
 
-      <button
-        onClick={() => signOut(auth)}
-        className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl bg-white shadow-sm text-brand-text font-semibold"
-      >
+      <Button variant="secondary" size="lg" onClick={() => signOut(auth)}>
         <LogOut size={16} />
         התנתק
-      </button>
+      </Button>
     </div>
   );
 }
