@@ -36,7 +36,7 @@ export default function HardWordsHeatmap({ words }) {
         <p className="text-body-sm text-brand-grey-text">אין עדיין מספיק נתוני תרגול.</p>
       ) : (
         <>
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 max-h-96 overflow-y-auto pr-1">
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 gap-2 max-h-96 overflow-y-auto pr-1">
             {words.map((w) => {
               const isSelected = selected?.englishWord === w.englishWord;
               return (
@@ -48,7 +48,7 @@ export default function HardWordsHeatmap({ words }) {
                     w.errorRate,
                   )} ${isSelected ? 'ring-2 ring-offset-1 ring-brand-turquoise' : ''}`}
                 >
-                  <p className="font-bold text-body-sm truncate" dir="ltr">
+                  <p className={`font-bold break-words ${w.englishWord.length > 10 ? 'text-caption' : 'text-body-sm'}`} dir="ltr">
                     {w.englishWord}
                   </p>
                   <p className="text-caption font-semibold mt-1">{Math.round(w.errorRate * 100)}% שגיאה</p>
