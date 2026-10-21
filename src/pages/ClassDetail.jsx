@@ -17,7 +17,7 @@ async function shareJoinInfo(joinCode) {
   if (navigator.share) {
     try {
       await navigator.share({
-        title: 'הצטרף לכיתה ב-EasyLex',
+        title: 'הצטרף לכיתה ב-Easylex',
         text: `קוד הכיתה שלך: ${joinCode}\nלהרשמה: ${url}`,
         url,
       });

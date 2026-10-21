@@ -1,4 +1,5 @@
-const CACHE_NAME = 'easylex-teacher-v1';
+// v2: לוגו Easylex חדש — מחליף אייקונים/manifest שנשמרו ב-cache
+const CACHE_NAME = 'easylex-teacher-v2';
 const APP_SHELL = ['/manifest.json', '/icons/icon-192.png', '/icons/icon-512.png'];
 
 self.addEventListener('install', (event) => {
