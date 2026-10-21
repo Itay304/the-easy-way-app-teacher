@@ -90,7 +90,7 @@ export default function Login() {
   return (
     <div className="min-h-dvh flex flex-col items-center justify-center px-6 py-12">
       <img src="/logo.svg" alt="Easylex" className="w-56 h-auto mb-6" />
-      <h1 className="text-h1 font-bold text-brand-text mb-8">Easylex — מורה</h1>
+      <h1 className="text-h1 font-bold text-brand-text mb-8">כניסת מורים</h1>
 
       <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
         {mode === 'signup' && (
