@@ -1,11 +1,14 @@
 import { useState } from 'react';
+import { AlertTriangle, Gauge, Layers } from 'lucide-react';
 import { callCreateAssignment } from '../../../lib/api.js';
+import { creationPace, MAX_ASSIGNMENT_WORDS, stageCount } from '../../../lib/pace.js';
 import Input from '../../ui/Input.jsx';
 import Button from '../../ui/Button.jsx';
 
-export default function StepFinalize({ matchedWords, listId, classes, onBack, onCreated }) {
-  const [selectionMode, setSelectionMode] = useState('all'); // 'all' | 'random' | 'manual' | 'varied'
-  const [randomCount, setRandomCount] = useState(Math.min(10, matchedWords.length));
+export default function StepFinalize({ matchedWords, listId, listSource, classes, onBack, onCreated }) {
+  // בחירת מילים בלבד — התרגול עצמו תמיד מגוון (המורה כבר לא בוחר מצב תרגול)
+  const [selectionMode, setSelectionMode] = useState('all'); // 'all' | 'random' | 'manual'
+  const [randomCount, setRandomCount] = useState(Math.min(10, matchedWords.length, MAX_ASSIGNMENT_WORDS));
   const [manualIds, setManualIds] = useState([]);
   const [title, setTitle] = useState('');
   const [dueDate, setDueDate] = useState('');
@@ -18,13 +21,18 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
   }
 
   function resolveWordIds() {
-    if (selectionMode === 'all' || selectionMode === 'varied') return matchedWords.map((w) => w.id);
+    if (selectionMode === 'all') return matchedWords.map((w) => w.id);
     if (selectionMode === 'random') {
       const shuffled = [...matchedWords].sort(() => Math.random() - 0.5);
       return shuffled.slice(0, randomCount).map((w) => w.id);
     }
     return manualIds;
   }
+
+  const selectedCount =
+    selectionMode === 'all' ? matchedWords.length : selectionMode === 'random' ? randomCount : manualIds.length;
+  const tooMany = selectedCount > MAX_ASSIGNMENT_WORDS;
+  const pace = creationPace(selectedCount, dueDate ? new Date(dueDate).getTime() : null);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -34,6 +42,10 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
       setError('יש לבחור לפחות מילה אחת.');
       return;
     }
+    if (wordIds.length > MAX_ASSIGNMENT_WORDS) {
+      setError(`משימה יכולה לכלול עד ${MAX_ASSIGNMENT_WORDS} מילים (נבחרו ${wordIds.length}). צמצמו בסינון או חלקו לכמה משימות.`);
+      return;
+    }
     if (!classId) {
       setError('יש לבחור כיתה.');
       return;
@@ -41,9 +53,9 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
 
     setSubmitting(true);
     try {
-      const payload = { classId, listId, title: title.trim(), wordIds };
+      // listSource: רשימה גלובלית (Band) או מוסדית — התלמיד והפונקציות טוענים את המילים מהמקום הנכון
+      const payload = { classId, listId, listSource, title: title.trim(), wordIds };
       if (dueDate) payload.dueDateMs = new Date(dueDate).getTime();
-      if (selectionMode === 'varied') payload.practiceMode = 'varied';
       await callCreateAssignment(payload);
       onCreated();
     } catch {
@@ -63,7 +75,6 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
             { key: 'all', label: `כל ${matchedWords.length} המילים` },
             { key: 'random', label: 'אקראי' },
             { key: 'manual', label: 'בחירה ידנית' },
-            { key: 'varied', label: 'מגוון אוטומטי 🎯' },
           ].map((opt) => (
             <button
               key={opt.key}
@@ -78,19 +89,12 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
           ))}
         </div>
 
-        {selectionMode === 'varied' && (
-          <p className="text-body-sm text-brand-grey-text bg-brand-grey-light rounded-xl p-3">
-            כל {matchedWords.length} המילים ייכללו במשימה. אנחנו ממליצים לתלמידים לחלק את התרגול לשלושה שווה
-            בשווה — שליש כרטיסיות, שליש מבחן, שליש איות — כדי לגוון את שיטת הלמידה.
-          </p>
-        )}
-
         {selectionMode === 'random' && (
           <div className="px-1">
             <input
               type="range"
               min={1}
-              max={matchedWords.length}
+              max={Math.min(matchedWords.length, MAX_ASSIGNMENT_WORDS)}
               value={randomCount}
               onChange={(e) => setRandomCount(Number(e.target.value))}
               className="w-full accent-brand-turquoise"
@@ -123,6 +127,43 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
         onChange={(e) => setDueDate(e.target.value)}
       />
 
+      {/* כמה שלבים, קצב מילים ליום עד תאריך היעד, ואזהרות (יותר מדי מילים / קצב גבוה) */}
+      <div className="space-y-2 rounded-xl bg-brand-grey-light p-3 text-body-sm">
+        {selectedCount > 0 && !tooMany && (
+          <p className="flex items-center gap-2 text-brand-text">
+            <Layers size={16} className="shrink-0 text-brand-turquoise" />
+            {selectedCount} מילים · {stageCount(selectedCount)} שלבים של 10–15 מילים
+          </p>
+        )}
+        {tooMany && (
+          <p className="flex items-start gap-2 font-semibold text-brand-error">
+            <AlertTriangle size={16} className="mt-0.5 shrink-0" />
+            משימה יכולה לכלול עד {MAX_ASSIGNMENT_WORDS} מילים (נבחרו {selectedCount}). צמצמו בסינון או חלקו לכמה משימות.
+          </p>
+        )}
+        {pace && !tooMany && !pace.pastDue && (
+          <p className="flex items-center gap-2 text-brand-text">
+            <Gauge size={16} className="shrink-0 text-brand-turquoise" />
+            קצב: כ-{pace.wordsPerDay} מילים חדשות ליום ({pace.days} ימים)
+          </p>
+        )}
+        {pace && !tooMany && pace.pastDue && (
+          <p className="flex items-start gap-2 font-semibold text-brand-error">
+            <AlertTriangle size={16} className="mt-0.5 shrink-0" />
+            תאריך היעד כבר עבר.
+          </p>
+        )}
+        {pace && !tooMany && pace.tooFast && !pace.pastDue && (
+          <p className="flex items-start gap-2 font-semibold text-amber-700">
+            <AlertTriangle size={16} className="mt-0.5 shrink-0" />
+            קצב גבוה: יותר מ-20 מילים חדשות ביום. כדאי להאריך את תאריך היעד או לצמצם מילים.
+          </p>
+        )}
+        {!pace && selectedCount > 0 && !tooMany && (
+          <p className="text-brand-grey-text">בלי תאריך יעד: התלמידים מתקדמים בקצב של סבב ביום.</p>
+        )}
+      </div>
+
       <div>
         <label className="block text-body-sm font-semibold text-brand-text mb-1">לאיזו כיתה</label>
         <select
@@ -145,7 +186,7 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
         <Button type="button" variant="ghost" onClick={onBack} className="flex-1">
           חזרה
         </Button>
-        <Button type="submit" loading={submitting} className="flex-1">
+        <Button type="submit" loading={submitting} disabled={tooMany} className="flex-1">
           צור משימה
         </Button>
       </div>

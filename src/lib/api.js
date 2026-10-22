@@ -90,6 +90,7 @@ export const callGetClassStudentCounts = httpsCallable(functions, 'getClassStude
 export const callRemoveStudentFromClass = httpsCallable(functions, 'removeStudentFromClass');
 export const callGetClassHardWords = httpsCallable(functions, 'getClassHardWords');
 export const callGetAssignmentProgress = httpsCallable(functions, 'getAssignmentProgress');
+export const callGetAssignmentSummary = httpsCallable(functions, 'getAssignmentSummary');
 export const callSendAnnouncement = httpsCallable(functions, 'sendAnnouncement');
 export const callGetPrincipalStats = httpsCallable(functions, 'getPrincipalStats');
 
