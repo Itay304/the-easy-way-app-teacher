@@ -93,7 +93,8 @@ export default function AssignmentCard({ assignment, className }) {
                         <span dir="ltr" className="font-semibold text-brand-text">
                           {w.englishWord}
                         </span>
-                        <span className="text-brand-grey-text"> · {w.studentsNotKnown} עוד לא יודעים</span>
+                        {/* studentsNotKnown = תלמידים שכבר ראו את המילה ועדיין לא הגיעו אצלם ל"ידועה" */}
+                        <span className="text-brand-grey-text"> · {w.studentsNotKnown} תלמידים עוד לא סיימו</span>
                       </li>
                     ))}
                   </ul>
