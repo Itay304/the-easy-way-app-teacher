@@ -3,7 +3,7 @@ import { callCreateAssignment } from '../../../lib/api.js';
 import Input from '../../ui/Input.jsx';
 import Button from '../../ui/Button.jsx';
 
-export default function StepFinalize({ matchedWords, listId, classes, onBack, onCreated }) {
+export default function StepFinalize({ matchedWords, listId, listSource, classes, onBack, onCreated }) {
   const [selectionMode, setSelectionMode] = useState('all'); // 'all' | 'random' | 'manual' | 'varied'
   const [randomCount, setRandomCount] = useState(Math.min(10, matchedWords.length));
   const [manualIds, setManualIds] = useState([]);
@@ -41,7 +41,8 @@ export default function StepFinalize({ matchedWords, listId, classes, onBack, on
 
     setSubmitting(true);
     try {
-      const payload = { classId, listId, title: title.trim(), wordIds };
+      // listSource: רשימה גלובלית (Band) או מוסדית — התלמיד והפונקציות טוענים את המילים מהמקום הנכון
+      const payload = { classId, listId, listSource, title: title.trim(), wordIds };
       if (dueDate) payload.dueDateMs = new Date(dueDate).getTime();
       if (selectionMode === 'varied') payload.practiceMode = 'varied';
       await callCreateAssignment(payload);

@@ -55,6 +55,7 @@ export default function AssignmentWizard({ institutionId, classes, onClose, onCr
           <StepFinalize
             matchedWords={matchedWords}
             listId={source.listId}
+            listSource={source.sourceType === 'customList' ? 'custom' : 'global'}
             classes={classes}
             onBack={() => setStep(2)}
             onCreated={onCreated}
