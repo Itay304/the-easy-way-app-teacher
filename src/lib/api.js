@@ -7,7 +7,8 @@ import {
   getDoc,
 } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
-import { db, functions } from '../firebase.js';
+import { auth, db, functions } from '../firebase.js';
+import { hidesSensitive, visibleWords } from './contentFilter.js';
 
 // ── כיתות ────────────────────────────────────────────────────────────────
 
@@ -66,9 +67,38 @@ export async function getWordLists() {
   return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
 }
 
+// "תוכן מותאם לבתי ספר דתיים" (contentFilter.js): כל טעינת מילים כאן עוברת דרך ההגדרה של המוסד
+// של המשתמש המחובר — פעם אחת לכל משתמש בסשן (resetContentPolicy אחרי שינוי ההגדרה).
+let contentPolicy = { uid: null, promise: null };
+
+export function hideSensitiveForMe() {
+  const uid = auth.currentUser?.uid || null;
+  if (contentPolicy.uid !== uid || !contentPolicy.promise) {
+    contentPolicy = {
+      uid,
+      promise: (async () => {
+        if (!uid) return false;
+        const user = await getUserDoc(uid);
+        if (!user?.institutionId) return false;
+        return hidesSensitive(await getInstitution(user.institutionId));
+      })().catch(() => false),
+    };
+  }
+  return contentPolicy.promise;
+}
+
+export function resetContentPolicy() {
+  contentPolicy = { uid: null, promise: null };
+}
+
+export const callSetInstitutionContentSettings = httpsCallable(functions, 'setInstitutionContentSettings');
+
 export async function getWordsForList(listId) {
   const snap = await getDocs(collection(db, 'word_lists', listId, 'words'));
-  return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+  return visibleWords(
+    snap.docs.map((d) => ({ id: d.id, ...d.data() })),
+    await hideSensitiveForMe(),
+  );
 }
 
 export async function getCustomLists(institutionId) {
@@ -80,7 +110,10 @@ export async function getCustomListWords(institutionId, listId) {
   const snap = await getDocs(
     collection(db, 'institutions', institutionId, 'customLists', listId, 'words'),
   );
-  return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+  return visibleWords(
+    snap.docs.map((d) => ({ id: d.id, ...d.data() })),
+    await hideSensitiveForMe(),
+  );
 }
 
 // ── התקדמות תלמידים / הודעות (Cloud Functions קיימות בלבד) ─────────────────

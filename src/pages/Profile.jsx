@@ -3,7 +3,14 @@ import { signOut } from 'firebase/auth';
 import { ExternalLink, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { auth } from '../firebase.js';
-import { getInstitution, getMyClasses, callGetClassStudentCounts } from '../lib/api.js';
+import {
+  getInstitution,
+  getMyClasses,
+  callGetClassStudentCounts,
+  callSetInstitutionContentSettings,
+  resetContentPolicy,
+} from '../lib/api.js';
+import { hidesSensitive } from '../lib/contentFilter.js';
 import { Skeleton } from '../components/Skeleton.jsx';
 import Card from '../components/ui/Card.jsx';
 import Button from '../components/ui/Button.jsx';
@@ -44,6 +51,27 @@ export default function Profile() {
     const next = !notifyInactive;
     setNotifyInactive(next);
     localStorage.setItem(NOTIFY_KEY, String(next));
+  }
+
+  // הגדרת מוסד (מנהל בלבד): "תוכן מותאם לבתי ספר דתיים" — מסתיר מילים מתויגות sensitive מכל המוסד
+  const isPrincipal = profile.role === 'principal';
+  const hideSensitive = hidesSensitive(institution);
+  const [savingContent, setSavingContent] = useState(false);
+  const [contentError, setContentError] = useState('');
+
+  async function toggleHideSensitive() {
+    const next = !hideSensitive;
+    setSavingContent(true);
+    setContentError('');
+    try {
+      await callSetInstitutionContentSettings({ hideSensitiveWords: next });
+      setInstitution((prev) => ({ ...prev, hideSensitiveWords: next }));
+      resetContentPolicy();
+    } catch {
+      setContentError('לא הצלחנו לשמור את ההגדרה. נסו שוב.');
+    } finally {
+      setSavingContent(false);
+    }
   }
 
   return (
@@ -91,6 +119,36 @@ export default function Profile() {
           />
         </button>
       </Card>
+
+      {isPrincipal && institution && (
+        <Card padding="p-5" className="space-y-2">
+          <div className="flex items-center justify-between gap-4">
+            <span id="hide-sensitive-label" className="text-body-sm font-medium text-brand-text">
+              תוכן מותאם לבתי ספר דתיים
+            </span>
+            <button
+              role="switch"
+              aria-checked={hideSensitive}
+              aria-labelledby="hide-sensitive-label"
+              disabled={savingContent}
+              onClick={toggleHideSensitive}
+              className={`w-12 h-7 shrink-0 rounded-full transition relative disabled:opacity-50 ${
+                hideSensitive ? 'bg-brand-turquoise' : 'bg-black/10'
+              }`}
+            >
+              <span
+                className={`absolute top-1 h-5 w-5 rounded-full bg-white transition ${
+                  hideSensitive ? 'right-1' : 'right-6'
+                }`}
+              />
+            </button>
+          </div>
+          <p className="text-caption text-brand-grey-text">
+            מילים שסומנו כרגישות לא יוצגו לתלמידי המוסד ולא יהיו זמינות ביצירת משימות. במשימות קיימות הן ידולגו.
+          </p>
+          {contentError && <p className="text-caption text-brand-error">{contentError}</p>}
+        </Card>
+      )}
 
       <a
         href="https://theeasywayapp.co.il/teacher"
