@@ -4,6 +4,8 @@ const MAX_WIDTH_CLASSES = {
   sm: 'max-w-sm',
   md: 'max-w-md',
   lg: 'max-w-lg',
+  // אשף המשימה: כמו lg בטלפון ובטאבלט, רחב במחשב (המסננים ורשימת המילים זה לצד זה)
+  wide: 'max-w-lg lg:max-w-5xl',
 };
 
 const FOCUSABLE_SELECTOR =

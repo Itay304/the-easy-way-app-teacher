@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import { signOut } from 'firebase/auth';
 import { ExternalLink, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
-import { auth } from '../firebase.js';
+import { doc, updateDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase.js';
+import { marketingFields } from '../lib/consent.js';
 import {
   getInstitution,
   getMyClasses,
@@ -46,6 +48,23 @@ export default function Profile() {
       cancelled = true;
     };
   }, [profile, user]);
+
+  // "קבלת עדכונים במייל" — הסכמה לדיוור, אפשר לשנות בכל זמן (נשמר עם זמן שרת וגרסת הנוסח).
+  // הערך המוצג מגיע מה-snapshot של מסמך המשתמש (useAuthRole), כך שהוא מתעדכן אחרי השמירה.
+  const [savingMarketing, setSavingMarketing] = useState(false);
+  const [marketingError, setMarketingError] = useState('');
+  async function toggleMarketing() {
+    setSavingMarketing(true);
+    setMarketingError('');
+    try {
+      await updateDoc(doc(db, 'users', user.uid), marketingFields(!profile.marketingConsent));
+    } catch (err) {
+      console.error('[Profile] marketing consent save failed:', err);
+      setMarketingError('השמירה נכשלה. נסו שוב.');
+    } finally {
+      setSavingMarketing(false);
+    }
+  }
 
   function toggleNotify() {
     const next = !notifyInactive;
@@ -105,19 +124,53 @@ export default function Profile() {
       )}
 
       <Card padding="p-5" className="flex items-center justify-between">
-        <span className="text-body-sm font-medium text-brand-text">התראות על תלמידים לא פעילים</span>
+        <span id="notify-inactive-label" className="text-body-sm font-medium text-brand-text">
+          התראות על תלמידים לא פעילים
+        </span>
         <button
+          role="switch"
+          aria-checked={notifyInactive}
+          aria-labelledby="notify-inactive-label"
           onClick={toggleNotify}
-          className={`w-12 h-7 rounded-full transition relative ${
-            notifyInactive ? 'bg-brand-turquoise' : 'bg-black/10'
+          className={`w-12 h-7 shrink-0 rounded-full border-2 transition relative ${
+            notifyInactive ? 'bg-brand-turquoise border-brand-turquoise' : 'bg-white border-brand-grey-text'
           }`}
         >
           <span
-            className={`absolute top-1 h-5 w-5 rounded-full bg-white transition ${
-              notifyInactive ? 'right-1' : 'right-6'
+            className={`absolute top-0.5 h-5 w-5 rounded-full transition ${
+              notifyInactive ? 'right-0.5 bg-white' : 'right-[22px] bg-brand-grey-text'
             }`}
           />
         </button>
+      </Card>
+
+      <Card padding="p-5" className="space-y-2">
+        <div className="flex items-center justify-between gap-4">
+          <span id="marketing-consent-label" className="text-body-sm font-medium text-brand-text">
+            קבלת עדכונים במייל
+          </span>
+          <button
+            role="switch"
+            aria-checked={profile.marketingConsent}
+            aria-labelledby="marketing-consent-label"
+            aria-describedby="marketing-consent-hint"
+            disabled={savingMarketing}
+            onClick={toggleMarketing}
+            className={`w-12 h-7 shrink-0 rounded-full border-2 transition relative disabled:opacity-50 ${
+              profile.marketingConsent ? 'bg-brand-turquoise border-brand-turquoise' : 'bg-white border-brand-grey-text'
+            }`}
+          >
+            <span
+              className={`absolute top-0.5 h-5 w-5 rounded-full transition ${
+                profile.marketingConsent ? 'right-0.5 bg-white' : 'right-[22px] bg-brand-grey-text'
+              }`}
+            />
+          </button>
+        </div>
+        <p id="marketing-consent-hint" className="text-caption text-brand-grey-text">
+          עדכונים ומידע על מוצרים חדשים של Easylex. מיילי שירות (כמו איפוס סיסמה) נשלחים בכל מקרה.
+        </p>
+        {marketingError && <p className="text-caption text-brand-error">{marketingError}</p>}
       </Card>
 
       {isPrincipal && institution && (
@@ -132,13 +185,13 @@ export default function Profile() {
               aria-labelledby="hide-sensitive-label"
               disabled={savingContent}
               onClick={toggleHideSensitive}
-              className={`w-12 h-7 shrink-0 rounded-full transition relative disabled:opacity-50 ${
-                hideSensitive ? 'bg-brand-turquoise' : 'bg-black/10'
+              className={`w-12 h-7 shrink-0 rounded-full border-2 transition relative disabled:opacity-50 ${
+                hideSensitive ? 'bg-brand-turquoise border-brand-turquoise' : 'bg-white border-brand-grey-text'
               }`}
             >
               <span
-                className={`absolute top-1 h-5 w-5 rounded-full bg-white transition ${
-                  hideSensitive ? 'right-1' : 'right-6'
+                className={`absolute top-0.5 h-5 w-5 rounded-full transition ${
+                  hideSensitive ? 'right-0.5 bg-white' : 'right-[22px] bg-brand-grey-text'
                 }`}
               />
             </button>

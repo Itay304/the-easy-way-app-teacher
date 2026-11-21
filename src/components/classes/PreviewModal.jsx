@@ -100,7 +100,7 @@ export default function PreviewModal({ institutionId, classId, onClose }) {
                 </div>
                 <div className="h-2 rounded-full bg-brand-grey-light overflow-hidden">
                   <div
-                    className="h-full bg-brand-turquoise rounded-full"
+                    className="h-full bg-brand-turquoise-light rounded-full"
                     style={{ width: `${DEMO_PROGRESS_PCT}%` }}
                   />
                 </div>
