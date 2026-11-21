@@ -11,6 +11,7 @@ import BottomNav from './components/BottomNav.jsx';
 import SideNav from './components/SideNav.jsx';
 import Login from './pages/Login.jsx';
 import Unauthorized from './pages/Unauthorized.jsx';
+import ConsentGate from './components/consent/ConsentGate.jsx';
 import Home from './pages/Home.jsx';
 import Classes from './pages/Classes.jsx';
 import ClassDetail from './pages/ClassDetail.jsx';
@@ -61,6 +62,8 @@ export default function App() {
 
   if (status === 'signed-out') return <Login />;
   if (status === 'unauthorized') return <Unauthorized />;
+  // מורה/מנהל קיים שעוד לא אישר תקנון ומדיניות פרטיות — מסך הסכמה חד-פעמי לפני כל דבר אחר
+  if (profile?.needsConsent) return <ConsentGate uid={user.uid} />;
 
   return (
     <AuthProvider user={user} profile={profile}>

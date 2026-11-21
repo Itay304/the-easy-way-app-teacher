@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { auth, db } from '../firebase.js';
+import { needsConsent } from '../lib/consent.js';
 
 const ALLOWED_ROLES = ['teacher', 'principal'];
 
@@ -55,7 +56,8 @@ export default function useAuthRole() {
     const unsubDoc = onSnapshot(
       doc(db, 'users', user.uid),
       async (snap) => {
-        const data = snap.data() || {};
+        // estimate: אחרי כתיבה עם serverTimestamp() ה-snapshot המקומי כבר מכיל ערך — בלי "הבהוב" של מסך ההסכמה
+        const data = snap.data({ serverTimestamps: 'estimate' }) || {};
         const role = data.role || 'student';
         const institutionId = data.institutionId || null;
 
@@ -69,6 +71,8 @@ export default function useAuthRole() {
           institutionId,
           displayName: data.displayName || user.email,
           classIds: Array.isArray(data.classIds) ? data.classIds : [],
+          needsConsent: needsConsent(snap.exists(), data),
+          marketingConsent: data.marketingConsent === true,
         });
         setStatus(ALLOWED_ROLES.includes(role) ? 'ready' : 'unauthorized');
       },
