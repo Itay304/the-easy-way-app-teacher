@@ -3,15 +3,15 @@ import { Flame } from 'lucide-react';
 
 function heatColor(errorRate) {
   if (errorRate >= 0.8) return 'bg-brand-error-dark text-white';
-  // במחשב כתום כהה יותר — לבן עליו 5:1 (orange-400 נותן 2.4:1); בטלפון כמו קודם
-  if (errorRate >= 0.5) return 'bg-orange-400 lg:bg-orange-700 text-white';
+  // כתום כהה — לבן עליו 5:1 (orange-400 נתן 2.4:1)
+  if (errorRate >= 0.5) return 'bg-orange-700 text-white';
   if (errorRate >= 0.3) return 'bg-yellow-300 text-yellow-900';
   return 'bg-brand-green/15 text-brand-green';
 }
 
 const LEGEND = [
   { label: '80%+', className: 'bg-brand-error-dark' },
-  { label: '50-80%', className: 'bg-orange-400 lg:bg-orange-700' },
+  { label: '50-80%', className: 'bg-orange-700' },
   { label: '30-50%', className: 'bg-yellow-300' },
   { label: 'מתחת ל-30%', className: 'bg-brand-green/60' },
 ];

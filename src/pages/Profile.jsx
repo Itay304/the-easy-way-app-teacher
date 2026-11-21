@@ -132,13 +132,13 @@ export default function Profile() {
           aria-checked={notifyInactive}
           aria-labelledby="notify-inactive-label"
           onClick={toggleNotify}
-          className={`w-12 h-7 rounded-full transition relative ${
-            notifyInactive ? 'bg-brand-turquoise' : 'bg-black/10'
+          className={`w-12 h-7 shrink-0 rounded-full border-2 transition relative ${
+            notifyInactive ? 'bg-brand-turquoise border-brand-turquoise' : 'bg-white border-brand-grey-text'
           }`}
         >
           <span
-            className={`absolute top-1 h-5 w-5 rounded-full bg-white transition ${
-              notifyInactive ? 'right-1' : 'right-6'
+            className={`absolute top-0.5 h-5 w-5 rounded-full transition ${
+              notifyInactive ? 'right-0.5 bg-white' : 'right-[22px] bg-brand-grey-text'
             }`}
           />
         </button>
@@ -156,13 +156,13 @@ export default function Profile() {
             aria-describedby="marketing-consent-hint"
             disabled={savingMarketing}
             onClick={toggleMarketing}
-            className={`w-12 h-7 shrink-0 rounded-full transition relative disabled:opacity-50 ${
-              profile.marketingConsent ? 'bg-brand-turquoise' : 'bg-black/10'
+            className={`w-12 h-7 shrink-0 rounded-full border-2 transition relative disabled:opacity-50 ${
+              profile.marketingConsent ? 'bg-brand-turquoise border-brand-turquoise' : 'bg-white border-brand-grey-text'
             }`}
           >
             <span
-              className={`absolute top-1 h-5 w-5 rounded-full bg-white transition ${
-                profile.marketingConsent ? 'right-1' : 'right-6'
+              className={`absolute top-0.5 h-5 w-5 rounded-full transition ${
+                profile.marketingConsent ? 'right-0.5 bg-white' : 'right-[22px] bg-brand-grey-text'
               }`}
             />
           </button>
@@ -185,13 +185,13 @@ export default function Profile() {
               aria-labelledby="hide-sensitive-label"
               disabled={savingContent}
               onClick={toggleHideSensitive}
-              className={`w-12 h-7 shrink-0 rounded-full transition relative disabled:opacity-50 ${
-                hideSensitive ? 'bg-brand-turquoise' : 'bg-black/10'
+              className={`w-12 h-7 shrink-0 rounded-full border-2 transition relative disabled:opacity-50 ${
+                hideSensitive ? 'bg-brand-turquoise border-brand-turquoise' : 'bg-white border-brand-grey-text'
               }`}
             >
               <span
-                className={`absolute top-1 h-5 w-5 rounded-full bg-white transition ${
-                  hideSensitive ? 'right-1' : 'right-6'
+                className={`absolute top-0.5 h-5 w-5 rounded-full transition ${
+                  hideSensitive ? 'right-0.5 bg-white' : 'right-[22px] bg-brand-grey-text'
                 }`}
               />
             </button>
