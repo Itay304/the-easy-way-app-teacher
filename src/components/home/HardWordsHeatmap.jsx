@@ -3,14 +3,15 @@ import { Flame } from 'lucide-react';
 
 function heatColor(errorRate) {
   if (errorRate >= 0.8) return 'bg-brand-error-dark text-white';
-  if (errorRate >= 0.5) return 'bg-orange-400 text-white';
+  // במחשב כתום כהה יותר — לבן עליו 5:1 (orange-400 נותן 2.4:1); בטלפון כמו קודם
+  if (errorRate >= 0.5) return 'bg-orange-400 lg:bg-orange-700 text-white';
   if (errorRate >= 0.3) return 'bg-yellow-300 text-yellow-900';
   return 'bg-brand-green/15 text-brand-green';
 }
 
 const LEGEND = [
   { label: '80%+', className: 'bg-brand-error-dark' },
-  { label: '50-80%', className: 'bg-orange-400' },
+  { label: '50-80%', className: 'bg-orange-400 lg:bg-orange-700' },
   { label: '30-50%', className: 'bg-yellow-300' },
   { label: 'מתחת ל-30%', className: 'bg-brand-green/60' },
 ];
@@ -36,7 +37,7 @@ export default function HardWordsHeatmap({ words }) {
         <p className="text-body-sm text-brand-grey-text">אין עדיין מספיק נתוני תרגול.</p>
       ) : (
         <>
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 gap-2 max-h-96 overflow-y-auto pr-1">
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-2 2xl:grid-cols-3 gap-2 max-h-96 overflow-y-auto pr-1">
             {words.map((w) => {
               const isSelected = selected?.englishWord === w.englishWord;
               return (

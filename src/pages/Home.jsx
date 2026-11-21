@@ -1,11 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
-import {
-  getMyClasses,
-  getAssignmentsForClasses,
-  callGetClassProgress,
-  callGetClassHardWords,
-} from '../lib/api.js';
+import { getMyClasses, getAssignmentsForClasses, callGetClassProgress, callGetClassHardWords } from '../lib/api.js';
 import { toDateKey, daysAgo, lastSevenDays } from '../lib/dateUtils.js';
 import { GraduationCap, ClipboardList, TrendingUp } from 'lucide-react';
 import ErrorBanner from '../components/ErrorBanner.jsx';
@@ -14,6 +9,8 @@ import { SummaryCardsSkeleton, Skeleton } from '../components/Skeleton.jsx';
 import WeeklyActivityChart from '../components/home/WeeklyActivityChart.jsx';
 import InactiveStudentsList from '../components/home/InactiveStudentsList.jsx';
 import HardWordsHeatmap from '../components/home/HardWordsHeatmap.jsx';
+import AssignmentCard from '../components/assignments/AssignmentCard.jsx';
+import useMediaQuery from '../hooks/useMediaQuery.js';
 
 // getClassProgress/getClassHardWords קוראות את כל ה-progress של כל תלמיד בכיתה — יקר. לכן:
 // טוענים רק את הכיתה שנבחרה (לא את כל הכיתות בכל כניסה לבית), ושומרים בזיכרון ל-5 דקות,
@@ -55,6 +52,10 @@ export default function Home() {
   const { user, profile } = useAuth();
   const [classes, setClasses] = useState(null);
   const [activeAssignments, setActiveAssignments] = useState(0);
+  const [assignmentList, setAssignmentList] = useState([]);
+  // במחשב בלבד: המשימות של הכיתה עם הסיכום (בקצב / מאחור / לא התחילו) — עמודה ראשית בבית.
+  // בטלפון לא מוצגות ולא נטענים סיכומים (AssignmentCard טוען סיכום רק כשהוא מוצג).
+  const desktop = useMediaQuery('(min-width: 1024px)');
   const [classId, setClassId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -72,10 +73,14 @@ export default function Home() {
     (async () => {
       try {
         const myClasses = await getMyClasses(profile.institutionId, user.uid);
-        const assignments = await getAssignmentsForClasses(profile.institutionId, myClasses.map((c) => c.id));
+        const assignments = await getAssignmentsForClasses(
+          profile.institutionId,
+          myClasses.map((c) => c.id),
+        );
         if (cancelled) return;
         setClasses(myClasses);
         setActiveAssignments(assignments.length);
+        setAssignmentList(assignments.map((a) => ({ ...a, institutionId: profile.institutionId })));
         setClassId((current) => current || myClasses[0]?.id || null);
         if (myClasses.length === 0) setLoading(false);
       } catch {
@@ -144,12 +149,39 @@ export default function Home() {
             <SummaryCard icon={TrendingUp} label="ממוצע מילים נכבשות" value={data.avgMastered.toFixed(1)} />
           </div>
 
-          {/* בדסקטופ (md+) שני הפאנלים התחתונים לצד זה זה — שתי עמודות
-          מנצלות את הרוחב הפנוי במקום לגלול עמודה בודדת (audit/REPORT.md item 6) */}
-          <WeeklyActivityChart data={data.weeklyChart} />
-          <div className="md:grid md:grid-cols-2 md:gap-4 space-y-6 md:space-y-0">
-            <InactiveStudentsList students={data.inactiveStudents} />
-            <HardWordsHeatmap words={data.hardWords} />
+          {/* טאבלט (md): שני הפאנלים התחתונים זה לצד זה. מחשב (lg): עמודה ראשית (2/3) — המשימות של
+          הכיתה וגרף הפעילות; עמודת צד (1/3) — תלמידים לא פעילים ומפת החום. בטלפון — כמו קודם. */}
+          <div className="space-y-6 lg:grid lg:grid-cols-3 lg:items-start lg:gap-6 lg:space-y-0">
+            <div className="space-y-6 lg:col-span-2">
+              {desktop && (
+                <section aria-labelledby="home-assignments-title" className="space-y-3">
+                  <h2 id="home-assignments-title" className="text-h2 font-bold text-brand-text">
+                    משימות הכיתה
+                  </h2>
+                  {assignmentList.filter((a) => a.classId === classId).length === 0 ? (
+                    <p className="text-body-sm text-brand-grey-text">אין משימות פעילות בכיתה הזו.</p>
+                  ) : (
+                    <ul className="space-y-3">
+                      {assignmentList
+                        .filter((a) => a.classId === classId)
+                        .map((a) => (
+                          <li key={a.id}>
+                            <AssignmentCard
+                              assignment={a}
+                              className={classes?.find((c) => c.id === a.classId)?.name || ''}
+                            />
+                          </li>
+                        ))}
+                    </ul>
+                  )}
+                </section>
+              )}
+              <WeeklyActivityChart data={data.weeklyChart} />
+            </div>
+            <div className="md:grid md:grid-cols-2 md:gap-4 space-y-6 md:space-y-0 lg:block lg:space-y-6">
+              <InactiveStudentsList students={data.inactiveStudents} />
+              <HardWordsHeatmap words={data.hardWords} />
+            </div>
           </div>
         </>
       )}

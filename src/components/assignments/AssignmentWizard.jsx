@@ -14,7 +14,7 @@ export default function AssignmentWizard({ institutionId, classes, onClose, onCr
   const [matchedWords, setMatchedWords] = useState([]);
 
   return (
-    <Modal onClose={onClose} maxWidth="lg" className="max-h-[90vh] overflow-y-auto">
+    <Modal onClose={onClose} maxWidth="wide" className="max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-4">
           <div className="flex gap-1.5">
             {[1, 2, 3].map((n) => (
@@ -24,7 +24,7 @@ export default function AssignmentWizard({ institutionId, classes, onClose, onCr
               />
             ))}
           </div>
-          <button onClick={onClose} className="text-brand-grey-text hover:text-brand-text">
+          <button onClick={onClose} aria-label="סגירה" className="text-brand-grey-text hover:text-brand-text">
             <X size={20} />
           </button>
         </div>

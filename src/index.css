@@ -32,6 +32,19 @@
   --color-brand-error-dark: #b91c1c;
 }
 
+/* מחשב בלבד (1024px ומעלה): גוונים כהים יותר לטקסט/כפתורים — ניגודיות WCAG AA (4.5:1).
+   בטלפון ובטאבלט הצבעים נשארים בדיוק כמו קודם (כמו באפליקציית התלמיד: אפשר להעביר ל-@theme
+   כדי להחיל בכל הרוחבים). */
+@media (min-width: 1024px) {
+  :root {
+    --color-brand-turquoise: #00736a; /* לבן עליו 5.7:1 (היה #00bfa5, 2.3:1) */
+    --color-brand-turquoise-dark: #005f57;
+    --color-brand-grey-text: #6b6b6b;
+    --color-brand-green: #1b5e20;
+    --color-brand-error: #b91c1c;
+  }
+}
+
 html {
   height: 100%;
 }

@@ -8,6 +8,7 @@ import LoadingSpinner from './components/LoadingSpinner.jsx';
 import InstallRequired from './components/InstallRequired.jsx';
 import SplashScreen from './components/SplashScreen.jsx';
 import BottomNav from './components/BottomNav.jsx';
+import SideNav from './components/SideNav.jsx';
 import Login from './pages/Login.jsx';
 import Unauthorized from './pages/Unauthorized.jsx';
 import Home from './pages/Home.jsx';
@@ -16,11 +17,15 @@ import ClassDetail from './pages/ClassDetail.jsx';
 import Assignments from './pages/Assignments.jsx';
 import Profile from './pages/Profile.jsx';
 
+// פריסה לפי רוחב המסך:
+// • טלפון וטאבלט (עד 1023px): בדיוק כמו קודם — עמודה עד 1024px וסרגל טאבים תחתון.
+// • מחשב (1024px ומעלה): ניווט צד מימין (SideNav) במקום הסרגל התחתון; התוכן עד 1400px, ממורכז בשטח שנשאר.
 function Layout() {
   return (
-    <div className="min-h-dvh flex flex-col md:bg-gradient-to-b md:from-brand-grey-light md:to-white">
-      <main className="flex-1 max-w-5xl w-full mx-auto pb-24 md:px-6 md:py-4">
-        <div className="md:rounded-3xl md:bg-white md:shadow-sm md:p-8 md:min-h-[calc(100dvh-6rem)]">
+    <div className="min-h-dvh flex flex-col md:bg-gradient-to-b md:from-brand-grey-light md:to-white lg:pr-64">
+      <SideNav />
+      <main className="flex-1 max-w-5xl w-full mx-auto pb-24 md:px-6 md:py-4 lg:max-w-[1400px] lg:px-8 lg:py-6 lg:pb-8">
+        <div className="md:rounded-3xl md:bg-white md:shadow-sm md:p-8 md:min-h-[calc(100dvh-6rem)] lg:min-h-[calc(100dvh-3rem)]">
           <Outlet />
         </div>
       </main>

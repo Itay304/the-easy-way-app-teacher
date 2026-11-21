@@ -105,8 +105,13 @@ export default function Profile() {
       )}
 
       <Card padding="p-5" className="flex items-center justify-between">
-        <span className="text-body-sm font-medium text-brand-text">התראות על תלמידים לא פעילים</span>
+        <span id="notify-inactive-label" className="text-body-sm font-medium text-brand-text">
+          התראות על תלמידים לא פעילים
+        </span>
         <button
+          role="switch"
+          aria-checked={notifyInactive}
+          aria-labelledby="notify-inactive-label"
           onClick={toggleNotify}
           className={`w-12 h-7 rounded-full transition relative ${
             notifyInactive ? 'bg-brand-turquoise' : 'bg-black/10'
