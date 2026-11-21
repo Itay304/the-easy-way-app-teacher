@@ -9,6 +9,9 @@ import { httpsCallable } from 'firebase/functions';
 import { auth, db, functions } from '../firebase.js';
 import Input from '../components/ui/Input.jsx';
 import Button from '../components/ui/Button.jsx';
+import TermsCheckbox from '../components/consent/TermsCheckbox.jsx';
+import MarketingCheckbox from '../components/consent/MarketingCheckbox.jsx';
+import { teacherConsentFields, TERMS_REQUIRED_ERROR } from '../lib/consent.js';
 
 const PENDING_INSTITUTION_KEY = 'pending_institution_code';
 
@@ -17,6 +20,9 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [termsError, setTermsError] = useState('');
+  const [marketingConsent, setMarketingConsent] = useState(false); // אופציונלי, לא מסומן מראש
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -31,11 +37,18 @@ export default function Login() {
   function switchMode() {
     setMode((m) => (m === 'login' ? 'signup' : 'login'));
     setError('');
+    setTermsError('');
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
     setError('');
+    // הרשמה בלי אישור התקנון — לא נשלחת בכלל
+    if (mode === 'signup' && !termsAccepted) {
+      setTermsError(TERMS_REQUIRED_ERROR);
+      return;
+    }
+    setTermsError('');
     setSubmitting(true);
     try {
       if (mode === 'login') {
@@ -49,6 +62,8 @@ export default function Login() {
             email,
             role: 'teacher',
             createdAt: serverTimestamp(),
+            // termsAcceptedAt/marketingConsentAt (זמן שרת), גרסאות, ו-marketingConsent לפי הבחירה
+            ...teacherConsentFields(marketingConsent),
           });
           // בדיקת קיום המוסד לא אפשרית ישירות מהלקוח — firestore.rules על
           // institutions/{instId} דורשות belongsToInstitution(instId),
@@ -104,6 +119,19 @@ export default function Login() {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="סיסמה"
         />
+        {mode === 'signup' && (
+          <>
+            <TermsCheckbox
+              checked={termsAccepted}
+              onChange={(v) => {
+                setTermsAccepted(v);
+                if (v) setTermsError('');
+              }}
+              error={termsError}
+            />
+            <MarketingCheckbox checked={marketingConsent} onChange={setMarketingConsent} />
+          </>
+        )}
         {error && <p className="text-brand-error text-body-sm text-center">{error}</p>}
         <Button type="submit" size="lg" loading={submitting}>
           {mode === 'login' ? 'כניסה' : 'הרשמה'}
