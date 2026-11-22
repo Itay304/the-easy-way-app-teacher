@@ -9,58 +9,47 @@ const EMPTY_FILTERS = { letters: [], pos: [], difficulty: [], search: '', hardWo
 
 export default function AssignmentWizard({ institutionId, classes, onClose, onCreated }) {
   const [step, setStep] = useState(1);
-  const [source, setSource] = useState({ sourceType: 'wordList', listId: null });
+  // מקורות המילים — אחד או כמה (assignments-v2): [{ sourceType: 'wordList'|'customList', listId, name }]
+  const [sources, setSources] = useState([]);
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [matchedWords, setMatchedWords] = useState([]);
 
   return (
     <Modal onClose={onClose} maxWidth="wide" className="max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex gap-1.5">
-            {[1, 2, 3].map((n) => (
-              <span
-                key={n}
-                className={`h-1.5 w-8 rounded-full ${n <= step ? 'bg-brand-turquoise-light' : 'bg-brand-grey-light'}`}
-              />
-            ))}
-          </div>
-          <button onClick={onClose} aria-label="סגירה" className="text-brand-grey-text hover:text-brand-text">
-            <X size={20} />
-          </button>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex gap-1.5">
+          {[1, 2, 3].map((n) => (
+            <span
+              key={n}
+              className={`h-1.5 w-8 rounded-full ${n <= step ? 'bg-brand-turquoise-light' : 'bg-brand-grey-light'}`}
+            />
+          ))}
         </div>
+        <button onClick={onClose} aria-label="סגירה" className="text-brand-grey-text hover:text-brand-text">
+          <X size={20} />
+        </button>
+      </div>
 
-        {step === 1 && (
-          <StepSource
-            institutionId={institutionId}
-            source={source}
-            onChange={setSource}
-            onNext={() => setStep(2)}
-          />
-        )}
+      {step === 1 && (
+        <StepSource institutionId={institutionId} sources={sources} onChange={setSources} onNext={() => setStep(2)} />
+      )}
 
-        {step === 2 && (
-          <StepFilter
-            institutionId={institutionId}
-            classes={classes}
-            source={source}
-            filters={filters}
-            onFiltersChange={setFilters}
-            onMatchedWordsChange={setMatchedWords}
-            onBack={() => setStep(1)}
-            onNext={() => setStep(3)}
-          />
-        )}
+      {step === 2 && (
+        <StepFilter
+          institutionId={institutionId}
+          classes={classes}
+          sources={sources}
+          filters={filters}
+          onFiltersChange={setFilters}
+          onMatchedWordsChange={setMatchedWords}
+          onBack={() => setStep(1)}
+          onNext={() => setStep(3)}
+        />
+      )}
 
-        {step === 3 && (
-          <StepFinalize
-            matchedWords={matchedWords}
-            listId={source.listId}
-            listSource={source.sourceType === 'customList' ? 'custom' : 'global'}
-            classes={classes}
-            onBack={() => setStep(2)}
-            onCreated={onCreated}
-          />
-        )}
+      {step === 3 && (
+        <StepFinalize matchedWords={matchedWords} classes={classes} onBack={() => setStep(2)} onCreated={onCreated} />
+      )}
     </Modal>
   );
 }

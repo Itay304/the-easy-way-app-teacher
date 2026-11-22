@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getWordsForList, getCustomListWords, callGetClassHardWords } from '../../../lib/api.js';
 import { filterWords, POS_OPTIONS, LETTER_OPTIONS, DIFFICULTY_OPTIONS } from '../../../lib/wordFilters.js';
+import { mergeSources, dedupeByEnglish, wordKey } from '../../../lib/assignmentWords.js';
 import LoadingSpinner from '../../LoadingSpinner.jsx';
 import Button from '../../ui/Button.jsx';
 
@@ -14,7 +15,7 @@ function toggle(arr, value) {
 export default function StepFilter({
   institutionId,
   classes,
-  source,
+  sources,
   filters,
   onFiltersChange,
   onMatchedWordsChange,
@@ -25,13 +26,24 @@ export default function StepFilter({
   const [hardWordClassId, setHardWordClassId] = useState('');
   const [hardWords, setHardWords] = useState([]);
 
+  // כל הרשימות שנבחרו (assignments-v2): כל מילה נושאת listId/listSource ושם המקור
   useEffect(() => {
-    const loader =
-      source.sourceType === 'wordList'
-        ? getWordsForList(source.listId)
-        : getCustomListWords(institutionId, source.listId);
-    loader.then(setAllWords);
-  }, [institutionId, source]);
+    let cancelled = false;
+    Promise.all(
+      sources.map(async (s) => ({
+        listId: s.listId,
+        listSource: s.sourceType === 'customList' ? 'custom' : 'global',
+        name: s.name,
+        words:
+          s.sourceType === 'wordList'
+            ? await getWordsForList(s.listId)
+            : await getCustomListWords(institutionId, s.listId),
+      })),
+    ).then((lists) => !cancelled && setAllWords(mergeSources(lists)));
+    return () => {
+      cancelled = true;
+    };
+  }, [institutionId, sources]);
 
   useEffect(() => {
     if (!filters.hardWordsForClass || !hardWordClassId) {
@@ -45,7 +57,11 @@ export default function StepFilter({
 
   const filtered = allWords ? filterWords(allWords, filters) : [];
   const hardWordDocs = allWords ? allWords.filter((w) => hardWords.includes(w.englishWord)) : [];
-  const matched = Array.from(new Map([...filtered, ...hardWordDocs].map((w) => [w.id, w])).values());
+  // אותה מילה באנגלית מכמה רשימות — פעם אחת (המופע הראשון, לפי סדר הרשימות)
+  const { kept: matched, duplicates } = dedupeByEnglish(
+    Array.from(new Map([...filtered, ...hardWordDocs].map((w) => [wordKey(w), w])).values()),
+  );
+  const multiSource = sources.length > 1;
 
   useEffect(() => {
     onMatchedWordsChange(matched);
@@ -157,10 +173,16 @@ export default function StepFilter({
           <p className="px-4 py-2.5 border-b border-black/10 text-body-sm font-semibold text-brand-text">
             המילים שנמצאו ({matched.length})
           </p>
-          <ul tabIndex={0} className="max-h-[52vh] overflow-y-auto divide-y divide-black/5 outline-none focus-visible:ring-2 focus-visible:ring-brand-turquoise">
+          <ul
+            tabIndex={0}
+            className="max-h-[52vh] overflow-y-auto divide-y divide-black/5 outline-none focus-visible:ring-2 focus-visible:ring-brand-turquoise"
+          >
             {matched.slice(0, WORD_PREVIEW_LIMIT).map((w) => (
-              <li key={w.id} className="flex items-center justify-between gap-3 px-4 py-2 text-body-sm">
-                <span className="text-brand-grey-text truncate">{w.hebrewTranslation}</span>
+              <li key={wordKey(w)} className="flex items-center justify-between gap-3 px-4 py-2 text-body-sm">
+                <span className="text-brand-grey-text truncate">
+                  {w.hebrewTranslation}
+                  {multiSource && <span className="text-caption"> · {w.sourceName}</span>}
+                </span>
                 <span dir="ltr" className="font-medium text-brand-text shrink-0">
                   {w.englishWord}
                 </span>
@@ -175,7 +197,15 @@ export default function StepFilter({
         </section>
       </div>
 
-      <p className="text-center text-body-sm font-semibold text-brand-turquoise">נמצאו {matched.length} מילים</p>
+      <p className="text-center text-body-sm font-semibold text-brand-turquoise" aria-live="polite">
+        נמצאו {matched.length} מילים
+        {duplicates > 0 && (
+          <span className="font-normal text-brand-grey-text">
+            {' '}
+            ({duplicates} {duplicates === 1 ? 'מילה כפולה הוסרה' : 'מילים כפולות הוסרו'})
+          </span>
+        )}
+      </p>
 
       <div className="flex gap-3">
         <Button variant="ghost" onClick={onBack} className="flex-1">

@@ -1,15 +1,27 @@
 import { useState } from 'react';
 import { AlertTriangle, Gauge, Layers } from 'lucide-react';
 import { callCreateAssignment } from '../../../lib/api.js';
-import { creationPace, MAX_ASSIGNMENT_WORDS, stageCount } from '../../../lib/pace.js';
+import { creationPace, stageCount } from '../../../lib/pace.js';
+import {
+  MAX_ASSIGNMENT_WORDS,
+  LARGE_ACK_LABEL,
+  MIXED_ACK_LABEL,
+  checkSelection,
+  sourceCount,
+  wordKey,
+} from '../../../lib/assignmentWords.js';
 import Input from '../../ui/Input.jsx';
 import Button from '../../ui/Button.jsx';
 
-export default function StepFinalize({ matchedWords, listId, listSource, classes, onBack, onCreated }) {
+// matchedWords: מילים מכל המקורות (כל אחת עם listId/listSource), אחרי הסרת כפילויות (StepFilter).
+// מעל 300 מילים / כמה רשימות — תיבת אישור חובה (assignments-v2); מעל 1,000 — חסום. השרת בודק שוב.
+export default function StepFinalize({ matchedWords, classes, onBack, onCreated }) {
   // בחירת מילים בלבד — התרגול עצמו תמיד מגוון (המורה כבר לא בוחר מצב תרגול)
   const [selectionMode, setSelectionMode] = useState('all'); // 'all' | 'random' | 'manual'
   const [randomCount, setRandomCount] = useState(Math.min(10, matchedWords.length, MAX_ASSIGNMENT_WORDS));
-  const [manualIds, setManualIds] = useState([]);
+  const [manualIds, setManualIds] = useState([]); // מפתחות listId/id
+  const [ackLarge, setAckLarge] = useState(false);
+  const [ackMixed, setAckMixed] = useState(false);
   const [title, setTitle] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [classId, setClassId] = useState(classes[0]?.id || '');
@@ -20,30 +32,26 @@ export default function StepFinalize({ matchedWords, listId, listSource, classes
     setManualIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
   }
 
-  function resolveWordIds() {
-    if (selectionMode === 'all') return matchedWords.map((w) => w.id);
-    if (selectionMode === 'random') {
-      const shuffled = [...matchedWords].sort(() => Math.random() - 0.5);
-      return shuffled.slice(0, randomCount).map((w) => w.id);
-    }
-    return manualIds;
-  }
+  // המילים שנבחרו (אובייקטים). באקראי — סדר אקראי שנקבע פעם אחת לכל רשימת מילים, כדי שהספירה והאישורים
+  // יתאימו בדיוק למה שנשלח.
+  const [shuffled] = useState(() => [...matchedWords].sort(() => Math.random() - 0.5));
+  const selectedWords =
+    selectionMode === 'all'
+      ? matchedWords
+      : selectionMode === 'random'
+        ? shuffled.slice(0, randomCount)
+        : matchedWords.filter((w) => manualIds.includes(wordKey(w)));
 
-  const selectedCount =
-    selectionMode === 'all' ? matchedWords.length : selectionMode === 'random' ? randomCount : manualIds.length;
-  const tooMany = selectedCount > MAX_ASSIGNMENT_WORDS;
+  const selectedCount = selectedWords.length;
+  const check = checkSelection({ count: selectedCount, sources: sourceCount(selectedWords), ackLarge, ackMixed });
+  const tooMany = check.tooMany;
   const pace = creationPace(selectedCount, dueDate ? new Date(dueDate).getTime() : null);
 
   async function handleSubmit(e) {
     e.preventDefault();
     setError('');
-    const wordIds = resolveWordIds();
-    if (wordIds.length === 0) {
-      setError('יש לבחור לפחות מילה אחת.');
-      return;
-    }
-    if (wordIds.length > MAX_ASSIGNMENT_WORDS) {
-      setError(`משימה יכולה לכלול עד ${MAX_ASSIGNMENT_WORDS} מילים (נבחרו ${wordIds.length}). צמצמו בסינון או חלקו לכמה משימות.`);
+    if (check.error) {
+      setError(check.error);
       return;
     }
     if (!classId) {
@@ -53,13 +61,20 @@ export default function StepFinalize({ matchedWords, listId, listSource, classes
 
     setSubmitting(true);
     try {
-      // listSource: רשימה גלובלית (Band) או מוסדית — התלמיד והפונקציות טוענים את המילים מהמקום הנכון
-      const payload = { classId, listId, listSource, title: title.trim(), wordIds };
+      // כל מילה עם המקור שלה (רשימת Band גלובלית או רשימה מוסדית); האישורים נבדקים שוב בשרת
+      const payload = {
+        classId,
+        title: title.trim(),
+        words: selectedWords.map((w) => ({ id: w.id, listId: w.listId, listSource: w.listSource })),
+        acknowledgedLarge: check.large && ackLarge,
+        acknowledgedMixed: check.mixed && ackMixed,
+      };
       if (dueDate) payload.dueDateMs = new Date(dueDate).getTime();
       await callCreateAssignment(payload);
       onCreated();
-    } catch {
-      setError('שגיאה ביצירת המשימה. נסה שוב.');
+    } catch (err) {
+      // שגיאות השרת (מגבלות, אישורים, תוכן מותאם) כבר בעברית
+      setError(err?.code?.startsWith('functions/') && err.message ? err.message : 'שגיאה ביצירת המשימה. נסה שוב.');
     } finally {
       setSubmitting(false);
     }
@@ -106,8 +121,12 @@ export default function StepFinalize({ matchedWords, listId, listSource, classes
         {selectionMode === 'manual' && (
           <div className="max-h-48 overflow-y-auto rounded-xl border border-black/10 divide-y divide-black/5">
             {matchedWords.map((w) => (
-              <label key={w.id} className="flex items-center gap-3 px-4 py-2 text-body-sm">
-                <input type="checkbox" checked={manualIds.includes(w.id)} onChange={() => toggleManual(w.id)} />
+              <label key={wordKey(w)} className="flex items-center gap-3 px-4 py-2 text-body-sm">
+                <input
+                  type="checkbox"
+                  checked={manualIds.includes(wordKey(w))}
+                  onChange={() => toggleManual(wordKey(w))}
+                />
                 <span dir="ltr" className="font-medium text-brand-text">
                   {w.englishWord}
                 </span>
@@ -120,12 +139,7 @@ export default function StepFinalize({ matchedWords, listId, listSource, classes
 
       <Input required value={title} onChange={(e) => setTitle(e.target.value)} placeholder="שם המשימה" />
 
-      <Input
-        type="date"
-        label="דד-ליין (אופציונלי)"
-        value={dueDate}
-        onChange={(e) => setDueDate(e.target.value)}
-      />
+      <Input type="date" label="דד-ליין (אופציונלי)" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
 
       {/* כמה שלבים, קצב מילים ליום עד תאריך היעד, ואזהרות (יותר מדי מילים / קצב גבוה) */}
       <div className="space-y-2 rounded-xl bg-brand-grey-light p-3 text-body-sm">
@@ -138,7 +152,7 @@ export default function StepFinalize({ matchedWords, listId, listSource, classes
         {tooMany && (
           <p className="flex items-start gap-2 font-semibold text-brand-error">
             <AlertTriangle size={16} className="mt-0.5 shrink-0" />
-            משימה יכולה לכלול עד {MAX_ASSIGNMENT_WORDS} מילים (נבחרו {selectedCount}). צמצמו בסינון או חלקו לכמה משימות.
+            {check.error}
           </p>
         )}
         {pace && !tooMany && !pace.pastDue && (
@@ -163,6 +177,34 @@ export default function StepFinalize({ matchedWords, listId, listSource, classes
           <p className="text-brand-grey-text">בלי תאריך יעד: התלמידים מתקדמים בקצב של סבב ביום.</p>
         )}
       </div>
+
+      {/* אישורים חובה (assignments-v2): משימה גדולה (מעל 300 מילים) / מילים מכמה רשימות */}
+      {!tooMany && (check.large || check.mixed) && (
+        <div className="space-y-3 rounded-xl border border-amber-300 bg-amber-50 p-3">
+          {check.large && (
+            <label className="flex items-start gap-2.5 text-body-sm text-brand-text cursor-pointer">
+              <input
+                type="checkbox"
+                checked={ackLarge}
+                onChange={(e) => setAckLarge(e.target.checked)}
+                className="mt-0.5 h-5 w-5 shrink-0 accent-brand-turquoise"
+              />
+              <span>{LARGE_ACK_LABEL}</span>
+            </label>
+          )}
+          {check.mixed && (
+            <label className="flex items-start gap-2.5 text-body-sm text-brand-text cursor-pointer">
+              <input
+                type="checkbox"
+                checked={ackMixed}
+                onChange={(e) => setAckMixed(e.target.checked)}
+                className="mt-0.5 h-5 w-5 shrink-0 accent-brand-turquoise"
+              />
+              <span>{MIXED_ACK_LABEL}</span>
+            </label>
+          )}
+        </div>
+      )}
 
       <div>
         <label className="block text-body-sm font-semibold text-brand-text mb-1">לאיזו כיתה</label>
