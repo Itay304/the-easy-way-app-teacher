@@ -108,6 +108,7 @@ export default function StepFinalize({ matchedWords, classes, onBack, onCreated 
           <div className="px-1">
             <input
               type="range"
+              aria-label="מספר מילים אקראיות"
               min={1}
               max={Math.min(matchedWords.length, MAX_ASSIGNMENT_WORDS)}
               value={randomCount}
@@ -137,9 +138,21 @@ export default function StepFinalize({ matchedWords, classes, onBack, onCreated 
         )}
       </div>
 
-      <Input required value={title} onChange={(e) => setTitle(e.target.value)} placeholder="שם המשימה" />
+      <Input
+        required
+        aria-label="שם המשימה"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="שם המשימה"
+      />
 
-      <Input type="date" label="דד-ליין (אופציונלי)" value={dueDate} onChange={(e) => setDueDate(e.target.value)} />
+      <Input
+        id="assignment-due"
+        type="date"
+        label="דד-ליין (אופציונלי)"
+        value={dueDate}
+        onChange={(e) => setDueDate(e.target.value)}
+      />
 
       {/* כמה שלבים, קצב מילים ליום עד תאריך היעד, ואזהרות (יותר מדי מילים / קצב גבוה) */}
       <div className="space-y-2 rounded-xl bg-brand-grey-light p-3 text-body-sm">
@@ -207,8 +220,11 @@ export default function StepFinalize({ matchedWords, classes, onBack, onCreated 
       )}
 
       <div>
-        <label className="block text-body-sm font-semibold text-brand-text mb-1">לאיזו כיתה</label>
+        <label htmlFor="assignment-class" className="block text-body-sm font-semibold text-brand-text mb-1">
+          לאיזו כיתה
+        </label>
         <select
+          id="assignment-class"
           required
           value={classId}
           onChange={(e) => setClassId(e.target.value)}
