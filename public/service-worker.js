@@ -1,6 +1,7 @@
 // v3: משימות בשלבים (assignment-stages) — מנקה את ה-cache של הגרסה הקודמת
 // v4: פריסת מחשב, ערכת צבעים נגישה אחת, הסכמה לתקנון ולדיוור — מנקה את ה-cache של הגרסה הקודמת
-const CACHE_NAME = 'easylex-teacher-v4';
+// v5: assignments-v2 — משימות בארכיון/שחזור/מחיקה לצמיתות, עד 1,000 מילים, כמה רשימות, הודעות שגיאה ברורות
+const CACHE_NAME = 'easylex-teacher-v5';
 const APP_SHELL = ['/manifest.json', '/icons/icon-192.png', '/icons/icon-512.png'];
 
 self.addEventListener('install', (event) => {
