@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Megaphone } from 'lucide-react';
 import { callSendAnnouncement } from '../../lib/api.js';
 import Modal from '../ui/Modal.jsx';
+import { friendlyError } from '../../lib/errors.js';
 import Button from '../ui/Button.jsx';
 
 const MAX_LEN = 200;
@@ -18,8 +19,8 @@ export default function SendAnnouncementModal({ classId, onClose, onSent }) {
     try {
       await callSendAnnouncement({ classId, message: message.trim() });
       onSent();
-    } catch {
-      setError('שגיאה בשליחת ההודעה. נסה שוב.');
+    } catch (err) {
+      setError(friendlyError(err, { context: 'sendAnnouncement' }));
     } finally {
       setSubmitting(false);
     }

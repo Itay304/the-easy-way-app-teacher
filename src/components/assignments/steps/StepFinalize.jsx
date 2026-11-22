@@ -7,10 +7,12 @@ import {
   LARGE_ACK_LABEL,
   MIXED_ACK_LABEL,
   checkSelection,
+  buildCreatePayload,
   sourceCount,
   wordKey,
 } from '../../../lib/assignmentWords.js';
 import Input from '../../ui/Input.jsx';
+import { friendlyError } from '../../../lib/errors.js';
 import Button from '../../ui/Button.jsx';
 
 // matchedWords: מילים מכל המקורות (כל אחת עם listId/listSource), אחרי הסרת כפילויות (StepFilter).
@@ -62,19 +64,20 @@ export default function StepFinalize({ matchedWords, classes, onBack, onCreated 
     setSubmitting(true);
     try {
       // כל מילה עם המקור שלה (רשימת Band גלובלית או רשימה מוסדית); האישורים נבדקים שוב בשרת
-      const payload = {
+      // ר' buildCreatePayload: פורמט חדש + השדות הישנים כשהכל ממקור אחד (תואם גם לשרת הקודם)
+      const payload = buildCreatePayload({
         classId,
-        title: title.trim(),
-        words: selectedWords.map((w) => ({ id: w.id, listId: w.listId, listSource: w.listSource })),
-        acknowledgedLarge: check.large && ackLarge,
-        acknowledgedMixed: check.mixed && ackMixed,
-      };
-      if (dueDate) payload.dueDateMs = new Date(dueDate).getTime();
+        title,
+        selectedWords,
+        ackLarge,
+        ackMixed,
+        dueDateMs: dueDate ? new Date(dueDate).getTime() : null,
+      });
       await callCreateAssignment(payload);
       onCreated();
     } catch (err) {
       // שגיאות השרת (מגבלות, אישורים, תוכן מותאם) כבר בעברית
-      setError(err?.code?.startsWith('functions/') && err.message ? err.message : 'שגיאה ביצירת המשימה. נסה שוב.');
+      setError(friendlyError(err, { context: 'createAssignment' }));
     } finally {
       setSubmitting(false);
     }

@@ -50,3 +50,36 @@ export function checkSelection({ count, sources, ackLarge, ackMixed }) {
   else if (mixed && !ackMixed) error = 'משימה שמשלבת כמה רשימות: יש לסמן את תיבת האישור.';
   return { large, mixed, tooMany, error };
 }
+
+// בקשת יצירת משימה. words — הפורמט החדש (assignments-v2: לכל מילה המקור שלה). כשכל המילים ממקור אחד,
+// נשלחים גם השדות הישנים (listId, listSource, wordIds) — כך היצירה עובדת גם מול גרסת השרת הקודמת
+// (שדורשת listId), למשל באפליקציה חדשה מול פונקציות שעוד לא עודכנו. משימה משולבת — רק בפורמט החדש.
+export function buildCreatePayload({
+  classId,
+  title,
+  selectedWords,
+  ackLarge = false,
+  ackMixed = false,
+  dueDateMs = null,
+}) {
+  const check = checkSelection({
+    count: selectedWords.length,
+    sources: sourceCount(selectedWords),
+    ackLarge,
+    ackMixed,
+  });
+  const payload = {
+    classId,
+    title: String(title || '').trim(),
+    words: selectedWords.map((w) => ({ id: w.id, listId: w.listId, listSource: w.listSource })),
+    acknowledgedLarge: check.large && ackLarge,
+    acknowledgedMixed: check.mixed && ackMixed,
+  };
+  if (!check.mixed && selectedWords.length > 0) {
+    payload.listId = selectedWords[0].listId;
+    payload.listSource = selectedWords[0].listSource;
+    payload.wordIds = selectedWords.map((w) => w.id);
+  }
+  if (dueDateMs) payload.dueDateMs = dueDateMs;
+  return payload;
+}

@@ -11,6 +11,7 @@ import Input from '../components/ui/Input.jsx';
 import Button from '../components/ui/Button.jsx';
 import TermsCheckbox from '../components/consent/TermsCheckbox.jsx';
 import MarketingCheckbox from '../components/consent/MarketingCheckbox.jsx';
+import { friendlyError } from '../lib/errors.js';
 import { teacherConsentFields, TERMS_REQUIRED_ERROR } from '../lib/consent.js';
 
 const PENDING_INSTITUTION_KEY = 'pending_institution_code';
@@ -93,7 +94,7 @@ export default function Login() {
       } else if (err.code === 'auth/weak-password') {
         setError('הסיסמה חייבת להכיל לפחות 6 תווים.');
       } else if (err.code && err.code.startsWith('functions/')) {
-        setError(err.message || 'קוד המוסד אינו תקין. בקש קישור חדש מהמנהל.');
+        setError(friendlyError(err, { context: 'joinInstitutionAsTeacher' }));
       } else {
         setError('שגיאה בהרשמה. נסו שוב.');
       }

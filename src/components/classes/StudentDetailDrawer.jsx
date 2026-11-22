@@ -4,6 +4,7 @@ import { getUserDoc, callRemoveStudentFromClass } from '../../lib/api.js';
 import { daysAgo } from '../../lib/dateUtils.js';
 import LoadingSpinner from '../LoadingSpinner.jsx';
 import Modal from '../ui/Modal.jsx';
+import { friendlyError } from '../../lib/errors.js';
 import Button from '../ui/Button.jsx';
 
 export default function StudentDetailDrawer({ student, classId, institutionId, onClose, onRemoved }) {
@@ -30,7 +31,7 @@ export default function StudentDetailDrawer({ student, classId, institutionId, o
       onRemoved(student.uid);
       onClose();
     } catch (err) {
-      setRemoveError(err.message || 'שגיאה בהסרת התלמיד. נסו שוב.');
+      setRemoveError(friendlyError(err, { context: 'removeStudentFromClass' }));
       setRemoving(false);
     }
   }

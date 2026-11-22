@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { callArchiveAssignment } from '../../lib/api.js';
 import Modal from '../ui/Modal.jsx';
+import { friendlyError } from '../../lib/errors.js';
 import Button from '../ui/Button.jsx';
 
 // אישור "מחיקה" של משימה — בפועל העברה לארכיון (assignments-v2): המשימה נעלמת מהתלמידים ומהרשימה
@@ -17,7 +18,7 @@ export default function ArchiveAssignmentDialog({ assignment, onClose, onArchive
       await callArchiveAssignment({ assignmentId: assignment.id });
       onArchived(assignment);
     } catch (err) {
-      setError(err?.code?.startsWith('functions/') && err.message ? err.message : 'המחיקה נכשלה. נסו שוב.');
+      setError(friendlyError(err, { context: 'archiveAssignment' }));
       setSaving(false);
     }
   }

@@ -13,6 +13,7 @@ import EmptyState from '../components/EmptyState.jsx';
 import AssignmentCard from '../components/assignments/AssignmentCard.jsx';
 import AssignmentWizard from '../components/assignments/AssignmentWizard.jsx';
 import Card from '../components/ui/Card.jsx';
+import { friendlyError } from '../lib/errors.js';
 import Button from '../components/ui/Button.jsx';
 
 // משימות: "פעילות" (עם סיכום ו"מחיקה") ו"משימות בארכיון" (assignments-v2) — משימה שנמחקה עוברת לארכיון:
@@ -72,7 +73,7 @@ export default function Assignments() {
       await callRestoreAssignment({ assignmentId: a.id });
       setReloadKey((k) => k + 1);
     } catch (err) {
-      setRestoreError(err?.code?.startsWith('functions/') && err.message ? err.message : 'השחזור נכשל. נסו שוב.');
+      setRestoreError(friendlyError(err, { context: 'restoreAssignment' }));
     } finally {
       setRestoringId(null);
     }

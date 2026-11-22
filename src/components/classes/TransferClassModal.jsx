@@ -3,6 +3,7 @@ import { ArrowRightLeft } from 'lucide-react';
 import { getTeachersForInstitution, callTransferClass } from '../../lib/api.js';
 import LoadingSpinner from '../LoadingSpinner.jsx';
 import Modal from '../ui/Modal.jsx';
+import { friendlyError } from '../../lib/errors.js';
 import Button from '../ui/Button.jsx';
 
 export default function TransferClassModal({ institutionId, classId, currentTeacherId, onClose, onTransferred }) {
@@ -36,8 +37,8 @@ export default function TransferClassModal({ institutionId, classId, currentTeac
     try {
       await callTransferClass({ classId, newTeacherId });
       onTransferred();
-    } catch {
-      setError('שגיאה בהעברת הכיתה. נסה שוב.');
+    } catch (err) {
+      setError(friendlyError(err, { context: 'transferClass' }));
     } finally {
       setSubmitting(false);
     }
