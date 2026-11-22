@@ -1,11 +1,4 @@
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  doc,
-  getDoc,
-} from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, getDoc } from 'firebase/firestore';
 import { httpsCallable } from 'firebase/functions';
 import { auth, db, functions } from '../firebase.js';
 import { hidesSensitive, visibleWords } from './contentFilter.js';
@@ -32,11 +25,7 @@ export async function getClassById(institutionId, classId) {
  * (belongsToInstitution), לא רק מנהל — אין צורך ב-Cloud Function כאן,
  * רק לכתיבת teacherId בפועל (ר' callTransferClass). */
 export async function getTeachersForInstitution(institutionId) {
-  const q = query(
-    collection(db, 'users'),
-    where('institutionId', '==', institutionId),
-    where('role', '==', 'teacher'),
-  );
+  const q = query(collection(db, 'users'), where('institutionId', '==', institutionId), where('role', '==', 'teacher'));
   const snap = await getDocs(q);
   return snap.docs.map((d) => ({ uid: d.id, ...d.data() }));
 }
@@ -58,7 +47,24 @@ export async function getAssignmentsForClasses(institutionId, classIds) {
   return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
 }
 
+// משימות בארכיון ("נמחקו") — מוסתרות מהתלמידים, ההתקדמות שלהן נשמרת; אפשר לשחזר (assignments-v2)
+export async function getArchivedAssignmentsForClasses(institutionId, classIds) {
+  if (classIds.length === 0) return [];
+  const q = query(
+    collection(db, 'institutions', institutionId, 'assignments'),
+    where('classId', 'in', classIds.slice(0, 30)),
+    where('status', '==', 'archived'),
+  );
+  const snap = await getDocs(q);
+  return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
+}
+
 export const callCreateAssignment = httpsCallable(functions, 'createAssignment');
+// "מחיקה" = העברה לארכיון, ו"שחזור" — רק המורה שיצר את המשימה או מנהל המוסד (נבדק בשרת)
+export const callArchiveAssignment = httpsCallable(functions, 'archiveAssignment');
+export const callRestoreAssignment = httpsCallable(functions, 'restoreAssignment');
+// "מחיקה לצמיתות" — רק משימה בארכיון; נמחקים המשימה וההתקדמות של התלמידים בה (לא ההתקדמות הגלובלית)
+export const callDeleteAssignmentPermanently = httpsCallable(functions, 'deleteAssignmentPermanently');
 
 // ── מילים ────────────────────────────────────────────────────────────────
 
@@ -107,9 +113,7 @@ export async function getCustomLists(institutionId) {
 }
 
 export async function getCustomListWords(institutionId, listId) {
-  const snap = await getDocs(
-    collection(db, 'institutions', institutionId, 'customLists', listId, 'words'),
-  );
+  const snap = await getDocs(collection(db, 'institutions', institutionId, 'customLists', listId, 'words'));
   return visibleWords(
     snap.docs.map((d) => ({ id: d.id, ...d.data() })),
     await hideSensitiveForMe(),

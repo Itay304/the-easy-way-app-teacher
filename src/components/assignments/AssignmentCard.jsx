@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import { CalendarClock, ChevronDown } from 'lucide-react';
+import { CalendarClock, ChevronDown, Trash2 } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext.jsx';
+import ArchiveAssignmentDialog from './ArchiveAssignmentDialog.jsx';
 import { callGetAssignmentSummary } from '../../lib/api.js';
 import { daysAgo } from '../../lib/dateUtils.js';
 import Card from '../ui/Card.jsx';
@@ -21,7 +23,13 @@ function lastSeenLabel(dayKey) {
   return `לפני ${d} ימים`;
 }
 
-export default function AssignmentCard({ assignment, className }) {
+// onArchived(assignment) — אחרי "מחיקה" (העברה לארכיון); בלעדיו הכרטיס פשוט נעלם מהרשימה.
+// "מחיקה" מוצגת רק למורה שיצר את המשימה ולמנהל המוסד (אותה בדיקה גם בשרת).
+export default function AssignmentCard({ assignment, className, onArchived }) {
+  const { user, profile } = useAuth();
+  const canManage = profile?.role === 'principal' || assignment.createdBy === user?.uid;
+  const [confirming, setConfirming] = useState(false);
+  const [archived, setArchived] = useState(false);
   const [summary, setSummary] = useState(null);
   const [failed, setFailed] = useState(false);
   const [open, setOpen] = useState(false);
@@ -36,21 +44,47 @@ export default function AssignmentCard({ assignment, className }) {
     };
   }, [assignment.id, assignment.institutionId]);
 
+  if (archived) return null;
+
   return (
     <Card className="space-y-3">
-      <div className="min-w-0">
-        <p className="font-semibold text-brand-text truncate">{assignment.title}</p>
-        <p className="text-body-sm text-brand-grey-text truncate">
-          {className}
-          {summary ? ` · ${summary.totalWords} מילים · ${summary.stageCount} שלבים` : ''}
-        </p>
-        {assignment.dueDateMs && (
-          <p className="flex items-center gap-1 text-caption text-brand-grey-text mt-0.5">
-            <CalendarClock size={16} />
-            עד {new Date(assignment.dueDateMs).toLocaleDateString('he-IL')}
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="font-semibold text-brand-text truncate">{assignment.title}</p>
+          <p className="text-body-sm text-brand-grey-text truncate">
+            {className}
+            {summary ? ` · ${summary.totalWords} מילים · ${summary.stageCount} שלבים` : ''}
           </p>
+          {assignment.dueDateMs && (
+            <p className="flex items-center gap-1 text-caption text-brand-grey-text mt-0.5">
+              <CalendarClock size={16} />
+              עד {new Date(assignment.dueDateMs).toLocaleDateString('he-IL')}
+            </p>
+          )}
+        </div>
+        {canManage && (
+          <button
+            type="button"
+            onClick={() => setConfirming(true)}
+            className="flex shrink-0 items-center gap-1 rounded-lg px-2 py-1.5 text-body-sm font-semibold text-brand-error hover:bg-brand-error-light"
+          >
+            <Trash2 size={16} aria-hidden="true" />
+            מחיקה
+          </button>
         )}
       </div>
+
+      {confirming && (
+        <ArchiveAssignmentDialog
+          assignment={assignment}
+          onClose={() => setConfirming(false)}
+          onArchived={(a) => {
+            setConfirming(false);
+            if (onArchived) onArchived(a);
+            else setArchived(true);
+          }}
+        />
+      )}
 
       {!summary && !failed && <p className="text-caption text-brand-grey-text">טוען…</p>}
       {failed && <p className="text-caption text-brand-error">לא הצלחנו לטעון את מצב המשימה.</p>}
@@ -112,7 +146,9 @@ export default function AssignmentCard({ assignment, className }) {
                           ידועות {s.known}/{summary.totalWords} · נראו {s.seen} · {lastSeenLabel(s.lastDay)}
                         </p>
                       </div>
-                      <span className={`shrink-0 rounded-full px-2.5 py-0.5 text-caption font-semibold ${STATUS[s.status].className}`}>
+                      <span
+                        className={`shrink-0 rounded-full px-2.5 py-0.5 text-caption font-semibold ${STATUS[s.status].className}`}
+                      >
                         {STATUS[s.status].label}
                       </span>
                     </li>

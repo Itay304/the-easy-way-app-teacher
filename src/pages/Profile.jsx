@@ -15,6 +15,7 @@ import {
 import { hidesSensitive } from '../lib/contentFilter.js';
 import { Skeleton } from '../components/Skeleton.jsx';
 import Card from '../components/ui/Card.jsx';
+import { friendlyError } from '../lib/errors.js';
 import Button from '../components/ui/Button.jsx';
 
 const NOTIFY_KEY = 'easylex_notify_inactive';
@@ -86,8 +87,8 @@ export default function Profile() {
       await callSetInstitutionContentSettings({ hideSensitiveWords: next });
       setInstitution((prev) => ({ ...prev, hideSensitiveWords: next }));
       resetContentPolicy();
-    } catch {
-      setContentError('לא הצלחנו לשמור את ההגדרה. נסו שוב.');
+    } catch (err) {
+      setContentError(friendlyError(err, { context: 'setInstitutionContentSettings' }));
     } finally {
       setSavingContent(false);
     }

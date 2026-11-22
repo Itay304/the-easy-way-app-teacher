@@ -1,6 +1,7 @@
 // קצב משימה בזמן היצירה — אותן הגדרות כמו functions/stages.js ו-the-easy-way-app-student/src/lib/stages.js
-// (שלבים של 10–15 מילים, ימים לפי שעון ישראל, עד 300 מילים, אזהרה מעל 20 מילים חדשות ביום).
-export const MAX_ASSIGNMENT_WORDS = 300;
+// (שלבים של 10–15 מילים, ימים לפי שעון ישראל, עד 1,000 מילים — מעל 300 באישור, ר' assignmentWords.js —
+// אזהרה מעל 20 מילים חדשות ביום).
+export { MAX_ASSIGNMENT_WORDS } from './assignmentWords.js';
 export const HIGH_PACE_WORDS_PER_DAY = 20;
 const STAGE_MIN = 10;
 const STAGE_MAX = 15;

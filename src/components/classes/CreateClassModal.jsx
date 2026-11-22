@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { callCreateClass } from '../../lib/api.js';
 import Modal from '../ui/Modal.jsx';
 import Input from '../ui/Input.jsx';
+import { friendlyError } from '../../lib/errors.js';
 import Button from '../ui/Button.jsx';
 
 export default function CreateClassModal({ onClose, onCreated }) {
@@ -17,8 +18,8 @@ export default function CreateClassModal({ onClose, onCreated }) {
     try {
       await callCreateClass({ className: name.trim(), grade: grade.trim() });
       onCreated();
-    } catch {
-      setError('שגיאה ביצירת הכיתה. נסה שוב.');
+    } catch (err) {
+      setError(friendlyError(err, { context: 'createClass' }));
     } finally {
       setSubmitting(false);
     }
