@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Plus, ClipboardList, Archive, RotateCcw } from 'lucide-react';
+import { Plus, ClipboardList, Archive, RotateCcw, Trash2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext.jsx';
 import {
   getMyClasses,
@@ -12,6 +12,7 @@ import ErrorBanner from '../components/ErrorBanner.jsx';
 import EmptyState from '../components/EmptyState.jsx';
 import AssignmentCard from '../components/assignments/AssignmentCard.jsx';
 import AssignmentWizard from '../components/assignments/AssignmentWizard.jsx';
+import PermanentDeleteDialog from '../components/assignments/PermanentDeleteDialog.jsx';
 import Card from '../components/ui/Card.jsx';
 import { friendlyError } from '../lib/errors.js';
 import Button from '../components/ui/Button.jsx';
@@ -29,6 +30,7 @@ export default function Assignments() {
   const [reloadKey, setReloadKey] = useState(0);
   const [restoringId, setRestoringId] = useState(null);
   const [restoreError, setRestoreError] = useState('');
+  const [deleting, setDeleting] = useState(null); // משימה שממתינה לאישור "מחיקה לצמיתות"
 
   useEffect(() => {
     let cancelled = false;
@@ -171,16 +173,16 @@ export default function Assignments() {
                       </p>
                     </div>
                     {canManage(a) && (
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        onClick={() => restore(a)}
-                        loading={restoringId === a.id}
-                        className="shrink-0"
-                      >
-                        <RotateCcw size={16} aria-hidden="true" />
-                        שחזור
-                      </Button>
+                      <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
+                        <Button size="sm" variant="secondary" onClick={() => restore(a)} loading={restoringId === a.id}>
+                          <RotateCcw size={16} aria-hidden="true" />
+                          שחזור
+                        </Button>
+                        <Button size="sm" variant="danger-subtle" onClick={() => setDeleting(a)}>
+                          <Trash2 size={16} aria-hidden="true" />
+                          מחיקה לצמיתות
+                        </Button>
+                      </div>
                     )}
                   </Card>
                 </li>
@@ -188,6 +190,17 @@ export default function Assignments() {
             </ul>
           )}
         </>
+      )}
+
+      {deleting && (
+        <PermanentDeleteDialog
+          assignment={deleting}
+          onClose={() => setDeleting(null)}
+          onDeleted={() => {
+            setDeleting(null);
+            setReloadKey((k) => k + 1);
+          }}
+        />
       )}
 
       {showWizard && classes && (

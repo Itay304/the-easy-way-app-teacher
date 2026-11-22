@@ -63,6 +63,8 @@ export const callCreateAssignment = httpsCallable(functions, 'createAssignment')
 // "מחיקה" = העברה לארכיון, ו"שחזור" — רק המורה שיצר את המשימה או מנהל המוסד (נבדק בשרת)
 export const callArchiveAssignment = httpsCallable(functions, 'archiveAssignment');
 export const callRestoreAssignment = httpsCallable(functions, 'restoreAssignment');
+// "מחיקה לצמיתות" — רק משימה בארכיון; נמחקים המשימה וההתקדמות של התלמידים בה (לא ההתקדמות הגלובלית)
+export const callDeleteAssignmentPermanently = httpsCallable(functions, 'deleteAssignmentPermanently');
 
 // ── מילים ────────────────────────────────────────────────────────────────
 
